@@ -23,15 +23,10 @@ https://www.figma.com/file/24fCfLLYYrCyTPW4SULqI5/Tower-Defense?node-id=0%3A1
 
 Типы врагов:
 
-![](https://sun9-76.userapi.com/impg/BpGG08bXvi4Fz0mzk4b1__KNbKCPZ4Obvp0NPQ/XRn-u6WKDrY.jpg?size=50x28&quality=96&sign=d6e38e309863afb599bf02c2aa06995b&type=album_) обычный враг
+![](https://sun9-32.userapi.com/impg/URlw08NTUhVhKvAheg0Q-KeOg48OudlLnFocIw/DX_Fm9sUI98.jpg?size=50x80&quality=96&sign=736f6006f71f5eba7783fb94085c4ee4&type=album)  ![](https://sun9-64.userapi.com/impg/l7bGsP-Jx8Vfki37qwI60mQmdyBkKwo324y8fw/c99l9-_eSeo.jpg?size=50x80&quality=96&sign=a7f1d2299c80aad40ebc6e2954322434&type=album) обычный враг
 
-![](https://sun9-52.userapi.com/impg/0mGi3SoaglAo08v42ukR49kpCTO3ehLPguCUUQ/3TkDxcIsJKE.jpg?size=50x28&quality=96&sign=db3c2ceb9ab2d8a1df2c907e1db01a9a&type=album) более сильный враг, появляются не с первых волн. Количество увеличивается по ходу игры
 
-Альтернативные варианты внешнего вида врагов:
-
-![](https://sun9-25.userapi.com/impg/hYT6Itgg9EKtIHdtLH97SYz9CVXzhHMJxwpN8w/oSwtUK_A3Ps.jpg?size=50x50&quality=96&sign=65bf0887da1079a65eac24180d0ecf4c&type=album) обычный враг
-
-![](https://sun9-70.userapi.com/impg/Fvfw_cbkmqa018WCNRZratwxK0zosYUAEursTQ/hhNTE85YR6c.jpg?size=50x50&quality=96&sign=72642e41351d015138b31f5fe968338d&type=album) более сильный враг, появляются не с первых волн. Количество увеличивается по ходу игры
+![](https://sun9-51.userapi.com/impg/uNgY6dvrZdiQdi3T8mI6V5-M28qtPn8UsyDCpw/OGp8jR4DI3I.jpg?size=50x80&quality=96&sign=4d174a90ced8b0a1c46d81fafb10ffcf&type=album) ![](hhttps://sun9-23.userapi.com/impg/n0fvxyK0z1vAc2fpbRxrAfgbwMw6MoypHAASnw/RmGhBWjScWk.jpg?size=50x80&quality=96&sign=af34e88f650876a42227c0e36617c22b&type=album) более сильный враг, появляются не с первых волн. Количество увеличивается по ходу игры
 
 Типы башен: 
 
@@ -85,21 +80,21 @@ https://www.figma.com/file/24fCfLLYYrCyTPW4SULqI5/Tower-Defense?node-id=0%3A1
   <tbody>
     <tr>
       <td valign="top">
-        <img width="150" height="150" src="">
+        <img width="150" height="150" src="https://ca.slack-edge.com/TPV9DP0N4-U01BDSXHZDZ-3709aab91b77-512">
         <br>
         <a href="https://github.com/Kezzeret">Dmitry Kotelevets</a>
         <br>
         <p>dev</p>
       </td>
       <td valign="top">
-        <img width="150" height="150" src="">
+        <img width="150" height="150" src="https://ca.slack-edge.com/TPV9DP0N4-U01B6UW0LKY-d6d64d6756ca-512">
         <br>
         <a href="https://github.com/greyforce">Gregory Kovorotny</a>
         <br>
         <p>dev</p>
       </td>
       <td valign="top">
-        <img width="150" height="150" src="">
+        <img width="150" height="150" src="https://ca.slack-edge.com/TPV9DP0N4-U01GT4G40BZ-07a4a7c07ea8-512">
         <br>
         <a href="https://github.com/Diamis">Alexey Chernyshev</a>
         <br>
