@@ -28,6 +28,7 @@ https://www.figma.com/file/24fCfLLYYrCyTPW4SULqI5/Tower-Defense?node-id=0%3A1
 ![](https://sun9-52.userapi.com/impg/0mGi3SoaglAo08v42ukR49kpCTO3ehLPguCUUQ/3TkDxcIsJKE.jpg?size=50x28&quality=96&sign=db3c2ceb9ab2d8a1df2c907e1db01a9a&type=album) более сильный враг, появляются не с первых волн. Количество увеличивается по ходу игры
 
 Альтернативные варианты внешнего вида врагов:
+
 ![](https://sun9-25.userapi.com/impg/hYT6Itgg9EKtIHdtLH97SYz9CVXzhHMJxwpN8w/oSwtUK_A3Ps.jpg?size=50x50&quality=96&sign=65bf0887da1079a65eac24180d0ecf4c&type=album) обычный враг
 
 ![](https://sun9-70.userapi.com/impg/Fvfw_cbkmqa018WCNRZratwxK0zosYUAEursTQ/hhNTE85YR6c.jpg?size=50x50&quality=96&sign=72642e41351d015138b31f5fe968338d&type=album) более сильный враг, появляются не с первых волн. Количество увеличивается по ходу игры
