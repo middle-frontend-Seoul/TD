@@ -1,7 +1,7 @@
 # Tower Defense project
 
 ## Описание проекта:
-Игра, представитель жанра "Tower Defense". Суть игры сводится к уничтожению волн наступающих противников, которые с каждым новым раундом становятся сильнее и многочисленнее. Устранение врагов происходит с помощью различных пушек, башен, ловушек и прочих аналогичных средств, которые игрок расставляет по уровню на свое усмотрение.
+Игра, представитель жанра "Tower Defense". Суть игры сводится к уничтожению волн наступающих противников, которые с каждым новым раундом становятся сильнее и многочисленнее. Устранение врагов происходит с помощью различных  башен, которые игрок расставляет по уровню на свое усмотрение.
 
 ## Примеры реализаций:
 - Canvas TD - https://canvas-td.teddy.io (https://github.com/tkazec/canvas-td)
@@ -26,6 +26,21 @@ https://www.figma.com/file/24fCfLLYYrCyTPW4SULqI5/Tower-Defense?node-id=0%3A1
 ![](https://sun9-76.userapi.com/impg/BpGG08bXvi4Fz0mzk4b1__KNbKCPZ4Obvp0NPQ/XRn-u6WKDrY.jpg?size=50x28&quality=96&sign=d6e38e309863afb599bf02c2aa06995b&type=album_) обычный враг
 
 ![](https://sun9-52.userapi.com/impg/0mGi3SoaglAo08v42ukR49kpCTO3ehLPguCUUQ/3TkDxcIsJKE.jpg?size=50x28&quality=96&sign=db3c2ceb9ab2d8a1df2c907e1db01a9a&type=album) более сильный враг, появляются не с первых волн. Количество увеличивается по ходу игры
+
+Альтернативные варианты внешнего вида врагов:
+![](https://sun9-25.userapi.com/impg/hYT6Itgg9EKtIHdtLH97SYz9CVXzhHMJxwpN8w/oSwtUK_A3Ps.jpg?size=50x50&quality=96&sign=65bf0887da1079a65eac24180d0ecf4c&type=album) обычный враг
+
+![](https://sun9-70.userapi.com/impg/Fvfw_cbkmqa018WCNRZratwxK0zosYUAEursTQ/hhNTE85YR6c.jpg?size=50x50&quality=96&sign=72642e41351d015138b31f5fe968338d&type=album) более сильный враг, появляются не с первых волн. Количество увеличивается по ходу игры
+
+Типы башен: 
+
+![](https://sun9-26.userapi.com/impg/4DAprbM0PfqjjzlE1qwKTN5B6LcytmVCOQ12Zw/GUTjSqM4XjQ.jpg?size=50x50&quality=96&sign=d0692b54804c41f16d52e44a6ab2ae5c&type=album) Пулемёт, стреляет прямо по ближайшей цели
+
+![](https://sun9-4.userapi.com/impg/YMHdOxJ9qhPOCfG_k_4MlJHBPD0ZRS6X0HX2Hw/ktIeYD26u9c.jpg?size=50x50&quality=96&sign=6acf29997de22cfbf778547db1fb19c0&type=album) Огнемёт, наносит урон в небольшом конусе
+
+![](https://sun9-28.userapi.com/impg/qDqdTL5Heor9ZKNrdVfFbQUVo41CjPcYC-LR5g/znfoQaRVWKM.jpg?size=50x50&quality=96&sign=eda3f4282839ede4552c5d55b201424b&type=album) Лазер, бьёт прямым лучом нанося урон всем противникам, проходящим через него
+
+![](https://sun9-39.userapi.com/impg/oR8pvo5E0dqnp5hyrVfBnhFiWljR0pK5-XYzlA/HlaZe0q10Fc.jpg?size=50x50&quality=96&sign=5aa13a39318d71a4ad2e696aea5ced81&type=album) Ракетная установка, стреляет по цели, но снаряд после выстрела не меняет траекторию и взрывается попав в то место пути, куда изначально целился. Повреждает те цели, которые в момент попадания находятся возле данной точки. Медленная.
 
 ## Ход игры:
 #### Начало игры
@@ -55,3 +70,40 @@ https://www.figma.com/file/24fCfLLYYrCyTPW4SULqI5/Tower-Defense?node-id=0%3A1
 #### Подсчет очков:
 За простого врага - 1, за усиленного - 2. При расчете умножается на номер волны.
 Количество врагов на каждой волне увеличивается.
+
+## Идеи для дальнейшего развития проекта (дополняется)
+- больше вариантов карт
+- генератор карт
+- больше вариантов противников и башен
+- Улучшение графики, замена пиксельных противников и башен на более детализированные объекты.
+- соревновательный режим 1х1
+
+## Команда разработки
+
+<table align="center">
+  <tbody>
+    <tr>
+      <td valign="top">
+        <img width="150" height="150" src="">
+        <br>
+        <a href="https://github.com/Kezzeret">Dmitry Kotelevets</a>
+        <br>
+        <p>dev</p>
+      </td>
+      <td valign="top">
+        <img width="150" height="150" src="">
+        <br>
+        <a href="https://github.com/greyforce">Gregory Kovorotny</a>
+        <br>
+        <p>dev</p>
+      </td>
+      <td valign="top">
+        <img width="150" height="150" src="">
+        <br>
+        <a href="https://github.com/Diamis">Alexey Chernyshev</a>
+        <br>
+        <p>dev</p>
+      </td>
+     </tr>
+  </tbody>
+</table>
