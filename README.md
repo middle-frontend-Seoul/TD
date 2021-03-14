@@ -80,21 +80,21 @@ https://www.figma.com/file/24fCfLLYYrCyTPW4SULqI5/Tower-Defense?node-id=0%3A1
   <tbody>
     <tr>
       <td valign="top">
-        <img width="150" height="150" src="https://ca.slack-edge.com/TPV9DP0N4-U01BDSXHZDZ-3709aab91b77-512">
+        <a href="https://github.com/Kezzeret"><img width="150" height="150" src="https://ca.slack-edge.com/TPV9DP0N4-U01BDSXHZDZ-3709aab91b77-512"></a>
         <br>
         <a href="https://github.com/Kezzeret">Dmitry Kotelevets</a>
         <br>
         <p>dev</p>
       </td>
       <td valign="top">
-        <img width="150" height="150" src="https://ca.slack-edge.com/TPV9DP0N4-U01B6UW0LKY-d6d64d6756ca-512">
+        <a href="https://github.com/greyforce"><img width="150" height="150" src="https://ca.slack-edge.com/TPV9DP0N4-U01B6UW0LKY-d6d64d6756ca-512"></a>
         <br>
         <a href="https://github.com/greyforce">Gregory Kovorotny</a>
         <br>
         <p>dev</p>
       </td>
       <td valign="top">
-        <img width="150" height="150" src="https://ca.slack-edge.com/TPV9DP0N4-U01GT4G40BZ-07a4a7c07ea8-512">
+        <a href="https://github.com/Diamis"><img width="150" height="150" src="https://ca.slack-edge.com/TPV9DP0N4-U01GT4G40BZ-07a4a7c07ea8-512"></a>
         <br>
         <a href="https://github.com/Diamis">Alexey Chernyshev</a>
         <br>
