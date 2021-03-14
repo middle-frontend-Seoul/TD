@@ -26,7 +26,7 @@ https://www.figma.com/file/24fCfLLYYrCyTPW4SULqI5/Tower-Defense?node-id=0%3A1
 ![](https://sun9-32.userapi.com/impg/URlw08NTUhVhKvAheg0Q-KeOg48OudlLnFocIw/DX_Fm9sUI98.jpg?size=50x80&quality=96&sign=736f6006f71f5eba7783fb94085c4ee4&type=album)  ![](https://sun9-64.userapi.com/impg/l7bGsP-Jx8Vfki37qwI60mQmdyBkKwo324y8fw/c99l9-_eSeo.jpg?size=50x80&quality=96&sign=a7f1d2299c80aad40ebc6e2954322434&type=album) обычный враг
 
 
-![](https://sun9-51.userapi.com/impg/uNgY6dvrZdiQdi3T8mI6V5-M28qtPn8UsyDCpw/OGp8jR4DI3I.jpg?size=50x80&quality=96&sign=4d174a90ced8b0a1c46d81fafb10ffcf&type=album) ![](hhttps://sun9-23.userapi.com/impg/n0fvxyK0z1vAc2fpbRxrAfgbwMw6MoypHAASnw/RmGhBWjScWk.jpg?size=50x80&quality=96&sign=af34e88f650876a42227c0e36617c22b&type=album) более сильный враг, появляются не с первых волн. Количество увеличивается по ходу игры
+![](https://sun9-51.userapi.com/impg/uNgY6dvrZdiQdi3T8mI6V5-M28qtPn8UsyDCpw/OGp8jR4DI3I.jpg?size=50x80&quality=96&sign=4d174a90ced8b0a1c46d81fafb10ffcf&type=album) ![](https://sun9-23.userapi.com/impg/n0fvxyK0z1vAc2fpbRxrAfgbwMw6MoypHAASnw/RmGhBWjScWk.jpg?size=50x80&quality=96&sign=af34e88f650876a42227c0e36617c22b&type=album) более сильный враг, появляются не с первых волн. Количество увеличивается по ходу игры
 
 Типы башен: 
 
