@@ -1,11 +1,11 @@
 import React, { PureComponent } from "react";
-import './App.css';
+import './App.scss';
 
 class App extends PureComponent {
     public render() {
         return (
             <div>
-                new App
+                <h1>Hello Seoul</h1>
             </div>
         );
     }
