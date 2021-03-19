@@ -1,5 +1,8 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const WebpackBar = require('webpackbar')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
     mode: 'development',
@@ -27,7 +30,7 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: ["style-loader", "css-loader"]
+                use: [MiniCssExtractPlugin.loader, "css-loader"]
             },
             {
                 test: /\.s[ac]ss$/i,
@@ -40,13 +43,21 @@ module.exports = {
             {
                 test: /\.html$/i,
                 loader: 'html-loader'
-            }
+            },
+            {
+                test: /\.js$/,
+                enforce: 'pre',
+                use: ['source-map-loader'],
+            },
         ]
     },
     plugins: [
         new HtmlWebpackPlugin({
             template: "./src/index.html"
-        })
+        }),
+        new CleanWebpackPlugin(),
+        new WebpackBar(),
+        new MiniCssExtractPlugin()
     ],
     devServer: {
         historyApiFallback: true,
