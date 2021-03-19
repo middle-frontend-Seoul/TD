@@ -18,7 +18,7 @@
 |--index.tsx
 |--polyfill.ts
 |--types.d.ts
-|--vars.less
+|--vars.scss
 ```
 
 ### api
@@ -74,7 +74,7 @@ export class CurrentUserInfo {
 |--components-ui
 |---Button
 |----Button.tsx
-|----Button.less
+|----Button.scss
 |----index.ts
 ```
 
@@ -84,7 +84,7 @@ export class CurrentUserInfo {
 |--core
 |---App
 |----App.tsx
-|----App.less
+|----App.scss
 |----AppRoutes.tsx
 |----index.ts
 |---PrivateRoute
@@ -119,7 +119,7 @@ export async function axiosGet(url, headers) {
 |--pages
 |---LeaderboardPage
 |----LeaderboardPage.tsx
-|----LeaderboardPage.less
+|----LeaderboardPage.scss
 |----index.ts
 ```
 
@@ -171,14 +171,14 @@ constants.ts - константы
 
 types.d.ts - типы, которые неудобно держать в конкретной папке/компоненте
 
-vars.less - переменные препроцессора стилей
+vars.scss - переменные препроцессора стилей
 
 polyfill.ts - полифилы (если нужны будут)
 
 ## Инструменты
 
 ### Препроцессор
-LESS + CSS Modules
+SASS (.scss) + CSS Modules
 
 ### Работа с http запросами
 axios
