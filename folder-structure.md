@@ -3,7 +3,7 @@
 ```
 |-dist
 |-src
-|--api
+|--api (или services)
 |--assets
 |--components
 |--components-ui
@@ -11,7 +11,6 @@
 |--network
 |--pages
 |--redux
-|--routes
 |--utils
 |--constants.ts
 |--index.html
@@ -23,7 +22,7 @@
 
 ### api
 Высокоуровневые реализации методов api.
-Например, в authApi.ts будут методы signin, signup и тд
+Например, в auth-api.ts будут методы signin, signup и тд
 
 Также здесь будет папка models, в которой будут описаны типы dto с бекенда и классы, которые преобразуют dto в объекты нашего приложения.
 
@@ -31,10 +30,10 @@
 |--api
 |---models
 |----auth.ts - модели dto
-|---authApi.ts - высокоуровневые методы api
+|---auth-api.ts - высокоуровневые методы api
 ```
 
-Пример getCurrentUser из authApi:
+Пример getCurrentUser из auth-api:
 ```js
 export const authApi = {
     getCurrentUser: async () => {
@@ -72,9 +71,9 @@ export class CurrentUserInfo {
 Мелкие, часто переиспользуемые компоненты (например Button, Input).
 ```
 |--components-ui
-|---Button
-|----Button.tsx
-|----Button.scss
+|---button
+|----button.tsx
+|----button.scss
 |----index.ts
 ```
 
@@ -82,12 +81,12 @@ export class CurrentUserInfo {
 Основной компонент приложения в подпапке App, а также блок с роутами AppRoutes, приватный роут PrivateRoute
 ```
 |--core
-|---App
-|----App.tsx
-|----App.scss
-|----AppRoutes.tsx
+|---app
+|----app.tsx
+|----app.scss
+|----app-routes.tsx
 |----index.ts
-|---PrivateRoute
+|---private-route
 ```
 
 ### network
@@ -117,47 +116,14 @@ export async function axiosGet(url, headers) {
 Компоненты-страницы (то-есть те и только те, на которые ведут роуты)
 ```
 |--pages
-|---LeaderboardPage
-|----LeaderboardPage.tsx
-|----LeaderboardPage.scss
+|---leaderboard-page
+|----leaderboard-page.tsx
+|----leaderboard-page.scss
 |----index.ts
 ```
 
 ### redux
 Здесь будут actions, reducers, sagas и все, связанное с redux
-
-### routes
-Файл paths.ts с экспортами путей в виде объектов со свойством path.
-Удобно, если надо потом менять пути - меняются только здесь.
-Файл routes.tsx - массив с роутами, который используется в компоненте AppRoutes.tsx для генерации всех `Routes` внутри `Switch`
-```
-|--routes
-|---paths.ts
-|---routes.tsx
-```
-
-Пример paths.ts
-```js
-export const LeaderboardPage = {
-    path: '/leaderboard',
-};
-...
-...
-```
-
-Пример routes.tsx
-```js
-import LeaderboardPage from 'pages/LeaderboardPage';
-import * as Paths from './paths';
-
-export const Routes = [
-    {
-        ...Paths.LoginPage,
-        exact: true,
-        component: LeaderboardPage,
-    }
-]
-```
 
 ### utils
 Файлы с утилитами, например format.ts (форматирование дат, строк), customsHooks.ts с кастомными хуками, helpers.ts (неспецифичными для конкретного компонента/цели хелперами) и т.д.
@@ -174,11 +140,3 @@ types.d.ts - типы, которые неудобно держать в кон�
 vars.scss - переменные препроцессора стилей
 
 polyfill.ts - полифилы (если нужны будут)
-
-## Инструменты
-
-### Препроцессор
-SASS (.scss) + CSS Modules
-
-### Работа с http запросами
-axios
