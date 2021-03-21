@@ -10,6 +10,7 @@ import {
   PageSignin,
   PageSignup,
   PageProfile,
+  PageStatistics,
   PageForumDetails,
   PageForumSection,
 } from 'pages';
@@ -27,6 +28,7 @@ const App: FC = () => (
       <Route path={URL.SIGNIN} component={PageSignin} />
       <Route path={URL.SIGNUP} component={PageSignup} />
       <Route path={URL.PROFILE} component={PageProfile} />
+      <Route path={URL.STATISTICS} component={PageStatistics} />
       <Route component={PageError} />
     </Switch>
   </Router>

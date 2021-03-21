@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 
-interface IStatisticsHomeProps {}
+interface IPageStatisticsProps {}
 
-const StatisticsHome: FC<IStatisticsHomeProps> = () => {
-  return <>StatisticsHome</>;
+const PageStatistics: FC<IPageStatisticsProps> = () => {
+  return <>PageStatistics</>;
 };
 
-export { StatisticsHome };
-export default StatisticsHome;
+export { PageStatistics };
+export default PageStatistics;
