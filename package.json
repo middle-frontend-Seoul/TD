@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "webpack serve --mode development --open --hot",
-    "build": "webpack --mode development",
+    "build": "webpack --mode production",
     "format": "prettier --write src/**/*.{js,jsx,ts,tsx}",
     "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx ./"
   },
