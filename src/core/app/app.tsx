@@ -14,7 +14,7 @@ import {
   PageForumSection,
 } from 'pages';
 
-import './app-core.scss';
+import './app.scss';
 
 const App: FC = () => (
   <Router>
