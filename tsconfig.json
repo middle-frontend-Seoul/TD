@@ -17,19 +17,13 @@
     "skipLibCheck": true,
     "declaration": false,
     "sourceMap": false,
-    "baseUrl": ".",
-    "outDir": "./dist",
-    "paths": {
-      "*": ["./src/*"]
-    },
-    "typeRoots": ["typings/**/*.d.ts", "node_modules/@types"],
+    "baseUrl": "src"
   },
   "include": [
-    "src",
-    "typings/**/*.d.ts",
-    "./node_modules/@types"
+    "src/**/*"
   ],
   "exclude": [
+    "node_modules",
     "**/*.js"
   ]
 }

@@ -1,7 +1,7 @@
-import React, { FC } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import React, { FC } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import * as URL from "core/url";
+import * as URL from 'core/url';
 import {
   PageHome,
   PagePlay,
@@ -12,9 +12,9 @@ import {
   PageProfile,
   PageForumDetails,
   PageForumSection,
-} from "pages";
+} from 'pages';
 
-import "./app.scss";
+import './app-core.scss';
 
 const App: FC = () => (
   <Router>
