@@ -1,0 +1,7 @@
+node_modules
+dist
+
+.*rc.js
+webpack.*.js
+*.test.ts
+*.d.ts
