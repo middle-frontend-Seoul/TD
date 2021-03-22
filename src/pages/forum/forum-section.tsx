@@ -1,8 +1,6 @@
 import React, { FC } from 'react';
 
-interface IPageForumSectionProps {}
-
-const PageForumSection: FC<IPageForumSectionProps> = () => {
+const PageForumSection: FC = () => {
   return <>PageForumSection</>;
 };
 
