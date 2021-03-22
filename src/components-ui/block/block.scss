@@ -1,0 +1,16 @@
+.block {
+  padding: 24px;
+  max-width: 1150px;
+  background-color: rgba(0, 0, 0, 0.7);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.block_type-block {
+  display: block;
+  width: 100%;
+}
+
+.block_type-inline {
+  display: inline-block;
+}

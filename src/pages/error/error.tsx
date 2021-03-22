@@ -1,8 +1,6 @@
 import React, { FC } from 'react';
 
-interface IPageErrorProps {}
-
-const PageError: FC<IPageErrorProps> = () => {
+const PageError: FC = () => {
   return <>PageError</>;
 };
 

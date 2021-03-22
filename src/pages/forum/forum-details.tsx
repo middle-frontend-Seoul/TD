@@ -1,8 +1,6 @@
 import React, { FC } from 'react';
 
-interface IPageForumDetailsProps {}
-
-const PageForumDetails: FC<IPageForumDetailsProps> = () => {
+const PageForumDetails: FC = () => {
   return <>PageForumDetails</>;
 };
 

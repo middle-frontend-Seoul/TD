@@ -1,8 +1,6 @@
 import React, { FC } from 'react';
 
-interface IPageSigninProps {}
-
-const PageSignin: FC<IPageSigninProps> = () => {
+const PageSignin: FC = () => {
   return <>PageSignin</>;
 };
 
