@@ -1,1 +1,1 @@
-export * from './statistics';
+export { PageStatistics as default } from './statistics';
