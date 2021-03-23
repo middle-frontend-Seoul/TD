@@ -10,48 +10,48 @@
   border: 1px solid;
   border-radius: 4px;
   transition: border 0.3s;
-}
 
-.button_size_small {
-  min-width: 180px;
-  height: 40px;
-  font-size: 16px;
-  line-height: 18px;
-}
+  &_size {
+    &-small {
+      min-width: 180px;
+      height: 40px;
+      font-size: 16px;
+      line-height: 18px;
+    }
+    &-medium {
+      min-width: 250px;
+      height: 58px;
+      font-size: 20px;
+      line-height: 23px;
+    }
+    &-large {
+      min-width: 320px;
+      height: 62px;
+      font-size: 23px;
+      line-height: 25px;
+    }
+  }
 
-.button_size-medium {
-  min-width: 250px;
-  height: 58px;
-  font-size: 20px;
-  line-height: 23px;
-}
-
-.button_size_large {
-  min-width: 320px;
-  height: 62px;
-  font-size: 23px;
-  line-height: 25px;
-}
-
-.button_use-default {
-  border: 1px solid;
-  color: white;
-  border-color: rgba(0, 0, 0, 0.7);
-  background: rgba(0, 0, 0, 0.7);
-}
-.button_use-default:hover {
-  border-color: white;
-}
-
-.button_use-primary {
-  color: #354216;
-  border-color: rgba(0, 0, 0, 0.7);
-  background-color: white;
-}
-.button_use-primary:hover {
-  border-color: #354216;
-}
-
-.button_radius-medium {
-  border-radius: 29px;
+  &_use {
+    &-default {
+      border: 1px solid;
+      color: white;
+      border-color: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.7);
+      &:hover {
+        border-color: white;
+      }
+    }
+    &-primary {
+      color: #354216;
+      border-color: rgba(0, 0, 0, 0.7);
+      background-color: white;
+      &:hover {
+        border-color: #354216;
+      }
+    }
+  }
+  &_radius-medium {
+    border-radius: 29px;
+  }
 }

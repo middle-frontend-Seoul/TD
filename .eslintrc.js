@@ -15,7 +15,6 @@ module.exports = {
   },
   rules: {
     'import/prefer-default-export': 'off',
-    'react/jsx-props-no-spreading': 'off',
     'react/button-has-type': 'off',
     '@typescript-eslint/no-empty-interface': ['warn'],
   },
