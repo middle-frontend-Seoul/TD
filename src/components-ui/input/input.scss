@@ -1,0 +1,101 @@
+.input-field {
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: white;
+  &_size {
+    &-small {
+      width: 120px;
+      height: 20px;
+      border-radius: 2px;
+    }
+    &-medium {
+      width: 240px;
+      height: 40px;
+      border-radius: 4px;
+    }
+    &-large {
+      width: 360px;
+      height: 60px;
+      border-radius: 8px;
+    }
+  }
+  .defaultValue {
+    color: #999999;
+    &_size {
+      &-small {
+        padding-left: 4px;
+        font-size: 10px;
+      }
+      &-medium {
+        padding-left: 8px;
+        font-size: 20px;
+      }
+      &-large {
+        padding-left: 16px;
+        font-size: 40px;
+      }
+    }
+  }
+  .top {
+    &_size {
+      &-small {
+        display: none;
+      }
+      &-medium {
+        position: absolute;
+        pointer-events: none;
+        font-size: 10px;
+        top: 4px;
+      }
+      &-large {
+        position: absolute;
+        pointer-events: none;
+        font-size: 16px;
+        top: 4px;
+      }
+    }
+  }
+  .hidden {
+    display: none;
+  }
+  .visible {
+    &_size {
+      &-small {
+        display: block;
+        border: 0;
+        outline: none;
+        height: 100%;
+        font-size: 14px;
+        padding: 2px 0px 0px 4px;
+        border-radius: 4px;
+        line-height: 17px;
+        width: 106px;
+      }
+      &-medium {
+        display: block;
+        border: 0;
+        outline: none;
+        height: 100%;
+        font-size: 14px;
+        padding: 10px 0px 0px 8px;
+        border-radius: 4px;
+        line-height: 17px;
+        width: 232px;
+      }
+      &-large {
+        display: block;
+        border: 0;
+        outline: none;
+        height: 100%;
+        font-size: 28px;
+        padding: 20px 0px 0px 16px;
+        border-radius: 8px;
+        line-height: 34px;
+        width: 344px;
+      }
+    }
+  }
+}
