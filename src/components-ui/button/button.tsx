@@ -9,11 +9,12 @@ export type ButtonSize = 'small' | 'medium' | 'large';
 
 export interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   radius?: boolean;
+  data?: unknown;
   use?: ButtonUse;
   size?: ButtonSize;
   icon?: React.ReactNode;
   loading?: boolean;
-  onClick?: () => void;
+  onClick?: (data?: unknown) => void;
   children: React.ReactNode;
 }
 
@@ -22,6 +23,7 @@ export const Button: FC<IButtonProps> = ({
   children,
   disabled,
   onClick,
+  data,
   radius,
   size = 'medium',
   type = 'button',
@@ -32,7 +34,7 @@ export const Button: FC<IButtonProps> = ({
   // ---------------
   const handleOnClick = () => {
     if (disabled) return;
-    onClick?.();
+    onClick?.(data);
   };
 
   // render

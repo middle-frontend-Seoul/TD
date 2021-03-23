@@ -6,6 +6,13 @@
   margin-right: auto;
 }
 
+.block_center {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .block_type-block {
   display: block;
   width: 100%;

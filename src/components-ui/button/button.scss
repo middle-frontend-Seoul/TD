@@ -9,6 +9,7 @@
   outline: none;
   border: 1px solid;
   border-radius: 4px;
+  transition: border 0.3s;
 }
 
 .button_size_small {
@@ -35,13 +36,20 @@
 .button_use-default {
   border: 1px solid;
   color: white;
+  border-color: rgba(0, 0, 0, 0.7);
   background: rgba(0, 0, 0, 0.7);
+}
+.button_use-default:hover {
+  border-color: white;
 }
 
 .button_use-primary {
   color: #354216;
   border-color: rgba(0, 0, 0, 0.7);
   background-color: white;
+}
+.button_use-primary:hover {
+  border-color: #354216;
 }
 
 .button_radius-medium {

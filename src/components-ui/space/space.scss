@@ -3,6 +3,10 @@
   min-width: 100%;
   justify-content: space-between;
 }
+.space_position-center {
+  justify-content: center;
+}
+
 .space_type-horizontal {
   flex-direction: row;
   margin-left: -12px;
