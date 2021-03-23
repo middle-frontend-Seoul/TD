@@ -11,10 +11,10 @@ import {
   PageSignin,
   PageSignup,
   PageProfile,
-  PageStatistics,
   PageForumDetails,
   PageForumSection,
 } from 'pages';
+import PageStatistics from 'pages/statistics';
 
 import './app.scss';
 
