@@ -1,9 +1,9 @@
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 
 import './layout.scss';
 
 export interface ILayoutProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export const Layout: FC<ILayoutProps> = ({ children }) => {

@@ -1,4 +1,4 @@
-import React, { FC, ButtonHTMLAttributes } from 'react';
+import React, { FC, ReactNode, CSSProperties } from 'react';
 import cn from 'classnames';
 
 import './button.scss';
@@ -7,15 +7,18 @@ export type ButtonUse = 'default' | 'primary';
 
 export type ButtonSize = 'small' | 'medium' | 'large';
 
-export interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface IButtonProps {
+  type?: 'button' | 'submit' | 'reset';
+  className?: string;
   radius?: boolean;
-  data?: unknown;
   use?: ButtonUse;
   size?: ButtonSize;
-  icon?: React.ReactNode;
+  icon?: ReactNode;
+  style?: CSSProperties;
+  disabled?: boolean;
   loading?: boolean;
-  onClick?: (data?: unknown) => void;
-  children: React.ReactNode;
+  onClick?: () => void;
+  children: ReactNode;
 }
 
 export const Button: FC<IButtonProps> = ({
@@ -23,18 +26,17 @@ export const Button: FC<IButtonProps> = ({
   children,
   disabled,
   onClick,
-  data,
   radius,
+  style,
   size = 'medium',
   type = 'button',
   use = 'default',
-  ...props
 }) => {
   // method
   // ---------------
   const handleOnClick = () => {
     if (disabled) return;
-    onClick?.(data);
+    onClick?.();
   };
 
   // render
@@ -50,7 +52,12 @@ export const Button: FC<IButtonProps> = ({
   );
 
   return (
-    <button type={type} className={classes} onClick={handleOnClick} {...props}>
+    <button
+      type={type}
+      style={style}
+      className={classes}
+      onClick={handleOnClick}
+    >
       {children}
     </button>
   );

@@ -3,7 +3,7 @@ import cn from 'classnames';
 
 import './space.scss';
 
-export type SpaceType = 'horizontal' | 'vertikale';
+export type SpaceType = 'horizontal' | 'vertical';
 
 export type SpaceSize = 'medium';
 
@@ -16,28 +16,30 @@ export interface IBlockProps {
 }
 
 export const Space: FC<IBlockProps> = ({
-  type = 'vertikale',
+  type = 'vertical',
   size = 'medium',
   position,
   className,
   children,
 }) => {
   const classes = cn(className, 'space', `space_type-${type}`, {
-    'space_position-center': !!position,
+    position: Boolean(position),
   });
 
-  const childs = React.Children.toArray(children)
-    .map((child, i) => {
-      if (!React.isValidElement(child)) {
-        return false;
-      }
+  const childs = React.useMemo(() => {
+    return React.Children.toArray(children)
+      .map((child, i) => {
+        if (!React.isValidElement(child)) {
+          return false;
+        }
 
-      return React.cloneElement(child, {
-        key: String(i),
-        className: `space__${type}_size-${size}`,
-      });
-    })
-    .filter(Boolean);
+        return React.cloneElement(child, {
+          key: String(i),
+          className: `space__${type}_size-${size}`,
+        });
+      })
+      .filter(Boolean);
+  }, [children, type, size]);
 
   return <div className={classes}>{childs}</div>;
 };

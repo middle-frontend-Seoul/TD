@@ -4,9 +4,9 @@
   font-weight: normal;
   text-align: center;
   font-family: Roboto, Arial, Helvetica, sans-serif;
-}
 
-.title_szie-medium {
-  font-size: 38px;
-  line-height: 45px;
+  &_size-medium {
+    font-size: 38px;
+    line-height: 45px;
+  }
 }
