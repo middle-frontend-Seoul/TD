@@ -10,6 +10,7 @@ export type SpaceSize = 'medium';
 export interface IBlockProps {
   size?: SpaceSize;
   type?: SpaceType;
+  position?: 'center';
   className?: string;
   children: React.ReactNode;
 }
@@ -17,10 +18,13 @@ export interface IBlockProps {
 export const Space: FC<IBlockProps> = ({
   type = 'vertikale',
   size = 'medium',
+  position,
   className,
   children,
 }) => {
-  const classes = cn(className, 'space', `space_type-${type}`);
+  const classes = cn(className, 'space', `space_type-${type}`, {
+    'space_position-center': !!position,
+  });
 
   const childs = React.Children.toArray(children)
     .map((child, i) => {
