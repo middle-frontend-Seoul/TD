@@ -1,12 +1,11 @@
-import React, { FC, useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { FC } from 'react';
 
 import { Link } from 'components-ui/link';
 import { Block } from 'components-ui/block';
 import { Title } from 'components-ui/title';
 import { Space } from 'components-ui/space';
 import { Button } from 'components-ui/button';
-import { PLAY, PROFILE, STATISTICS, FORUM, SIGNIN } from 'core/url';
+import { PLAY, PROFILE, STATISTICS, FORUM } from 'core/url';
 
 import map1 from './images/map1.png';
 import map2 from './images/map2.png';
@@ -14,15 +13,6 @@ import map3 from './images/map3.png';
 import './home.scss';
 
 const PageHome: FC = () => {
-  const history = useHistory();
-
-  const onClickForum = useCallback(() => history.push(FORUM), [history]);
-  const onClickLogout = useCallback(() => history.push(SIGNIN), [history]);
-  const onClickProfile = useCallback(() => history.push(PROFILE), [history]);
-  const onClickStatistincs = useCallback(() => history.push(STATISTICS), [
-    history,
-  ]);
-
   return (
     <Space type="vertical">
       <Block center page="home" type="flex" className="home-block">
@@ -40,18 +30,16 @@ const PageHome: FC = () => {
         </Space>
       </Block>
       <Space type="horizontal">
-        <Button radius onClick={onClickProfile}>
+        <Link type="button" to={PROFILE}>
           Профиль
-        </Button>
-        <Button radius onClick={onClickStatistincs}>
+        </Link>
+        <Link type="button" to={STATISTICS}>
           Таблица лидеров
-        </Button>
-        <Button radius onClick={onClickForum}>
+        </Link>
+        <Link type="button" to={FORUM}>
           Форум
-        </Button>
-        <Button radius onClick={onClickLogout}>
-          Выйти из игры
-        </Button>
+        </Link>
+        <Button radius>Выйти из игры</Button>
       </Space>
     </Space>
   );

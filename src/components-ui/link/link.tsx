@@ -4,8 +4,19 @@ import cn from 'classnames';
 
 import './link.scss';
 
-export const Link: FC<LinkProps> = ({ className, to, children }) => {
-  const classes = cn(className, 'link');
+type LinkType = 'link' | 'button';
+
+export interface ILinkProps {
+  type?: LinkType;
+}
+
+export const Link: FC<LinkProps> = ({
+  type = 'link',
+  to,
+  className,
+  children,
+}) => {
+  const classes = cn(className, 'link', `link_type-${type}`);
   return (
     <RRLink className={classes} to={to}>
       {children}
