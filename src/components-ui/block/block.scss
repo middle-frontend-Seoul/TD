@@ -1,0 +1,34 @@
+.block {
+  padding: 24px;
+  max-width: 1150px;
+  background-color: rgba(0, 0, 0, 0.7);
+  margin-left: auto;
+  margin-right: auto;
+
+  &_center {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &_type {
+    &-flex {
+      width: 100%;
+      display: flex;
+    }
+    &-block {
+      display: block;
+      width: 100%;
+    }
+    &-inline {
+      display: inline-block;
+    }
+  }
+
+  &_page {
+    &-home {
+      height: calc(100vh - 200px);
+      min-height: 300px;
+    }
+  }
+}

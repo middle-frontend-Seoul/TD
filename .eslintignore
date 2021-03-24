@@ -1,4 +1,5 @@
 node_modules
+__stories__
 dist
 
 .*rc.js

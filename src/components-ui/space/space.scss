@@ -1,0 +1,31 @@
+.space {
+  display: flex;
+  min-width: 100%;
+  justify-content: space-between;
+
+  &.position {
+    justify-content: center;
+  }
+
+  &_type {
+    &-horizontal {
+      flex-direction: row;
+      margin-left: -12px;
+      margin-right: -12px;
+    }
+    &-vertical {
+      flex-direction: column;
+      margin-top: -12px;
+      margin-bottom: -12px;
+    }
+  }
+
+  &__horizontal_size-medium {
+    margin-left: 12px;
+    margin-right: 12px;
+  }
+  &__vertical_size-medium {
+    margin-top: 12px;
+    margin-bottom: 12px;
+  }
+}

@@ -1,8 +1,6 @@
 import React, { FC } from 'react';
 
-interface IPagePlayProps {}
-
-const PagePlay: FC<IPagePlayProps> = () => {
+const PagePlay: FC = () => {
   return <>PagePlay</>;
 };
 

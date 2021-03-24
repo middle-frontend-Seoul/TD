@@ -1,8 +1,6 @@
 import React, { FC } from 'react';
 
-interface IPageStatisticsProps {}
-
-const PageStatistics: FC<IPageStatisticsProps> = () => {
+const PageStatistics: FC = () => {
   return <>PageStatistics</>;
 };
 

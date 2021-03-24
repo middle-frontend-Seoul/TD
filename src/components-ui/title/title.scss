@@ -1,0 +1,12 @@
+.title {
+  color: #ffffff;
+  font-style: normal;
+  font-weight: normal;
+  text-align: center;
+  font-family: Roboto, Arial, Helvetica, sans-serif;
+
+  &_size-medium {
+    font-size: 38px;
+    line-height: 45px;
+  }
+}

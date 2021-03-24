@@ -1,4 +1,16 @@
-h1 {
-    color: #27aedb;
-    text-align: center;
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Roboto, Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  background-image: url(./terrain.webp);
+  background-position: center;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
 }

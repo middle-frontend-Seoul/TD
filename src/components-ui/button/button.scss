@@ -1,0 +1,57 @@
+.button {
+  cursor: pointer;
+  padding: 12px 16px;
+  z-index: 0;
+  font-style: normal;
+  font-weight: 500;
+  box-sizing: border-box;
+  text-align: center;
+  outline: none;
+  border: 1px solid;
+  border-radius: 4px;
+  transition: border 0.3s;
+
+  &_size {
+    &-small {
+      min-width: 180px;
+      height: 40px;
+      font-size: 16px;
+      line-height: 18px;
+    }
+    &-medium {
+      min-width: 250px;
+      height: 58px;
+      font-size: 20px;
+      line-height: 23px;
+    }
+    &-large {
+      min-width: 320px;
+      height: 62px;
+      font-size: 23px;
+      line-height: 25px;
+    }
+  }
+
+  &_use {
+    &-default {
+      border: 1px solid;
+      color: white;
+      border-color: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.7);
+      &:hover {
+        border-color: white;
+      }
+    }
+    &-primary {
+      color: #354216;
+      border-color: rgba(0, 0, 0, 0.7);
+      background-color: white;
+      &:hover {
+        border-color: #354216;
+      }
+    }
+  }
+  &_radius-medium {
+    border-radius: 29px;
+  }
+}
