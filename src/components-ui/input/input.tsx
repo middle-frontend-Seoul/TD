@@ -18,36 +18,37 @@ export const Input: FC<InputProps> = ({
   value,
   onChange,
 }) => {
-  const [inputStyle, setInputStyle] = React.useState<string>('hidden');
+  const [isHidden, setIsHidden] = React.useState<boolean>(true);
   const [labelStyle, setLabelStyle] = React.useState<string>('default');
   const inputEl = React.useRef<HTMLInputElement>(null);
-
   const handleLeave = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    if (value === '') {
-      setInputStyle('hidden');
+    if (!value) {
+      setIsHidden(true);
       setLabelStyle('');
     }
   };
-
   const handleClick = () => {
-    if (inputStyle === 'hidden') {
-      setInputStyle(`visible`);
-      if (placeholder === '') setLabelStyle(`top`);
-      else setLabelStyle(`hidden`);
+    if (isHidden) {
+      setIsHidden(false);
+      if (placeholder === '') {
+        setLabelStyle(`top`);
+      } else {
+        setLabelStyle(`hidden`);
+      }
     }
   };
-
   const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value !== '') setLabelStyle(`top`);
-    else if (placeholder === '') setLabelStyle(`top`);
-    else setLabelStyle(`hidden`);
-
+    if (event.target.value !== '' || !placeholder) {
+      setLabelStyle(`top`);
+    } else {
+      setLabelStyle(`hidden`);
+    }
     onChange();
   };
-
-  React.useEffect(() => inputEl?.current?.focus(), [inputStyle]);
-
+  React.useEffect(() => {
+    inputEl?.current?.focus();
+  }, [isHidden]);
   return (
     <div
       onKeyDown={handleClick}
@@ -58,10 +59,16 @@ export const Input: FC<InputProps> = ({
     >
       <div className={cn('defaultValue', labelStyle, size)}>{placeholder}</div>
       <input
-        className={cn(inputStyle, size)}
+        className={cn(
+          {
+            hidden: isHidden,
+            visible: !isHidden,
+          },
+          size
+        )}
         value={value}
         onBlur={handleLeave}
-        onChange={onChangeInput.bind(this)}
+        onChange={onChangeInput}
         ref={inputEl}
         placeholder={placeholder}
       />
