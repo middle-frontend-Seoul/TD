@@ -5,16 +5,16 @@ import './input.scss';
 
 export type InputSize = 'small' | 'medium' | 'large';
 
-export interface IButtonProps {
+export interface InputProps {
   size?: InputSize;
   value: string;
   onChange: () => void;
-  defaultValue?: string;
+  placeholder?: string;
 }
 
-export const Input: FC<IButtonProps> = ({
+export const Input: FC<InputProps> = ({
   size = 'medium',
-  defaultValue = 'input',
+  placeholder = '',
   value,
   onChange,
 }) => {
@@ -26,39 +26,44 @@ export const Input: FC<IButtonProps> = ({
     event.preventDefault();
     if (value === '') {
       setInputStyle('hidden');
-      setLabelStyle('default');
+      setLabelStyle('');
     }
   };
 
   const handleClick = () => {
     if (inputStyle === 'hidden') {
-      setInputStyle(`visible_size-${size}`);
-      setLabelStyle(`top_size-${size}`);
+      setInputStyle(`visible`);
+      if (placeholder === '') setLabelStyle(`top`);
+      else setLabelStyle(`hidden`);
     }
+  };
+
+  const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.value !== '') setLabelStyle(`top`);
+    else if (placeholder === '') setLabelStyle(`top`);
+    else setLabelStyle(`hidden`);
+
+    onChange();
   };
 
   React.useEffect(() => inputEl?.current?.focus(), [inputStyle]);
 
   return (
     <div
-      /** Строчка ниже чтобы прошёл коммит. Без неё выдаются две ошибки, которые я не знаю как побороть */
-      /** Static HTML elements with event handlers require a role */
-      /** Visible, non-interactive elements with click handlers must have at least one keyboard listener */
-      aria-hidden="true"
-      className={cn('input-field', `input-field_size-${size}`)}
+      onKeyDown={handleClick}
+      role="button"
+      tabIndex={0}
+      className={cn('input-field', size)}
       onClick={handleClick}
     >
-      <div
-        className={cn('defaultValue', labelStyle, `defaultValue_size-${size}`)}
-      >
-        {defaultValue}
-      </div>
+      <div className={cn('defaultValue', labelStyle, size)}>{placeholder}</div>
       <input
-        className={cn(inputStyle, `input_size-${size}`)}
+        className={cn(inputStyle, size)}
         value={value}
         onBlur={handleLeave}
-        onChange={onChange}
+        onChange={onChangeInput.bind(this)}
         ref={inputEl}
+        placeholder={placeholder}
       />
     </div>
   );
