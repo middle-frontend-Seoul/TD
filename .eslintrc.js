@@ -3,7 +3,10 @@ module.exports = {
   parserOptions: {
     project: './tsconfig.json',
   },
-  plugins: ['@typescript-eslint'],
+  plugins: [
+    '@typescript-eslint',
+    'react-hooks',
+  ],
   extends: ['airbnb-typescript-prettier'],
   settings: {
     'import/resolver': {
@@ -12,7 +15,7 @@ module.exports = {
         moduleDirectory: ['node_modules', 'src'],
       },
     },
-    'import/ignore': ['models', 'pages'],
+    'import/ignore': ['codecs', 'pages'],
   },
   rules: {
     'import/prefer-default-export': 'off',
@@ -20,5 +23,9 @@ module.exports = {
     '@typescript-eslint/no-empty-interface': ['warn'],
     'max-classes-per-file': 'off',
     'lines-between-class-members': 'off',
+
+    // react-hooks
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'error',
   },
 };

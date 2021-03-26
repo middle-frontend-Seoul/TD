@@ -1,19 +1,17 @@
 import { httpPost } from 'network/http';
-import { Leaderboard } from './models';
+import { Leaderboard } from './codecs';
 
 export const leaderboardApi = {
   getAllLeaderboards: async (
-    data: Leaderboard.LeaderboardRequestInfo
-  ): Promise<ApiResponse<Leaderboard.LeaderboardInfo[], Leaderboard.LeaderboardDto[]>> => { // eslint-disable-line prettier/prettier
-    const { response, error } = await httpPost<Leaderboard.LeaderboardDto[]>(
+    data: LeaderboardRequestInfo
+  ): Promise<ApiResponse<LeaderboardInfo[], LeaderboardDto[]>> => {
+    const { response, error } = await httpPost<LeaderboardDto[]>(
       '/leaderboard/all',
-      new Leaderboard.LeaderboardRequestDto(data)
+      Leaderboard.encodeLeaderboardRequest(data)
     );
     if (response) {
       return {
-        data: (response.data || []).map(
-          (dto) => new Leaderboard.LeaderboardInfo(dto)
-        ),
+        data: (response.data || []).map(Leaderboard.decodeLeaderboard),
       };
     }
     return { error };

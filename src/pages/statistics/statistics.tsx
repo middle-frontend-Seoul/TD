@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
 
-import { LeaderboardInfo } from 'api/models/leaderboard';
 import { leaderboardApi } from 'api/leaderboard-api';
 import { authApi } from 'api/auth-api';
 
