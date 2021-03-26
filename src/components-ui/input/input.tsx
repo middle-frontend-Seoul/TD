@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, ChangeEvent, useState, useRef } from 'react';
 import cn from 'classnames';
 
 import './input.scss';
@@ -18,10 +18,10 @@ export const Input: FC<InputProps> = ({
   value,
   onChange,
 }) => {
-  const [isHidden, setIsHidden] = React.useState<boolean>(true);
-  const [labelStyle, setLabelStyle] = React.useState<string>('default');
-  const inputEl = React.useRef<HTMLInputElement>(null);
-  const handleLeave = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const [isHidden, setIsHidden] = useState<boolean>(true);
+  const [labelStyle, setLabelStyle] = useState<string>('default');
+  const inputEl = useRef<HTMLInputElement>(null);
+  const handleLeave = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     if (!value) {
       setIsHidden(true);
@@ -38,7 +38,7 @@ export const Input: FC<InputProps> = ({
       }
     }
   };
-  const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.value !== '' || !placeholder) {
       setLabelStyle(`top`);
     } else {
