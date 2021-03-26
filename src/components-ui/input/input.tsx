@@ -59,13 +59,7 @@ export const Input: FC<InputProps> = ({
     >
       <div className={cn('defaultValue', labelStyle, size)}>{placeholder}</div>
       <input
-        className={cn(
-          {
-            hidden: isHidden,
-            visible: !isHidden,
-          },
-          size
-        )}
+        className={cn({ hidden: isHidden }, size)}
         value={value}
         onBlur={handleLeave}
         onChange={onChangeInput}

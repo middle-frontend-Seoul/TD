@@ -61,12 +61,11 @@
     display: none;
   }
 
-  .visible {
+  input {
+    border: 0;
+    outline: none;
+    height: 100%;
     &.small {
-      display: block;
-      border: 0;
-      outline: none;
-      height: 100%;
       font-size: 14px;
       padding: 2px 0px 0px 4px;
       border-radius: 4px;
@@ -74,10 +73,6 @@
       width: 106px;
     }
     &.medium {
-      display: block;
-      border: 0;
-      outline: none;
-      height: 100%;
       font-size: 14px;
       padding: 10px 0px 0px 8px;
       border-radius: 4px;
@@ -85,10 +80,6 @@
       width: 232px;
     }
     &.large {
-      display: block;
-      border: 0;
-      outline: none;
-      height: 100%;
       font-size: 28px;
       padding: 20px 0px 0px 16px;
       border-radius: 8px;
