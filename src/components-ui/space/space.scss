@@ -1,6 +1,7 @@
 .space {
   display: flex;
   min-width: 100%;
+  align-items: inherit;
   justify-content: space-between;
 
   &.position {

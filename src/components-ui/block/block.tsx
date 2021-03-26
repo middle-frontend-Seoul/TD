@@ -3,11 +3,12 @@ import cn from 'classnames';
 
 import './block.scss';
 
-export type BlockPage = 'home';
+export type BlockPage = 'home' | 'forum';
 
 export type BlockType = 'block' | 'inline' | 'flex';
 
 export interface IBlockProps {
+  title?: string;
   center?: boolean;
   page?: BlockPage;
   type?: BlockType;
@@ -19,6 +20,7 @@ export interface IBlockProps {
 export const Block: FC<IBlockProps> = ({
   type = 'block',
   page,
+  title,
   center,
   className,
   children,
@@ -31,6 +33,7 @@ export const Block: FC<IBlockProps> = ({
 
   return (
     <div className={classes} style={style}>
+      {title && <div className="block_title">{title}</div>}
       {children}
     </div>
   );

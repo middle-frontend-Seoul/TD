@@ -5,6 +5,16 @@
   margin-left: auto;
   margin-right: auto;
 
+  &_title {
+    color: white;
+    text-align: center;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 38px;
+    line-height: 45px;
+  }
+
   &_center {
     flex-direction: column;
     justify-content: center;
@@ -26,6 +36,7 @@
   }
 
   &_page {
+    &-forum,
     &-home {
       height: calc(100vh - 200px);
       min-height: 300px;
