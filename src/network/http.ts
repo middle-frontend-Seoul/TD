@@ -7,39 +7,80 @@ const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
 });
 
-export async function httpGet<R>(
-  url: string,
-  headers?: Record<string, string>
-): Promise<HttpResponse<R>> {
+async function httpRequest<Dto>(
+  method: HttpMethod,
+  config: HttpConfig
+): Promise<HttpResponse<Dto>> {
   const allHeaders = {
     'Content-type': 'application/json',
-    ...headers,
+    ...config.headers,
   };
+
+  let response: AxiosResponse<Dto>;
+
   try {
-    const response = await axiosInstance.get<R, AxiosResponse<R>>(url, {
-      headers: allHeaders,
-    });
+    switch (method) {
+      case 'GET':
+        response = await axiosInstance.get<Dto, AxiosResponse<Dto>>(
+          config.url,
+          { headers: allHeaders }
+        );
+        break;
+
+      case 'POST':
+        response = await axiosInstance.post<Dto, AxiosResponse<Dto>>(
+          config.url,
+          config.data,
+          { headers: allHeaders }
+        );
+        break;
+
+      case 'PUT':
+        response = await axiosInstance.put<Dto, AxiosResponse<Dto>>(
+          config.url,
+          config.data,
+          { headers: allHeaders }
+        );
+        break;
+
+      case 'DELETE':
+        response = await axiosInstance.delete<Dto, AxiosResponse<Dto>>(
+          config.url,
+          { headers: allHeaders }
+        );
+        break;
+
+      default:
+        throw new Error('method not implemented');
+    }
     return { response };
   } catch (error) {
-    return { error: error.toJSON() };
+    return { error };
   }
 }
 
-export async function httpPost<R>(
-  url: string,
-  data?: any, // eslint-disable-line
-  headers?: Record<string, string>
-): Promise<HttpResponse<R>> {
-  const allHeaders = {
-    'Content-type': 'application/json',
-    ...headers,
-  };
-  try {
-    const response = await axiosInstance.post<R, AxiosResponse<R>>(url, data, {
-      headers: allHeaders,
-    });
-    return { response };
-  } catch (error) {
-    return { error: error.toJSON() };
-  }
-}
+export const http = {
+  get: async <Dto>(
+    url: string,
+    headers?: Record<string, string>
+  ): Promise<HttpResponse<Dto>> => httpRequest<Dto>('GET', { url, headers }),
+
+  post: async <Dto>(
+    url: string,
+    data?: any, // eslint-disable-line
+    headers?: Record<string, string>
+  ): Promise<HttpResponse<Dto>> =>
+    httpRequest<Dto>('POST', { url, data, headers }),
+
+  put: async <Dto>(
+    url: string,
+    data?: any, // eslint-disable-line
+    headers?: Record<string, string>
+  ): Promise<HttpResponse<Dto>> =>
+    httpRequest<Dto>('PUT', { url, data, headers }),
+
+  delete: async <Dto>(
+    url: string,
+    headers?: Record<string, string>
+  ): Promise<HttpResponse<Dto>> => httpRequest<Dto>('DELETE', { url, headers }),
+};

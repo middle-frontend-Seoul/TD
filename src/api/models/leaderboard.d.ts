@@ -17,12 +17,12 @@ type LeaderboardInfo = {
   score: number;
 };
 
-type LeaderboardRequestInfo = {
+type LeaderboardRequestDto = {
   ratingFieldName: RatingFieldName;
   cursor: number;
   limit: number;
 }
-type LeaderboardRequestDto = {
+type LeaderboardRequestInfo = {
   ratingFieldName: RatingFieldName;
   cursor: number;
   limit: number;
