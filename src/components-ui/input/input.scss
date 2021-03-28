@@ -10,17 +10,17 @@
   &.small {
     width: $input-width-sm;
     height: $input-height-sm;
-    border-radius: 2px;
+    border-radius: $border-radius-sm;
   }
   &.medium {
     width: $input-width-md;
     height: $input-height-md;
-    border-radius: 4px;
+    border-radius: $border-radius-md;
   }
   &.large {
     width: $input-width-lg;
     height: $input-height-lg;
-    border-radius: 8px;
+    border-radius: $border-radius-lg;
   }
 
   .defaultValue {
@@ -66,23 +66,23 @@
     outline: none;
     height: 100%;
     &.small {
-      font-size: 14px;
+      font-size: $font-size-base;
       padding: 2px 0px 0px 4px;
-      border-radius: 4px;
+      border-radius: $border-radius-sm;
       line-height: 17px;
       width: 106px;
     }
     &.medium {
-      font-size: 14px;
+      font-size: $font-size-base;
       padding: 10px 0px 0px 8px;
-      border-radius: 4px;
+      border-radius: $border-radius-md;
       line-height: 17px;
       width: 232px;
     }
     &.large {
-      font-size: 28px;
+      font-size: $font-size-lg;
       padding: 20px 0px 0px 16px;
-      border-radius: 8px;
+      border-radius: $border-radius-lg;
       line-height: 34px;
       width: 344px;
     }
