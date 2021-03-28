@@ -71,7 +71,8 @@
     font-size: $font-size-md;
   }
 
-  &__arrow, &__page {
+  &__arrow,
+  &__page {
     outline: none;
     user-select: none;
     text-align: center;
