@@ -37,7 +37,19 @@ module.exports = {
       },
       {
         test: /\.s[ac]ss$/i,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        use: [
+          'style-loader',
+          'css-loader',
+          'sass-loader',
+          {
+            loader: 'style-resources-loader',
+            options: {
+              patterns: [
+                path.resolve(__dirname, 'src/vars.scss'),
+              ]
+            }
+          }
+        ],
       },
       {
         test: /\.(png|jpg|svg|jpeg|gif|webp)$/,

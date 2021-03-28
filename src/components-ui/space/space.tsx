@@ -7,7 +7,7 @@ export type SpaceType = 'horizontal' | 'vertical';
 
 export type SpaceSize = 'medium';
 
-export interface IBlockProps {
+export interface ISpaceProps {
   size?: SpaceSize;
   type?: SpaceType;
   position?: 'center';
@@ -15,7 +15,7 @@ export interface IBlockProps {
   children: React.ReactNode;
 }
 
-export const Space: FC<IBlockProps> = ({
+export const Space: FC<ISpaceProps> = ({
   type = 'vertical',
   size = 'medium',
   position,
@@ -33,10 +33,11 @@ export const Space: FC<IBlockProps> = ({
           return false;
         }
 
-        return React.cloneElement(child, {
-          key: String(i),
-          className: `space__${type}_size-${size}`,
-        });
+        return (
+          <div key={String(i)} className={`space__${type}_size-${size}`}>
+            {child}
+          </div>
+        );
       })
       .filter(Boolean);
   }, [children, type, size]);

@@ -3,7 +3,7 @@ import cn from 'classnames';
 
 import './block.scss';
 
-export type BlockPage = 'home';
+export type BlockPage = 'home' | 'statistics';
 
 export type BlockType = 'block' | 'inline' | 'flex';
 
