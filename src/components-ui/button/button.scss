@@ -23,13 +23,13 @@
     &-small {
       min-width: 180px;
       height: 40px;
-      font-size: 16px;
+      font-size: $font-size-md;
       line-height: 18px;
     }
     &-medium {
       min-width: 250px;
       height: 58px;
-      font-size: 20px;
+      font-size: $font-size-xlg;
       line-height: 23px;
     }
     &-large {
