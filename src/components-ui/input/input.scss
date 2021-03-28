@@ -1,0 +1,90 @@
+@import 'src/vars';
+
+.input-field {
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: white;
+  &.small {
+    width: $input-width-sm;
+    height: $input-height-sm;
+    border-radius: $border-radius-sm;
+  }
+  &.medium {
+    width: $input-width-md;
+    height: $input-height-md;
+    border-radius: $border-radius-md;
+  }
+  &.large {
+    width: $input-width-lg;
+    height: $input-height-lg;
+    border-radius: $border-radius-lg;
+  }
+
+  .defaultValue {
+    color: $text-color-secondary;
+    &.small {
+      padding-left: 4px;
+      font-size: 10px;
+    }
+    &.medium {
+      padding-left: 8px;
+      font-size: 20px;
+    }
+    &.large {
+      padding-left: 16px;
+      font-size: 40px;
+    }
+
+    &.top {
+      &.small {
+        display: none;
+      }
+      &.medium {
+        position: absolute;
+        pointer-events: none;
+        font-size: 10px;
+        top: 4px;
+      }
+      &.large {
+        position: absolute;
+        pointer-events: none;
+        font-size: 16px;
+        top: 4px;
+      }
+    }
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  input {
+    border: 0;
+    outline: none;
+    height: 100%;
+    &.small {
+      font-size: $font-size-base;
+      padding: 2px 0px 0px 4px;
+      border-radius: $border-radius-sm;
+      line-height: 17px;
+      width: 106px;
+    }
+    &.medium {
+      font-size: $font-size-base;
+      padding: 10px 0px 0px 8px;
+      border-radius: $border-radius-md;
+      line-height: 17px;
+      width: 232px;
+    }
+    &.large {
+      font-size: $font-size-lg;
+      padding: 20px 0px 0px 16px;
+      border-radius: $border-radius-lg;
+      line-height: 34px;
+      width: 344px;
+    }
+  }
+}
