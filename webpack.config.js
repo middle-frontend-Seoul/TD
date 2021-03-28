@@ -10,6 +10,7 @@ module.exports = {
   entry: './src/index.tsx',
   output: {
     path: path.resolve(__dirname, 'dist'),
+    publicPath: '/',
     filename: 'app.js',
   },
   resolve: {
@@ -62,9 +63,6 @@ module.exports = {
     new WebpackBar(),
     new MiniCssExtractPlugin(),
   ],
-  output: {
-    publicPath: '/',
-  },
   devServer: {
     historyApiFallback: true,
     port: 8000,
