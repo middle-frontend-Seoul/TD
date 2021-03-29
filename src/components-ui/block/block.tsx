@@ -14,6 +14,7 @@ export interface IBlockProps {
   className?: string;
   style?: React.CSSProperties;
   children: React.ReactNode;
+  relative?: boolean;
 }
 
 export const Block: FC<IBlockProps> = ({
@@ -21,10 +22,12 @@ export const Block: FC<IBlockProps> = ({
   page,
   center,
   className,
+  relative,
   children,
   style,
 }) => {
   const classes = cn(className, 'block', `block_type-${type}`, {
+    relative: Boolean(relative),
     block_center: Boolean(center),
     [`block_page-${page}`]: Boolean(page),
   });
