@@ -26,11 +26,7 @@
   }
 
   &_page {
-    &-home {
-      height: calc(100vh - 200px);
-      min-height: 300px;
-    }
-
+    &-home,
     &-statistics {
       height: calc(100vh - 200px);
       min-height: 300px;
