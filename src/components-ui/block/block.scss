@@ -26,9 +26,15 @@
   }
 
   &_page {
+    &-play,
     &-home {
       height: calc(100vh - 200px);
       min-height: 300px;
+    }
+    &-play {
+      padding: 0;
+      width: 900px;
+      height: 660px;
     }
   }
 }
