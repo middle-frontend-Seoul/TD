@@ -13,6 +13,19 @@ export const authApi = {
     };
   },
 
+  signUp: async (data: any): Promise<ApiResponse<string>> => {
+    const { response, error } = await http.post<string>('/auth/signup', {
+      first_name: data.login,
+      second_name: data.login,
+      phone: '8888888888',
+      ...data,
+    });
+    return {
+      data: response && response.data,
+      error,
+    };
+  },
+
   logout: async (): Promise<ApiResponse<string>> => {
     const { response, error } = await http.post<string>('/auth/logout');
     return {

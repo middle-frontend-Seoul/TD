@@ -8,8 +8,11 @@ export type InputSize = 'small' | 'medium' | 'large';
 export interface InputProps {
   size?: InputSize;
   value: string;
-  onChange: () => void;
+  onChange: (event: any) => void;
   placeholder?: string;
+  id?: string;
+  name: string;
+  type: string | undefined;
 }
 
 export const Input: FC<InputProps> = ({
@@ -17,6 +20,9 @@ export const Input: FC<InputProps> = ({
   placeholder = '',
   value,
   onChange,
+  name,
+  id,
+  type = 'text',
 }) => {
   const [isHidden, setIsHidden] = useState<boolean>(true);
   const [labelStyle, setLabelStyle] = useState<string>('default');
@@ -44,7 +50,7 @@ export const Input: FC<InputProps> = ({
     } else {
       setLabelStyle(`hidden`);
     }
-    onChange();
+    onChange(event);
   };
   React.useEffect(() => {
     inputEl?.current?.focus();
@@ -65,6 +71,9 @@ export const Input: FC<InputProps> = ({
         onChange={onChangeInput}
         ref={inputEl}
         placeholder={placeholder}
+        name={name}
+        id={id}
+        type={type}
       />
     </div>
   );
