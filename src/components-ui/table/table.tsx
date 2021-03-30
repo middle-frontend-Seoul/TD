@@ -20,6 +20,8 @@ export type TableColumn = {
   render?: (value: any, row: any) => JSX.Element;
 };
 
+// TODO - типизировать
+// например, https://fernandoabolafio.medium.com/generic-table-component-with-react-and-typescript-d849ad9f4c48
 export interface ITableProps {
   className?: string;
   rowKey?: string | ((row: any) => string);
@@ -42,17 +44,17 @@ export const Table: FC<ITableProps> = ({
       <table className="table">
         <thead>
           <tr>
-            {columns.map((column) => (
+            {columns.map(({ key, align, width, minWidth, title }) => (
               <th
-                key={column.key}
+                key={key}
                 className={`table__header-cell table__header-cell_size-${size}`}
                 style={{
-                  textAlign: column.align || 'left',
-                  width: column.width,
-                  minWidth: column.minWidth,
+                  textAlign: align || 'left',
+                  width: width,
+                  minWidth: minWidth,
                 }}
               >
-                {column.title}
+                {title}
               </th>
             ))}
           </tr>
@@ -85,10 +87,10 @@ export const Table: FC<ITableProps> = ({
           ))}
         </tbody>
       </table>
-      {pagination && (
+      {pagination && ( // TODO - отдельный component-ui
         <div className="table__pagination">
           <div className={`pagination pagination_size-${size}`}>
-            <div
+            <span
               className={`pagination__arrow pagination__arrow_size-${size}`}
               onClick={pagination.handlePrev}
               onKeyDown={pagination.handlePrev}
@@ -96,11 +98,11 @@ export const Table: FC<ITableProps> = ({
               tabIndex={0}
             >
               &lt;
-            </div>
-            <div className={`pagination__page pagination__page_size-${size}`}>
+            </span>
+            <span className={`pagination__page pagination__page_size-${size}`}>
               {pagination.page}
-            </div>
-            <div
+            </span>
+            <span
               className={`pagination__arrow pagination__arrow_size-${size}`}
               onClick={pagination.handleNext}
               onKeyDown={pagination.handleNext}
@@ -108,7 +110,7 @@ export const Table: FC<ITableProps> = ({
               tabIndex={0}
             >
               &gt;
-            </div>
+            </span>
           </div>
         </div>
       )}

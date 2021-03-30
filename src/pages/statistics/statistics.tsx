@@ -41,17 +41,6 @@ const PageStatistics: FC = () => {
   const [response, setResponse] = useState<ApiResponse<LeaderboardInfo[]>>({});
   const [currentPage, setCurrentPage] = useState(1);
 
-  // есть ли смысл выделять getAllLeaderboard вот так и потом вызывать его в useEffect-е?
-  // const getAllLeaderboard = useCallback(() => {
-  //   leaderboardApi
-  //     .getAllLeaderboards({
-  //       ratingFieldName: 'score',
-  //       cursor: (currentPage - 1) * DEFAULT_PAGE_SIZE,
-  //       limit: DEFAULT_PAGE_SIZE,
-  //     })
-  //     .then(setResponse);
-  // }, [currentPage]);
-
   useEffect(() => {
     leaderboardApi
       .getAllLeaderboards({
