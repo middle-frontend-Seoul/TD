@@ -1,31 +1,39 @@
 import bg from 'images/bg-play.png';
 import way from 'images/way-play.png';
 
-export type GridType = (number | boolean)[];
+import { GameError } from './game-error';
+import { GridType } from './typing';
+import { getGridSize } from './utils';
 
 export class GameMap {
-  size: number;
+  private size: number;
 
-  width: number;
+  private width: number;
 
-  height: number;
+  private height: number;
 
-  grid: GridType[];
+  private grid: GridType;
 
-  imgBG?: HTMLImageElement;
+  private imgBG?: HTMLImageElement;
 
-  imgWay?: HTMLImageElement;
+  private imgWay?: HTMLImageElement;
 
-  constructor(grid: GridType[], size = 30) {
+  constructor(grid: GridType, size = 30) {
+    const { width, height } = getGridSize(grid);
+
     this.size = size;
     this.grid = grid;
-    this.width = grid[0].length;
-    this.height = grid.length;
+    this.width = width;
+    this.height = height;
   }
 
-  async load(): Promise<void> {
-    this.imgBG = await this.loadingImage(bg);
-    this.imgWay = await this.loadingImage(way);
+  async init(): Promise<void> {
+    try {
+      this.imgBG = await this.loadingImage(bg);
+      this.imgWay = await this.loadingImage(way);
+    } catch (error) {
+      throw new GameError('Ошибка загрузки изображения', error);
+    }
   }
 
   drawGrid(ctx: CanvasRenderingContext2D): void {

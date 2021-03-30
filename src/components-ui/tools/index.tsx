@@ -1,2 +1,2 @@
 export * from './tools';
-export * from './tools.item';
+export * from './tools-item';

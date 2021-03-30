@@ -1,11 +1,10 @@
-import React, { FC, useRef, useState, useEffect } from 'react';
+import React, { FC, useRef, useState, useEffect, useCallback } from 'react';
 
 import { Space } from 'components-ui/space';
 import { Stats } from 'components-ui/stats';
 import { Block } from 'components-ui/block';
 import { Modal } from 'components-ui/modal';
 import { Button } from 'components-ui/button';
-import { Canvas } from 'components-ui/canvas';
 import { Tools, ToolsItem } from 'components-ui/tools';
 
 import { Game } from 'games';
@@ -21,21 +20,28 @@ import './style.scss';
 
 const PagePlay: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  // TODO: информация об ошибке в стайте является временныь решением
+  const [error, setError] = useState('');
   const [menuVisible, setMenuVisible] = useState(false);
 
   useEffect(() => {
     if (!canvasRef.current) return;
 
-    const game = new Game(canvasRef.current, gridPlayOne);
-    game.start();
+    try {
+      const game = new Game(canvasRef.current, gridPlayOne);
+      game.start();
+    } catch (err) {
+      setError(err.message);
+    }
   }, [canvasRef]);
 
-  const onClickPause = () => setMenuVisible(true);
-  const onClickCloseMenu = () => setMenuVisible(false);
+  const onClickPause = useCallback(() => setMenuVisible(true), []);
+  const onClickCloseMenu = useCallback(() => setMenuVisible(false), []);
 
   return (
     <Block relative page="play">
-      <Canvas width={900} height={570} ref={canvasRef} />
+      {error && <div>{error}</div>}
+      <canvas ref={canvasRef} width={900} height={570} />
       <div className="play-footer">
         <Tools>
           <ToolsItem src={gun} label="Пулемёт" footer="15 B" />
@@ -54,7 +60,7 @@ const PagePlay: FC = () => {
           />
         </div>
       </div>
-      <Modal open={menuVisible} onClose={onClickCloseMenu}>
+      <Modal isOpen={menuVisible} onClose={onClickCloseMenu}>
         <Space>
           <Button radius>Продолжить</Button>
           <Button radius>Начать сначала</Button>

@@ -1,26 +1,25 @@
 import { Canvas } from './canvas';
-import { GameMap, GridType } from './game-map';
+import { GameMap } from './game-map';
+import { GameError } from './game-error';
+import { GridType } from './typing';
 
 export class Game {
-  width: number;
-
-  height: number;
-
   canvas: Canvas;
 
   map: GameMap;
 
-  constructor(canvas: HTMLCanvasElement, grid: GridType[], size = 30) {
-    this.height = grid.length;
-    this.width = grid[0].length;
-
+  constructor(canvas: HTMLCanvasElement, grid: GridType, size = 30) {
     this.map = new GameMap(grid, size);
     this.canvas = new Canvas(canvas);
   }
 
   start = async (): Promise<void> => {
-    await this.map.load();
-    this.draw();
+    try {
+      await this.map.init();
+      this.draw();
+    } catch (error) {
+      throw new GameError('При старте игры возникла ошибка', error);
+    }
   };
 
   draw = (): void => {
