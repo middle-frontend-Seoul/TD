@@ -8,11 +8,15 @@ export abstract class Tower<SubClass extends Tower<SubClass>> {
 
   abstract pathImage: string;
 
+  abstract radius: number;
+
+  abstract color: string;
+
   protected size;
 
   protected element?: HTMLDivElement;
 
-  protected image?: HTMLImageElement;
+  image?: HTMLImageElement;
 
   constructor(size: number) {
     this.size = size;

@@ -8,6 +8,10 @@ export class Laser extends Tower<Laser> {
 
   price = 40;
 
+  radius = 3;
+
+  color = 'rgba(148, 10, 0, 0.5)';
+
   pathImage = towerPathLaser;
 
   clone(): Laser {

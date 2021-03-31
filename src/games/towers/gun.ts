@@ -8,6 +8,10 @@ export class Gun extends Tower<Gun> {
 
   price = 15;
 
+  radius = 3;
+
+  color = 'rgba(82, 82, 82, 0.5)';
+
   pathImage = towerPathGun;
 
   clone(): Gun {

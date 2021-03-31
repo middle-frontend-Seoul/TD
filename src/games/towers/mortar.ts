@@ -8,6 +8,10 @@ export class Mortar extends Tower<Mortar> {
 
   price = 60;
 
+  radius = 3;
+
+  color = 'rgba(134, 8, 0, 0.5)';
+
   pathImage = towerPathMortar;
 
   clone(): Mortar {
