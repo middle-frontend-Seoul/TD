@@ -8,6 +8,10 @@ export class Flamethrower extends Tower<Flamethrower> {
 
   price = 25;
 
+  radius = 3;
+
+  color = 'rgba(191, 94, 0, 0.5)';
+
   pathImage = towerPathFlamethrower;
 
   clone(): Flamethrower {
