@@ -27,7 +27,8 @@
 
   &_page {
     &-play,
-    &-home {
+    &-home,
+    &-statistics {
       height: calc(100vh - 200px);
       min-height: 300px;
     }
