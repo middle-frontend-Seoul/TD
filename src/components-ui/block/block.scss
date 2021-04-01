@@ -26,10 +26,20 @@
   }
 
   &_page {
+    &-play,
     &-home,
     &-statistics {
       height: calc(100vh - 200px);
       min-height: 300px;
     }
+    &-play {
+      padding: 0;
+      width: 900px;
+      height: 660px;
+    }
+  }
+
+  &.relative {
+    position: relative;
   }
 }

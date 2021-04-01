@@ -12,6 +12,14 @@
   transition: border 0.3s;
 
   &_size {
+    &-xsmall {
+      min-width: 100px;
+      height: 30px;
+      font-size: 14px;
+      line-height: 14px;
+      padding: 6px;
+    }
+
     &-small {
       min-width: 180px;
       height: 40px;

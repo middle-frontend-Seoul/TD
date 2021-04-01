@@ -5,7 +5,7 @@ import './button.scss';
 
 export type ButtonUse = 'default' | 'primary';
 
-export type ButtonSize = 'small' | 'medium' | 'large';
+export type ButtonSize = 'xsmall' | 'small' | 'medium' | 'large';
 
 export interface IButtonProps {
   type?: 'button' | 'submit' | 'reset';
