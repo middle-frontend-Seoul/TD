@@ -8,7 +8,7 @@ export type InputSize = 'small' | 'medium' | 'large';
 export interface InputProps {
   size?: InputSize;
   value: string;
-  onChange: (event: any) => void;
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   id?: string;
   name: string;

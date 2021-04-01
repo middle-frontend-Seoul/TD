@@ -1,5 +1,12 @@
 import { http } from 'network/http';
 
+export interface InputData {
+  login: string;
+  email: string;
+  password: string;
+  repeatedPassword: string;
+}
+
 // TODO - доработать в PR касающегося авторизации/регистрации
 export const authApi = {
   login: async (): Promise<ApiResponse<string>> => {
@@ -13,7 +20,7 @@ export const authApi = {
     };
   },
 
-  signUp: async (data: any): Promise<ApiResponse<string>> => {
+  signUp: async (data: InputData): Promise<ApiResponse<string>> => {
     const { response, error } = await http.post<string>('/auth/signup', {
       first_name: data.login,
       second_name: data.login,

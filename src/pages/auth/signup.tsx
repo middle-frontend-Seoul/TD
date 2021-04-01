@@ -36,19 +36,20 @@ const PageSignup: FC = () => {
     },
   ];
 
-  const signUp = (data: any) => {
-    authApi.signUp(data).then((response) => {
-      if (response.data) {
-        history.push({
-          pathname: '/',
-        });
-      }
-      // вот здесь хотелось бы получить данные об ошибке из
-      // response.error.response.data.reason
-      // но Property 'response' does not exist on type 'Error'.
-      setSignUpError('');
-    });
-  };
+  const signUp = React.useCallback(
+    (data: any) => {
+      authApi.signUp(data).then((response) => {
+        if (response.data) {
+          history.push({
+            pathname: '/',
+          });
+        } else if (response.error?.response) {
+          setSignUpError(response.error.response.data.reason);
+        }
+      });
+    },
+    [history]
+  );
 
   const validation = (values: Record<string, string>) => {
     const errors: Record<string, string> = {};
@@ -80,8 +81,14 @@ const PageSignup: FC = () => {
   return (
     <Space>
       <Block style={{ width: '400px', height: '420px' }}>
-        <Form onSubmit={signUp} fields={signUpFields} validation={validation} />
-        {signUpError && <div>{signUpError}</div>}
+        <Form
+          onSubmit={signUp}
+          fields={signUpFields}
+          validation={validation}
+          buttonText="Создать аккаунт"
+          title="Tower Defence"
+        />
+        {signUpError && <div className="signup-error">{signUpError}</div>}
       </Block>
     </Space>
   );

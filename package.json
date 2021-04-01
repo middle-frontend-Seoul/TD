@@ -69,7 +69,6 @@
   "dependencies": {
     "axios": "0.21.1",
     "classnames": "2.2.6",
-    "final-form": "4.20.2",
     "formik": "2.2.6",
     "history": "5.0.0",
     "react": "17.0.1",

@@ -16,15 +16,27 @@ export interface FormProps<> {
   onSubmit: (values: Record<string, string>) => void;
   fields: Array<FormField>;
   validation: (value: Record<string, string>) => Record<string, string>;
+  buttonText: string;
+  title: string;
 }
 
-export const Form: FC<FormProps> = ({ onSubmit, fields, validation }) => {
-  const initVals = fields.reduce(
-    (res: Record<string, string>, { name, defaultValue = '' }) => {
-      res[name] = defaultValue;
-      return res;
-    },
-    {}
+export const Form: FC<FormProps> = ({
+  onSubmit,
+  fields,
+  validation,
+  buttonText,
+  title,
+}) => {
+  const initVals = React.useMemo(
+    () =>
+      fields.reduce(
+        (res: Record<string, string>, { name, defaultValue = '' }) => {
+          res[name] = defaultValue;
+          return res;
+        },
+        {}
+      ),
+    [fields]
   );
 
   const signUpForm = useFormik({
@@ -39,7 +51,7 @@ export const Form: FC<FormProps> = ({ onSubmit, fields, validation }) => {
 
   return (
     <form onSubmit={signUpForm.handleSubmit} className="auth-form">
-      <Title size="small">Tower Defence</Title>
+      <Title size="small">{title}</Title>
       {fields.map((field) => (
         <div key={field.name}>
           <Input
@@ -56,7 +68,7 @@ export const Form: FC<FormProps> = ({ onSubmit, fields, validation }) => {
         </div>
       ))}
       <Button type="submit" use="primary" className="auth-form-button">
-        Создать аккаунт
+        {buttonText}
       </Button>
     </form>
   );

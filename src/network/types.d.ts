@@ -10,11 +10,11 @@ declare global {
 
   type HttpResponse<Dto> = {
     response?: AxiosResponse<Dto>;
-    error?: Error;
+    error?: AxiosError;
   };
   
   type ApiResponse<Info> = {
     data?: Info;
-    error?: Error;
+    error?: AxiosError;
   };
 }
