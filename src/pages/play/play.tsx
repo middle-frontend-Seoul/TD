@@ -22,7 +22,7 @@ const PagePlay: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   // TODO: информация об ошибке в стайте является временныь решением
   const [error, setError] = useState('');
-  const [menuVisible, setMenuVisible] = useState(false);
+  const [isMenuVisible, setMenuVisible] = useState(false);
 
   useEffect(() => {
     if (!canvasRef.current) return;
@@ -60,7 +60,7 @@ const PagePlay: FC = () => {
           />
         </div>
       </div>
-      <Modal isOpen={menuVisible} onClose={onClickCloseMenu}>
+      <Modal isOpen={isMenuVisible} onClose={onClickCloseMenu}>
         <Space>
           <Button radius>Продолжить</Button>
           <Button radius>Начать сначала</Button>
