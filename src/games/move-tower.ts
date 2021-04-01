@@ -1,12 +1,19 @@
+import { PlacedTowers } from './placed-towers';
 import { EventBus } from './event-bus';
 import { TowerType } from './towers';
+import { GridType } from './typing';
+import { GameError } from './game-error';
 
-export class TowerMove {
+export const ERROR_IS_NO_PLACE = 'IS NO PLACE';
+
+export class MoveTower {
   private x = -1;
 
   private y = -1;
 
   private isMove = false;
+
+  private placedTowers: PlacedTowers;
 
   private tower: TowerType | null = null;
 
@@ -14,35 +21,37 @@ export class TowerMove {
 
   event: () => EventBus;
 
-  constructor(size: number) {
+  constructor(size: number, grid: GridType) {
     const event = new EventBus();
 
     this.size = size;
+    this.placedTowers = new PlacedTowers(size, grid);
 
     this.event = () => event;
     this.event().on('mousemove:outcanvas', this.mousemoveOutCanvas);
     this.event().on('mousemove:incanvas', this.mousemoveInCanvas);
     this.event().on('keydown:escape', this.stop);
+    this.event().on('click', this.click);
   }
 
   draw = (ctx: CanvasRenderingContext2D): void => {
-    if (!this.isMove || this.x < 0 || this.y < 0 || !this.tower) return;
+    if (!this.isTowerMove()) return;
 
-    const { image, color, radius } = this.tower;
+    const { image, color, radius } = this.tower as TowerType;
     if (image) {
       ctx.beginPath();
       ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
       ctx.fillStyle = color;
       ctx.arc(
-        this.y + this.size / 2,
         this.x + this.size / 2,
+        this.y + this.size / 2,
         radius * this.size,
         0,
         2 * Math.PI
       );
       ctx.fill();
       ctx.stroke();
-      ctx.drawImage(image, this.y, this.x);
+      ctx.drawImage(image, this.x, this.y);
     }
   };
 
@@ -54,6 +63,28 @@ export class TowerMove {
   stop = (): void => {
     this.isMove = false;
     this.tower = null;
+  };
+
+  private click = (): void => {
+    if (!this.isTowerMove()) return;
+
+    const res = this.placedTowers.append(this.tower as TowerType, {
+      x: this.x,
+      y: this.y,
+    });
+
+    if (!res) {
+      throw new GameError(
+        'Здесь нельзя устанавливать башню',
+        ERROR_IS_NO_PLACE
+      );
+    }
+    this.stop();
+  };
+
+  private isTowerMove = (): boolean => {
+    if (!this.isMove || this.x < 0 || this.y < 0 || !this.tower) return false;
+    return true;
   };
 
   private mousemoveInCanvas = ({ x, y }: { x: number; y: number }): void => {

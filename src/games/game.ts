@@ -1,7 +1,8 @@
 import { Canvas } from './canvas';
 import { GameMap } from './game-map';
 import { GameError } from './game-error';
-import { TowerMove } from './tower-move';
+import { MoveTower } from './move-tower';
+import { PlacedTowers } from './placed-towers';
 import { Cursor } from './cursor';
 import { GridType } from './typing';
 import { Flamethrower, Mortar, Laser, Gun } from './towers';
@@ -15,7 +16,9 @@ export class Game {
 
   private cursor: Cursor;
 
-  private towerMove: TowerMove;
+  private moveTower: MoveTower;
+
+  private placedTowers: PlacedTowers;
 
   private towers = [Gun, Flamethrower, Laser, Mortar];
 
@@ -24,7 +27,8 @@ export class Game {
     this.map = new GameMap(grid, size);
     this.canvas = new Canvas(canvas);
     this.cursor = new Cursor(this.canvas, size);
-    this.towerMove = new TowerMove(size);
+    this.moveTower = new MoveTower(size, grid);
+    this.placedTowers = new PlacedTowers(size, grid);
   }
 
   public start = async (): Promise<void> => {
@@ -55,7 +59,7 @@ export class Game {
       const el = tower.getElement();
       if (!el) return;
 
-      el.onclick = () => this.towerMove.start(tower);
+      el.onclick = () => this.moveTower.start(tower);
       node.appendChild(el);
     });
   };
@@ -64,6 +68,7 @@ export class Game {
     const ctx = this.canvas.getCtx();
     this.canvas.clear();
     this.map.drawGrid(ctx);
-    this.towerMove.draw(ctx);
+    this.moveTower.draw(ctx);
+    this.placedTowers.draw(ctx);
   };
 }

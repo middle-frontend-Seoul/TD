@@ -67,8 +67,8 @@ export class Cursor {
     const { x: canvasX, y: canvasY } = this.canvas.getRect();
     this.mouse = { x: clientX, y: clientY };
     this.position = {
-      y: Math.floor((clientX - canvasX) / this.size),
-      x: Math.floor((clientY - canvasY) / this.size),
+      x: Math.floor((clientX - canvasX) / this.size),
+      y: Math.floor((clientY - canvasY) / this.size),
     };
 
     if (this.mouseInCanvas) {
