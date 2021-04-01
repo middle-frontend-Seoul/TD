@@ -11,7 +11,7 @@ import { DEFAULT_PAGE_SIZE } from 'constants/defaults';
 
 import './statistics.scss';
 
-const columns: TableColumn[] = [
+const columns: TableColumn<LeaderboardInfo>[] = [
   {
     title: 'Login',
     dataIndex: 'login',
@@ -68,7 +68,7 @@ const PageStatistics: FC = () => {
       <Block page="statistics" type="flex" className="statistics-block">
         <Title>Таблица лидеров</Title>
         <Space type="vertical">
-          <Table
+          <Table<LeaderboardInfo>
             rowKey={generateRowKey}
             className="statistics-table"
             columns={columns}

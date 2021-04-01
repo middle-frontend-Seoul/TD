@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 
 import './table.scss';
 
@@ -10,35 +10,35 @@ export type TablePagination = {
   handleNext: () => void;
 };
 
-export type TableColumn = {
+export type TableColumn<T> = {
   title: string;
   dataIndex: string;
   key: string;
   align?: 'left' | 'center' | 'right';
   width?: string;
   minWidth?: string;
-  render?: (value: any, row: any) => JSX.Element;
+  render?: (value: any, row: T) => JSX.Element;
 };
 
 // TODO - типизировать
 // например, https://fernandoabolafio.medium.com/generic-table-component-with-react-and-typescript-d849ad9f4c48
-export interface ITableProps {
+export interface ITableProps<T> {
   className?: string;
-  rowKey?: string | ((row: any) => string);
-  columns: TableColumn[];
-  dataSource?: any[];
+  rowKey?: string | ((row: T) => string);
+  columns: TableColumn<T>[];
+  dataSource?: T[];
   size?: TableSize;
   pagination?: TablePagination;
 }
 
-export const Table: FC<ITableProps> = ({
+export function Table<T extends Record<string, any>>({
   className,
   rowKey = 'id',
   columns,
   dataSource,
   size = 'medium',
   pagination,
-}) => {
+}: ITableProps<T>): JSX.Element {
   return (
     <div className={className}>
       <table className="table">
@@ -50,8 +50,8 @@ export const Table: FC<ITableProps> = ({
                 className={`table__header-cell table__header-cell_size-${size}`}
                 style={{
                   textAlign: align || 'left',
-                  width: width,
-                  minWidth: minWidth,
+                  width,
+                  minWidth,
                 }}
               >
                 {title}
@@ -78,8 +78,8 @@ export const Table: FC<ITableProps> = ({
                     minWidth: column.minWidth,
                   }}
                 >
-                  {rowData.render
-                    ? rowData.render(rowData[column.dataIndex], rowData)
+                  {column.render
+                    ? column.render(rowData[column.dataIndex], rowData)
                     : rowData[column.dataIndex]}
                 </td>
               ))}
