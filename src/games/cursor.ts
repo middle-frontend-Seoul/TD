@@ -39,6 +39,7 @@ export class Cursor {
   }
 
   removeEventListener = (): void => {
+    window.removeEventListener('click', this.click);
     window.removeEventListener('keydown', this.keydown);
     window.removeEventListener('mousemove', this.mousemove);
 
