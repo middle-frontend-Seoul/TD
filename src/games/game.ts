@@ -6,7 +6,13 @@ import { PlacedTowers } from './placed-towers';
 import { Cursor } from './cursor';
 import { GridType } from './typing';
 import { Flamethrower, Mortar, Laser, Gun } from './towers';
+import { SimpleEnemy, StrongEnemy } from './enemies';
 
+// TODO: времееное решения. для демонстрации врагов
+const simple = new SimpleEnemy(2 * 30, 6 * 30);
+const strong = new StrongEnemy(1 * 30, 6 * 30);
+simple.damage(20); // демонстрация нанесения урона
+strong.damage(55);
 export class Game {
   private map: GameMap;
 
@@ -70,5 +76,9 @@ export class Game {
     this.map.drawGrid(ctx);
     this.moveTower.draw(ctx);
     this.placedTowers.draw(ctx);
+
+    // TODO: времееное решения. для демонстрации врагов
+    simple.draw(ctx);
+    strong.draw(ctx);
   };
 }
