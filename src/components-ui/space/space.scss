@@ -1,6 +1,7 @@
 .space {
   display: flex;
   min-width: 100%;
+  align-items: inherit;
   justify-content: space-between;
 
   &.position {
@@ -25,6 +26,7 @@
     margin-right: 12px;
   }
   &__vertical_size-medium {
+    min-width: 100%;
     margin-top: 12px;
     margin-bottom: 12px;
   }

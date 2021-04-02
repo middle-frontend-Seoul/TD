@@ -4,14 +4,17 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const WebpackBar = require('webpackbar');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const Dotenv = require('dotenv-webpack');
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 
 module.exports = {
   mode: 'development',
   entry: './src/index.tsx',
+
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
     filename: 'app.js',
+    publicPath: '/',
   },
   resolve: {
     modules: [path.resolve(__dirname, 'src'), 'node_modules'],
@@ -44,11 +47,9 @@ module.exports = {
           {
             loader: 'style-resources-loader',
             options: {
-              patterns: [
-                path.resolve(__dirname, 'src/vars.scss'),
-              ]
-            }
-          }
+              patterns: [path.resolve(__dirname, 'src/vars.scss')],
+            },
+          },
         ],
       },
       {
@@ -74,6 +75,9 @@ module.exports = {
     new CleanWebpackPlugin(),
     new WebpackBar(),
     new MiniCssExtractPlugin(),
+    new MomentLocalesPlugin({
+      localesToKeep: ['es-us', 'ru'],
+    }),
   ],
   devServer: {
     historyApiFallback: true,
