@@ -2,7 +2,6 @@ import React, { FC, useState, useEffect } from 'react';
 
 import { Link } from 'components-ui/link';
 import { Block } from 'components-ui/block';
-import { Title } from 'components-ui/title';
 import { Space } from 'components-ui/space';
 import { Table, TableColumn } from 'components-ui/table';
 import { HOME } from 'core/url';
@@ -65,8 +64,12 @@ const PageStatistics: FC = () => {
 
   return (
     <Space type="vertical">
-      <Block page="statistics" type="flex" className="statistics-block">
-        <Title>Таблица лидеров</Title>
+      <Block
+        page="statistics"
+        title="Таблица лидеров"
+        type="flex"
+        className="statistics-block"
+      >
         <Space type="vertical">
           <Table<LeaderboardInfo>
             rowKey={generateRowKey}
