@@ -25,11 +25,11 @@
     color: $text-color-secondary;
     &.small {
       padding-left: 4px;
-      font-size: 10px;
+      font-size: $font-size-xs;
     }
     &.medium {
       padding-left: 8px;
-      font-size: 20px;
+      font-size: $font-size-xlg;
     }
     &.large {
       padding-left: 16px;
@@ -43,13 +43,13 @@
       &.medium {
         position: absolute;
         pointer-events: none;
-        font-size: 10px;
+        font-size: $font-size-xs;
         top: 4px;
       }
       &.large {
         position: absolute;
         pointer-events: none;
-        font-size: 16px;
+        font-size: $font-size-md;
         top: 4px;
       }
     }
@@ -78,7 +78,7 @@
       width: 232px;
     }
     &.large {
-      font-size: $font-size-lg;
+      font-size: $font-size-xxlg;
       padding: 20px 0px 0px 16px;
       border-radius: $border-radius-lg;
       line-height: 34px;
