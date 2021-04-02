@@ -2,6 +2,20 @@
   width: 100%;
   border-spacing: 0;
 
+  &__cell {
+    &_align-left {
+      text-align: left;
+    }
+
+    &_align-right {
+      text-align: right;
+    }
+
+    &_align-center {
+      text-align: center;
+    }
+  }
+
   &__header-cell {
     border-bottom-width: 2px;
     border-bottom-style: solid;

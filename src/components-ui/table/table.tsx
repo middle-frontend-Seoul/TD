@@ -1,4 +1,5 @@
 import React from 'react';
+import cn from 'classnames';
 
 import './table.scss';
 
@@ -35,7 +36,7 @@ export function Table<T extends Record<string, any>>({
   className,
   rowKey = 'id',
   columns,
-  dataSource,
+  dataSource = [],
   size = 'medium',
   pagination,
 }: ITableProps<T>): JSX.Element {
@@ -44,23 +45,29 @@ export function Table<T extends Record<string, any>>({
       <table className="table">
         <thead>
           <tr>
-            {columns.map(({ key, align, width, minWidth, title }) => (
-              <th
-                key={key}
-                className={`table__header-cell table__header-cell_size-${size}`}
-                style={{
-                  textAlign: align || 'left',
-                  width,
-                  minWidth,
-                }}
-              >
-                {title}
-              </th>
-            ))}
+            {columns.map(({ key, align, width, minWidth, title }) => {
+              const headerCellClasses = cn(
+                'table__header-cell',
+                `table__header-cell_size-${size}`,
+                `table__cell_align-${align || 'left'}`
+              );
+              return (
+                <th
+                  key={key}
+                  className={headerCellClasses}
+                  style={{
+                    width,
+                    minWidth,
+                  }}
+                >
+                  {title}
+                </th>
+              );
+            })}
           </tr>
         </thead>
         <tbody>
-          {(dataSource || []).map((rowData) => (
+          {dataSource.map((rowData) => (
             <tr
               key={
                 typeof rowKey === 'string'
@@ -68,21 +75,29 @@ export function Table<T extends Record<string, any>>({
                   : rowKey(rowData)
               }
             >
-              {columns.map((column) => (
-                <td
-                  key={column.key}
-                  className={`table__body-cell table__body-cell_size-${size}`}
-                  style={{
-                    textAlign: column.align || 'left',
-                    width: column.width,
-                    minWidth: column.minWidth,
-                  }}
-                >
-                  {column.render
-                    ? column.render(rowData[column.dataIndex], rowData)
-                    : rowData[column.dataIndex]}
-                </td>
-              ))}
+              {columns.map(
+                ({ key, dataIndex, align, width, minWidth, render }) => {
+                  const bodyCellClasses = cn(
+                    'table__body-cell',
+                    `table__body-cell_size-${size}`,
+                    `table__cell_align-${align || 'left'}`
+                  );
+                  return (
+                    <td
+                      key={key}
+                      className={bodyCellClasses}
+                      style={{
+                        width,
+                        minWidth,
+                      }}
+                    >
+                      {render
+                        ? render(rowData[dataIndex], rowData)
+                        : rowData[dataIndex]}
+                    </td>
+                  );
+                }
+              )}
             </tr>
           ))}
         </tbody>
@@ -116,4 +131,4 @@ export function Table<T extends Record<string, any>>({
       )}
     </div>
   );
-};
+}
