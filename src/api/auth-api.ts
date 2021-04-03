@@ -1,11 +1,5 @@
 import { http } from 'network/http';
-
-export interface InputData {
-  login: string;
-  email: string;
-  password: string;
-  repeatedPassword: string;
-}
+import { Auth } from './codecs';
 
 // TODO - доработать в PR касающегося авторизации/регистрации
 export const authApi = {
@@ -20,15 +14,13 @@ export const authApi = {
     };
   },
 
-  signUp: async (data: InputData): Promise<ApiResponse<string>> => {
-    const { response, error } = await http.post<string>('/auth/signup', {
-      first_name: data.login,
-      second_name: data.login,
-      phone: '8888888888',
-      ...data,
-    });
+  signUp: async (data: SignUpRequestInfo): Promise<ApiResponse<SignUpInfo>> => {
+    const { response, error } = await http.post<SignUpDto>(
+      '/auth/signup',
+      Auth.encodeLeaderboardRequest(data)
+    );
     return {
-      data: response && response.data,
+      data: response && Auth.decodeSignUp(response.data || {}),
       error,
     };
   },

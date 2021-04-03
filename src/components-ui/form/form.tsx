@@ -13,7 +13,7 @@ type FormField = {
 };
 
 export interface FormProps<> {
-  onSubmit: (values: Record<string, string>) => void;
+  onSubmit: (values: any) => void;
   fields: Array<FormField>;
   validation: (value: Record<string, string>) => Record<string, string>;
   buttonText: string;

@@ -3,8 +3,15 @@ import { Space } from 'components-ui/space';
 import './signup.scss';
 import { Form } from 'components-ui/form/form';
 import { useHistory } from 'react-router';
-import { Block } from '../../components-ui/block';
-import { authApi } from '../../api/auth-api';
+import { Block } from 'components-ui/block';
+import { authApi } from 'api/auth-api';
+import {
+  isPasswordEqual,
+  isValidEmail,
+  isValidLogin,
+  isValidPassword,
+  validationMessages,
+} from './utils/validation';
 
 const PageSignup: FC = () => {
   const history = useHistory();
@@ -37,14 +44,14 @@ const PageSignup: FC = () => {
   ];
 
   const signUp = React.useCallback(
-    (data: any) => {
-      authApi.signUp(data).then((response) => {
-        if (response.data) {
+    (info: SignUpRequestInfo) => {
+      authApi.signUp(info).then(({ data, error }) => {
+        if (data) {
           history.push({
             pathname: '/',
           });
-        } else if (response.error?.response) {
-          setSignUpError(response.error.response.data.reason);
+        } else if (error?.response) {
+          setSignUpError(error.response.data.reason);
         }
       });
     },
@@ -54,26 +61,24 @@ const PageSignup: FC = () => {
   const validation = (values: Record<string, string>) => {
     const errors: Record<string, string> = {};
     if (!values.login) {
-      errors.login = 'Required';
-    } else if (!/^[A-Za-z0-9]*$/.test(values.login)) {
-      errors.login = `Invalid login`;
+      errors.login = validationMessages.isRequire;
+    } else if (!isValidLogin(values.login)) {
+      errors.login = validationMessages.invalidFormat;
     }
     if (!values.email) {
-      errors.email = 'Required';
-    } else if (
-      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-    ) {
-      errors.email = 'Invalid email address';
+      errors.email = validationMessages.isRequire;
+    } else if (!isValidEmail(values.email)) {
+      errors.email = validationMessages.invalidFormat;
     }
     if (!values.password) {
-      errors.password = 'Required';
-    } else if (!/^.{5,}$/.test(values.password)) {
-      errors.password = 'Minimum 5 characters';
+      errors.password = validationMessages.isRequire;
+    } else if (!isValidPassword(values.password)) {
+      errors.password = validationMessages.passwordLength;
     }
     if (!values.passwordRepeated) {
-      errors.passwordRepeated = 'Required';
-    } else if (values.passwordRepeated !== values.password) {
-      errors.passwordRepeated = 'Passwords do not match';
+      errors.passwordRepeated = validationMessages.isRequire;
+    } else if (!isPasswordEqual(values.password, values.passwordRepeated)) {
+      errors.passwordRepeated = validationMessages.noEqualPasswords;
     }
     return errors;
   };
