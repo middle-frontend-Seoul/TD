@@ -1,58 +1,92 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 
+import { Link } from 'components-ui/link';
+import { Block } from 'components-ui/block';
+import { Title } from 'components-ui/title';
+import { Space } from 'components-ui/space';
+import { Table, TableColumn } from 'components-ui/table';
+import { HOME } from 'core/url';
 import { leaderboardApi } from 'api/leaderboard-api';
-import { authApi } from 'api/auth-api';
-import { useMountEffect } from 'utils/hooks';
+import { DEFAULT_PAGE_SIZE } from 'constants/defaults';
 
 import './statistics.scss';
 
+const columns: TableColumn<LeaderboardInfo>[] = [
+  {
+    title: 'Login',
+    dataIndex: 'login',
+    key: 'login',
+    width: '70%',
+  },
+  {
+    title: 'Level',
+    dataIndex: 'level',
+    key: 'level',
+    align: 'right',
+    width: '15%',
+  },
+  {
+    title: 'Score',
+    dataIndex: 'score',
+    key: 'score',
+    align: 'right',
+    width: '15%',
+  },
+];
+
+const generateRowKey = (rowData: LeaderboardInfo) =>
+  `${rowData.id}-${rowData.login}-${rowData.score}`;
+
 const PageStatistics: FC = () => {
   const [response, setResponse] = useState<ApiResponse<LeaderboardInfo[]>>({});
+  const [currentPage, setCurrentPage] = useState(1);
 
-  useMountEffect(() => {
+  useEffect(() => {
     leaderboardApi
       .getAllLeaderboards({
         ratingFieldName: 'score',
-        cursor: 0,
-        limit: 10,
+        cursor: (currentPage - 1) * DEFAULT_PAGE_SIZE,
+        limit: DEFAULT_PAGE_SIZE,
       })
       .then(setResponse);
-  });
+  }, [currentPage]);
 
-  function handleLogout() {
-    authApi.logout().then(({ data, error }) => console.log(data, error));
-  }
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (response.data && response.data.length === DEFAULT_PAGE_SIZE) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
 
   return (
-    <div>
-      <h1>PageStatistics</h1>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Login</th>
-            <th>Level</th>
-            <th>Score</th>
-          </tr>
-        </thead>
-        <tbody>
-          {response.data &&
-            response.data.map((item) => (
-              <tr key={`${item.id}-${item.login}-${item.score}`}>
-                <td>{item.id}</td>
-                <td>{item.name}</td>
-                <td>{item.login}</td>
-                <td>{item.level}</td>
-                <td>{item.score}</td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
-      <button onClick={handleLogout} type="button">
-        Logout
-      </button>
-    </div>
+    <Space type="vertical">
+      <Block page="statistics" type="flex" className="statistics-block">
+        <Title>Таблица лидеров</Title>
+        <Space type="vertical">
+          <Table<LeaderboardInfo>
+            rowKey={generateRowKey}
+            className="statistics-table"
+            columns={columns}
+            dataSource={response.data}
+            pagination={{
+              page: currentPage,
+              handlePrev: handlePrevPage,
+              handleNext: handleNextPage,
+            }}
+          />
+        </Space>
+      </Block>
+      <Space type="horizontal" position="center">
+        <Link type="button" to={HOME}>
+          На главный экран
+        </Link>
+      </Space>
+    </Space>
   );
 };
 
