@@ -17,7 +17,7 @@ export const authApi = {
   signUp: async (data: SignUpRequestInfo): Promise<ApiResponse<SignUpInfo>> => {
     const { response, error } = await http.post<SignUpDto>(
       '/auth/signup',
-      Auth.encodeLeaderboardRequest(data)
+      Auth.encodeSignUpRequest(data)
     );
     return {
       data: response && Auth.decodeSignUp(response.data || {}),

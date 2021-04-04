@@ -4,9 +4,7 @@ export function decodeSignUp(dto: SignUpDto): SignUpInfo {
   };
 }
 
-export function encodeLeaderboardRequest(
-  info: SignUpRequestInfo
-): SignUpRequestDto {
+export function encodeSignUpRequest(info: SignUpRequestInfo): SignUpRequestDto {
   return {
     first_name: info.login,
     second_name: info.login,
