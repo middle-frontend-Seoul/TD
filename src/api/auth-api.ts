@@ -1,7 +1,6 @@
 import { http } from 'network/http';
-import { Auth } from './codecs';
+import { Auth } from 'api/codecs';
 
-// TODO - доработать в PR касающегося авторизации/регистрации
 export const authApi = {
   signIn: async (data: SignInRequestInfo): Promise<ApiResponse<SignInInfo>> => {
     const { response, error } = await http.post<SignInDto>(

@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Space } from 'components-ui/space';
-import './signup.scss';
+import './auth.scss';
 import { Form } from 'components-ui/form/form';
 import { useHistory } from 'react-router';
 import { Block } from 'components-ui/block';
@@ -9,7 +9,7 @@ import {
   isValidLogin,
   isValidPassword,
   validationMessages,
-} from './utils/validation';
+} from 'pages/auth/utils/validation';
 
 const PageSignIn: FC = () => {
   const history = useHistory();
@@ -69,7 +69,7 @@ const PageSignIn: FC = () => {
           buttonText="Войти"
           title="Tower Defence"
         />
-        {signInError && <div className="signup-error">{signInError}</div>}
+        {signInError && <div className="auth-error">{signInError}</div>}
       </Block>
     </Space>
   );
