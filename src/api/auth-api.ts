@@ -1,4 +1,5 @@
 import { http } from 'network/http';
+import { Auth } from './codecs';
 
 // TODO - доработать в PR касающегося авторизации/регистрации
 export const authApi = {
@@ -9,6 +10,17 @@ export const authApi = {
     });
     return {
       data: response && response.data,
+      error,
+    };
+  },
+
+  signUp: async (data: SignUpRequestInfo): Promise<ApiResponse<SignUpInfo>> => {
+    const { response, error } = await http.post<SignUpDto>(
+      '/auth/signup',
+      Auth.encodeSignUpRequest(data)
+    );
+    return {
+      data: response && Auth.decodeSignUp(response.data || {}),
       error,
     };
   },

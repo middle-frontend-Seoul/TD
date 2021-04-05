@@ -3,7 +3,7 @@ import cn from 'classnames';
 
 import './title.scss';
 
-export type TitleSize = 'medium';
+export type TitleSize = 'small' | 'medium';
 
 export interface ITitleProps {
   size?: TitleSize;

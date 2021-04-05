@@ -23,17 +23,17 @@
 
   .defaultValue {
     color: $text-color-secondary;
-    &.small {
+     &.small {
       padding-left: 4px;
-      font-size: $font-size-xs;
+      font-size: 8px;
     }
     &.medium {
       padding-left: 8px;
-      font-size: $font-size-xlg;
+      font-size: 16px;
     }
     &.large {
       padding-left: 16px;
-      font-size: 40px;
+      font-size: 32px;
     }
 
     &.top {
