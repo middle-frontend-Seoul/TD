@@ -39,7 +39,7 @@ export const Form: FC<FormProps> = ({
     [fields]
   );
 
-  const signUpForm = useFormik({
+  const form = useFormik({
     initialValues: initVals,
     validate: validation,
     validateOnChange: false,
@@ -50,24 +50,24 @@ export const Form: FC<FormProps> = ({
   });
 
   return (
-    <form onSubmit={signUpForm.handleSubmit} className="auth-form">
+    <form onSubmit={form.handleSubmit} className="form">
       <Title size="small">{title}</Title>
       {fields.map((field) => (
         <div key={field.name}>
           <Input
-            value={signUpForm.values[field.name]}
-            onChange={signUpForm.handleChange}
+            value={form.values[field.name]}
+            onChange={form.handleChange}
             id={field.name}
             name={field.name}
             placeholder={field.placeholder}
             type={field.type}
           />
-          {signUpForm.errors[field.name] ? (
-            <div className="auth-error">{signUpForm.errors[field.name]}</div>
+          {form.errors[field.name] ? (
+            <div className="field-error">{form.errors[field.name]}</div>
           ) : null}
         </div>
       ))}
-      <Button type="submit" use="primary" className="auth-form-button">
+      <Button type="submit" use="primary" className="form-button">
         {buttonText}
       </Button>
     </form>

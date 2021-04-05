@@ -8,8 +8,8 @@ import {
   PagePlay,
   PageForum,
   PageError,
-  PageSignin,
-  PageSignup,
+  PageSignIn,
+  PageSignUp,
   PageProfile,
   PageStatistics,
   PageForumDetails,
@@ -27,8 +27,8 @@ const App: FC = () => (
         <Route path={URL.FORUM_DETAILS} component={PageForumDetails} />
         <Route path={URL.FORUM_SECTION} component={PageForumSection} />
         <Route path={URL.FORUM} component={PageForum} />
-        <Route path={URL.SIGNIN} component={PageSignin} />
-        <Route path={URL.SIGNUP} component={PageSignup} />
+        <Route path={URL.SIGNIN} component={PageSignIn} />
+        <Route path={URL.SIGNUP} component={PageSignUp} />
         <Route path={URL.PROFILE} component={PageProfile} />
         <Route path={URL.STATISTICS} component={PageStatistics} />
         <Route component={PageError} />

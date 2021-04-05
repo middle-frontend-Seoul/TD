@@ -3,13 +3,13 @@ import { Auth } from './codecs';
 
 // TODO - доработать в PR касающегося авторизации/регистрации
 export const authApi = {
-  login: async (): Promise<ApiResponse<string>> => {
-    const { response, error } = await http.post<string>('/auth/signin', {
-      login: process.env.USER_LOGIN,
-      password: process.env.USER_PASSWORD,
-    });
+  signIn: async (data: SignInRequestInfo): Promise<ApiResponse<SignInInfo>> => {
+    const { response, error } = await http.post<SignInDto>(
+      '/auth/signin',
+      Auth.encodeSignInRequest(data)
+    );
     return {
-      data: response && response.data,
+      data: response && Auth.decodeSigIn(response.data || {}),
       error,
     };
   },

@@ -21,3 +21,21 @@ type SignUpRequestDto = {
   login: string,
   password: string,
 }
+
+type SignInDto = {
+  id?: number;
+};
+
+type SignInInfo = {
+  id?: number
+}
+
+type SignInRequestInfo = {
+  login: string;
+  password: string;
+}
+
+type SignInRequestDto = {
+  login: string,
+  password: string,
+}

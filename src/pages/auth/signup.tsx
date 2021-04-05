@@ -13,7 +13,7 @@ import {
   validationMessages,
 } from './utils/validation';
 
-const PageSignup: FC = () => {
+const PageSignUp: FC = () => {
   const history = useHistory();
   const [signUpError, setSignUpError] = React.useState('');
   const signUpFields = [
@@ -99,5 +99,5 @@ const PageSignup: FC = () => {
   );
 };
 
-export { PageSignup };
-export default PageSignup;
+export { PageSignUp };
+export default PageSignUp;
