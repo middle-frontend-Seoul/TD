@@ -59,7 +59,7 @@ export class Game {
       const el = tower.getElement();
       if (!el) return;
 
-      el.onclick = () => this.moveTower.start(tower);
+      el.onclick = () => this.moveTower.onDrag(tower);
       node.appendChild(el);
     });
   };

@@ -8,6 +8,10 @@ type PlaceType = {
   position: Positions;
 };
 
+// проверка башни можно ли установить (в отдельный класс)
+// TowersMap (координаты башни)
+
+// фабрика TowersBuilder (события, ondrag)
 export class PlacedTowers {
   static interface: PlacedTowers;
 

@@ -1,6 +1,6 @@
 import { PlacedTowers } from './placed-towers';
 import { EventBus } from './event-bus';
-import { TowerType } from './towers';
+import { Tower } from './towers';
 import { GridType } from './typing';
 import { GameError } from './game-error';
 
@@ -15,7 +15,7 @@ export class MoveTower {
 
   private placedTowers: PlacedTowers;
 
-  private tower: TowerType | null = null;
+  private tower: Tower | null = null;
 
   private size: number;
 
@@ -30,14 +30,14 @@ export class MoveTower {
     this.event = () => event;
     this.event().on('mousemove:outcanvas', this.mousemoveOutCanvas);
     this.event().on('mousemove:incanvas', this.mousemoveInCanvas);
-    this.event().on('keydown:escape', this.stop);
+    this.event().on('keydown:escape', this.onDrop);
     this.event().on('click', this.click);
   }
 
   draw = (ctx: CanvasRenderingContext2D): void => {
     if (!this.isTowerMove()) return;
 
-    const { image, color, radius } = this.tower as TowerType;
+    const { image, color, radius } = this.tower as Tower;
     if (image) {
       ctx.beginPath();
       ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
@@ -55,12 +55,12 @@ export class MoveTower {
     }
   };
 
-  start = (tower: TowerType): void => {
+  onDrag = (tower: Tower): void => {
     this.tower = tower;
     this.isMove = true;
   };
 
-  stop = (): void => {
+  onDrop = (): void => {
     this.isMove = false;
     this.tower = null;
   };
@@ -68,7 +68,7 @@ export class MoveTower {
   private click = (): void => {
     if (!this.isTowerMove()) return;
 
-    const res = this.placedTowers.append(this.tower as TowerType, {
+    const res = this.placedTowers.append(this.tower as Tower, {
       x: this.x,
       y: this.y,
     });
@@ -79,7 +79,7 @@ export class MoveTower {
         ERROR_IS_NO_PLACE
       );
     }
-    this.stop();
+    this.onDrop();
   };
 
   private isTowerMove = (): boolean => {

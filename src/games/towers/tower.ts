@@ -1,7 +1,7 @@
 import { GameError } from '../game-error';
 import { loadingImage } from '../helpers';
 
-export abstract class Tower<SubClass extends Tower<SubClass>> {
+export abstract class Tower {
   abstract name: string;
 
   abstract price: number;
@@ -21,8 +21,6 @@ export abstract class Tower<SubClass extends Tower<SubClass>> {
   constructor(size: number) {
     this.size = size;
   }
-
-  abstract clone(): SubClass;
 
   init = async (): Promise<void> => {
     await this.loadingImage();
