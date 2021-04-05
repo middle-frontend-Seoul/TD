@@ -6,4 +6,4 @@ export const PROFILE = '/profile';
 export const STATISTICS = '/statistics';
 export const FORUM = '/forum';
 export const FORUM_SECTION = '/forum/:section';
-export const FORUM_DETAILS = '/forum/:section/:id';
+export const FORUM_DETAILS = '/forum/:section/show/:id';

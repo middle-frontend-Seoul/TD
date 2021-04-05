@@ -27,5 +27,3 @@ export const Loading: FC<ILoadingProps> = ({ className, style }) => {
     </ul>
   );
 };
-
-export default Loading;

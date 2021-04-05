@@ -22,11 +22,11 @@ const App: FC = () => (
   <Router>
     <Layout>
       <Switch>
-        <Route path={URL.HOME} exact component={PageHome} />
+        <Route path={URL.HOME} component={PageHome} exact />
         <Route path={URL.PLAY} component={PagePlay} />
+        <Route path={URL.FORUM_DETAILS} component={PageForumDetails} />
+        <Route path={URL.FORUM_SECTION} component={PageForumSection} />
         <Route path={URL.FORUM} component={PageForum} />
-        <Route path={URL.FORUM_SECTION} component={PageForumDetails} />
-        <Route path={URL.FORUM_DETAILS} component={PageForumSection} />
         <Route path={URL.SIGNIN} component={PageSignin} />
         <Route path={URL.SIGNUP} component={PageSignup} />
         <Route path={URL.PROFILE} component={PageProfile} />
