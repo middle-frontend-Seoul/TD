@@ -1,64 +1,45 @@
-import { GameError } from '../game-error';
-import { loadingImage } from '../helpers';
+export type TowerProps = {
+  size?: number;
+  name: string;
+  price: number;
+  color: string;
+  radius: number;
+};
 
 export abstract class Tower {
-  abstract name: string;
-
-  abstract price: number;
-
   abstract pathImage: string;
 
-  abstract radius: number;
+  protected size: number;
 
-  abstract color: string;
+  protected name: string;
 
-  protected size;
+  protected price: number;
 
-  protected element?: HTMLDivElement;
+  protected color: string;
 
-  image?: HTMLImageElement;
+  protected radius: number;
 
-  constructor(size: number) {
+  constructor(props: TowerProps) {
+    const { size = 30, name, price, color, radius } = props;
+
     this.size = size;
+    this.name = name;
+    this.price = price;
+    this.color = color;
+    this.radius = radius;
   }
 
-  init = async (): Promise<void> => {
-    await this.loadingImage();
-    this.createElemen();
-  };
+  abstract draw(ctx: CanvasRenderingContext2D): void;
 
-  private createElemen = () => {
-    if (!this.image) {
-      throw new GameError('Требуется загризть изображение');
-    }
+  public drawRadius = (ctx: CanvasRenderingContext2D): void => {
+    const cordinatX = 0 + this.size / 2;
+    const cordinatY = 0 + this.size / 2;
 
-    const elm = document.createElement('div');
-    elm.classList.add('tower');
-    elm.appendChild(this.image);
-
-    const title = document.createElement('span');
-    title.classList.add('tower__title');
-    title.innerText = this.name;
-    elm.appendChild(title);
-
-    const price = document.createElement('span');
-    price.classList.add('tower__price');
-    price.innerText = String(this.price);
-    elm.appendChild(price);
-
-    this.element = elm;
-  };
-
-  private loadingImage = async () => {
-    try {
-      this.image = await loadingImage(this.pathImage);
-      this.image.classList.add('tower__image');
-    } catch (err) {
-      throw new GameError(`Ошибка загрузки изображения ${this.pathImage}`, err);
-    }
-  };
-
-  getElement = (): HTMLDivElement | undefined => {
-    return this.element;
+    ctx.beginPath();
+    ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+    ctx.fillStyle = this.color;
+    ctx.arc(cordinatX, cordinatY, this.radius * this.size, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.stroke();
   };
 }

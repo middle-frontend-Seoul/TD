@@ -1,7 +1,25 @@
 import { GameError } from './game-error';
 import { GridType } from './typing';
 
+type GridPosition = {
+  width: number;
+  offset: number;
+};
+
 const GRID_FIRST_ROW = 0;
+
+export const getGridPosition = (
+  size: number,
+  procent: number
+): GridPosition => {
+  const width = (size * procent) / 100;
+  const offset = Math.floor((size - width) / 2);
+
+  return {
+    width,
+    offset,
+  };
+};
 
 export const isArray = (val: unknown[]): val is unknown[] | never => {
   if (!Array.isArray(val)) {

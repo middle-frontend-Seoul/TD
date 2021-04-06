@@ -21,11 +21,10 @@ const PagePlay: FC = () => {
   const [isMenuVisible, setMenuVisible] = useState(false);
 
   useEffect(() => {
-    if (!canvasRef.current || !towersRef.current) return;
+    if (!canvasRef.current) return;
 
     try {
       const game = new Game(canvasRef.current, gridPlayOne);
-      game.renderTowers(towersRef.current);
       game.start();
     } catch (err) {
       setError(err.message);
