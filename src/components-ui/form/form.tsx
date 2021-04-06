@@ -39,31 +39,31 @@ export const Form: FC<FormProps> = ({
     [fields]
   );
 
-  const form = useFormik({
+  const { handleSubmit, handleChange, values, errors } = useFormik({
     initialValues: initVals,
     validate: validation,
     validateOnChange: false,
     validateOnBlur: true,
-    onSubmit: (values) => {
-      onSubmit(values);
+    onSubmit: (formFields) => {
+      onSubmit(formFields);
     },
   });
 
   return (
-    <form onSubmit={form.handleSubmit} className="form">
+    <form onSubmit={handleSubmit} className="form">
       <Title size="small">{title}</Title>
       {fields.map((field) => (
         <div key={field.name}>
           <Input
-            value={form.values[field.name]}
-            onChange={form.handleChange}
+            value={values[field.name]}
+            onChange={handleChange}
             id={field.name}
             name={field.name}
             placeholder={field.placeholder}
             type={field.type}
           />
-          {form.errors[field.name] ? (
-            <div className="field-error">{form.errors[field.name]}</div>
+          {errors[field.name] ? (
+            <div className="field-error">{errors[field.name]}</div>
           ) : null}
         </div>
       ))}

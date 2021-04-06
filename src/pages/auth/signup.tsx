@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState, useCallback } from 'react';
 import { Space } from 'components-ui/space';
 import './auth.scss';
 import { Form } from 'components-ui/form/form';
@@ -15,7 +15,7 @@ import {
 
 const PageSignUp: FC = () => {
   const history = useHistory();
-  const [signUpError, setSignUpError] = React.useState('');
+  const [signUpError, setSignUpError] = useState('');
   const signUpFields = [
     {
       placeholder: 'Login',
@@ -43,7 +43,7 @@ const PageSignUp: FC = () => {
     },
   ];
 
-  const signUp = React.useCallback(
+  const signUp = useCallback(
     (info: SignUpRequestInfo) => {
       authApi.signUp(info).then(({ data, error }) => {
         if (data) {
