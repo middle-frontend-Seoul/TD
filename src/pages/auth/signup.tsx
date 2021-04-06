@@ -11,7 +11,7 @@ import {
   isValidLogin,
   isValidPassword,
   validationMessages,
-} from 'pages/auth/utils/validation';
+} from 'utils/validation';
 
 const PageSignUp: FC = () => {
   const history = useHistory();

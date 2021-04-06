@@ -9,7 +9,7 @@ import {
   isValidLogin,
   isValidPassword,
   validationMessages,
-} from 'pages/auth/utils/validation';
+} from 'utils/validation';
 
 const PageSignIn: FC = () => {
   const history = useHistory();
