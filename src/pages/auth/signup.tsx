@@ -55,7 +55,7 @@ const PageSignUp: FC = () => {
         }
       });
     },
-    [history]
+    [history, setSignUpError]
   );
 
   const validation = (values: Record<string, string>) => {

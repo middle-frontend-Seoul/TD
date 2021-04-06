@@ -41,7 +41,7 @@ const PageSignIn: FC = () => {
         }
       });
     },
-    [history]
+    [history, setSignInError]
   );
 
   const validation = (values: Record<string, string>) => {
