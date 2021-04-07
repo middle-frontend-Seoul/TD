@@ -6,3 +6,4 @@ dist
 webpack.*.js
 *.test.ts
 *.d.ts
+server.js
