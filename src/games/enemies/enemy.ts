@@ -1,3 +1,4 @@
+import { InterfaceMoveMap } from '../interfaces/move-map';
 import { Position } from '../typing';
 
 type EnemyProps = {
@@ -9,7 +10,7 @@ type EnemyProps = {
   position: Position;
 };
 
-export abstract class Enemy {
+export abstract class Enemy extends InterfaceMoveMap {
   protected name: string;
 
   protected live: number;
@@ -23,6 +24,7 @@ export abstract class Enemy {
   protected position: Position;
 
   constructor({ name, live, livesLeft, size, position, speed }: EnemyProps) {
+    super(position);
     this.name = name;
 
     this.live = live;
