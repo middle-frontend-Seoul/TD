@@ -6,7 +6,13 @@ import { Cursor } from './cursor';
 import { GridType } from './typing';
 import { TowersMap } from './towers-map';
 import { TowersBuilder } from './towers-builder';
+import { SimpleEnemy, StrongEnemy } from './enemies';
 
+// TODO: времееное решения. для демонстрации врагов
+const simple = new SimpleEnemy({ x: 2 * 30, y: 6 * 30 });
+const strong = new StrongEnemy({ x: 1 * 30, y: 6 * 30 });
+simple.damage(20); // демонстрация нанесения урона
+strong.damage(55);
 export class Game {
   private map: GameMap;
 
@@ -49,6 +55,10 @@ export class Game {
     this.map.drawGrid(ctx);
     this.move.draw(ctx);
     this.towersMap.draw(ctx);
+
+    // TODO: времееное решения. для демонстрации врагов
+    simple.draw(ctx);
+    strong.draw(ctx);
   };
 
   public getCursor(): Cursor {
