@@ -1,6 +1,15 @@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type EventCallback = (...args: any[]) => any;
 
+export enum EventNames {
+  drag = 'drag',
+  drop = 'drop',
+  escape = 'escape',
+  moveInCanvas = 'mousemove:incanvas',
+  moveOutCanvas = 'mousemove:outcanvas',
+  clickInCanavs = 'click:incanvas',
+}
+
 export class EventBus {
   private static instance: EventBus;
 

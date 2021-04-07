@@ -1,3 +1,5 @@
+import { Position } from '../typing';
+
 export type TowerProps = {
   size?: number;
   name: string;
@@ -29,11 +31,14 @@ export abstract class Tower {
     this.radius = radius;
   }
 
-  abstract draw(ctx: CanvasRenderingContext2D): void;
+  abstract draw(ctx: CanvasRenderingContext2D, position: Position): void;
 
-  public drawRadius = (ctx: CanvasRenderingContext2D): void => {
-    const cordinatX = 0 + this.size / 2;
-    const cordinatY = 0 + this.size / 2;
+  public drawRadius = (
+    ctx: CanvasRenderingContext2D,
+    { x, y }: Position
+  ): void => {
+    const cordinatX = x + this.size / 2;
+    const cordinatY = y + this.size / 2;
 
     ctx.beginPath();
     ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
@@ -42,4 +47,12 @@ export abstract class Tower {
     ctx.fill();
     ctx.stroke();
   };
+
+  getName(): string {
+    return this.name;
+  }
+
+  getPrice(): number {
+    return this.price;
+  }
 }

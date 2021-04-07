@@ -1,28 +1,32 @@
+import { Move } from './move';
 import { Canvas } from './canvas';
 import { GameMap } from './game-map';
 import { GameError } from './game-error';
-// import { MoveTower } from './move-tower';
-// import { PlacedTowers } from './placed-towers';
 import { Cursor } from './cursor';
 import { GridType } from './typing';
+import { TowersMap } from './towers-map';
+import { TowersBuilder } from './towers-builder';
 
 export class Game {
   private map: GameMap;
+
+  private towersMap: TowersMap;
+
+  private towersBuilder: TowersBuilder;
+
+  private move: Move;
 
   private canvas: Canvas;
 
   private cursor: Cursor;
 
-  // private moveTower: MoveTower;
-
-  // private placedTowers: PlacedTowers;
-
   constructor(canvas: HTMLCanvasElement, grid: GridType, size = 30) {
     this.map = new GameMap(grid, size);
+    this.move = new Move();
     this.canvas = new Canvas(canvas);
     this.cursor = new Cursor(this.canvas, size);
-    // this.moveTower = new MoveTower(size, grid);
-    // this.placedTowers = new PlacedTowers(size, grid);
+    this.towersMap = new TowersMap(grid, size);
+    this.towersBuilder = new TowersBuilder(this.towersMap, this.move);
   }
 
   public start = async (): Promise<void> => {
@@ -39,16 +43,19 @@ export class Game {
     requestAnimationFrame(this.animation.bind(this));
   }
 
-  public getCursor(): Cursor {
-    return this.cursor;
-  }
-
   private draw = (): void => {
     const ctx = this.canvas.getCtx();
     this.canvas.clear();
     this.map.drawGrid(ctx);
-
-    // this.moveTower.draw(ctx);
-    // this.placedTowers.draw(ctx);
+    this.move.draw(ctx);
+    this.towersMap.draw(ctx);
   };
+
+  public getCursor(): Cursor {
+    return this.cursor;
+  }
+
+  public getTowersBuilder(): TowersBuilder {
+    return this.towersBuilder;
+  }
 }

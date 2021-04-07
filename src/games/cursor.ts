@@ -1,9 +1,7 @@
-import { EventBus } from './event-bus';
+import { EventBus, EventNames } from './event-bus';
 import { Canvas } from './canvas';
 
 export class Cursor {
-  static instance: Cursor;
-
   size: number;
 
   event: () => EventBus;
@@ -23,10 +21,6 @@ export class Cursor {
     this.canvas = canvas;
     this.event = () => event;
 
-    if (Cursor.instance) {
-      return Cursor.instance;
-    }
-
     window.addEventListener('click', this.click);
     window.addEventListener('keydown', this.keydown);
     window.addEventListener('mousemove', this.mousemove);
@@ -34,8 +28,6 @@ export class Cursor {
     const element = this.canvas.getCanvas();
     element.addEventListener('mouseenter', this.mouseMoveInCanvas);
     element.addEventListener('mouseleave', this.mouseMoveOutCanvas);
-
-    Cursor.instance = this;
   }
 
   removeEventListener = (): void => {
@@ -49,11 +41,15 @@ export class Cursor {
   };
 
   private click = (event: MouseEvent): void => {
-    this.event().emit('click', { mouseInCanvas: this.mouseInCanvas, event });
+    if (this.mouseInCanvas) {
+      this.event().emit(EventNames.clickInCanavs, this.getPosition(event));
+    }
   };
 
   private keydown = ({ key }: KeyboardEvent) => {
-    this.event().emit(`keydown:${key.toLocaleLowerCase()}`);
+    if (key.toLocaleLowerCase() === 'escape') {
+      this.event().emit(EventNames.escape);
+    }
   };
 
   private mouseMoveInCanvas = () => {
@@ -64,18 +60,22 @@ export class Cursor {
     this.mouseInCanvas = false;
   };
 
-  private mousemove = ({ clientX, clientY }: MouseEvent) => {
-    const { x: canvasX, y: canvasY } = this.canvas.getRect();
-    this.mouse = { x: clientX, y: clientY };
-    this.position = {
-      x: Math.floor((clientX - canvasX) / this.size),
-      y: Math.floor((clientY - canvasY) / this.size),
-    };
+  private mousemove = (event: MouseEvent) => {
+    this.mouse = { x: event.clientX, y: event.clientY };
+    this.position = this.getPosition(event);
 
     if (this.mouseInCanvas) {
-      this.event().emit('mousemove:incanvas', this.position);
+      this.event().emit(EventNames.moveInCanvas, this.position);
     } else {
-      this.event().emit('mousemove:outcanvas', this.mouse);
+      this.event().emit(EventNames.moveOutCanvas, this.mouse);
     }
+  };
+
+  private getPosition = ({ clientX, clientY }: MouseEvent) => {
+    const { x: canvasX, y: canvasY } = this.canvas.getRect();
+    return {
+      x: Math.floor((clientX - canvasX) / this.size) * this.size,
+      y: Math.floor((clientY - canvasY) / this.size) * this.size,
+    };
   };
 }
