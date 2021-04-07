@@ -1,17 +1,19 @@
 import { Enemy } from './enemy';
+import { Position } from '../typing';
 
-export class SimpleEnemy extends Enemy<SimpleEnemy> {
-  name = 'simple';
+export class SimpleEnemy extends Enemy {
+  protected sizeBox = 4;
 
-  live = 100;
-
-  livesLeft = 100;
-
-  speed = 10;
-
-  sizeBox = 4;
-
-  width = 16;
+  constructor(position: Position) {
+    super({
+      name: 'simple',
+      size: 30,
+      live: 100,
+      livesLeft: 100,
+      speed: 10,
+      position,
+    });
+  }
 
   draw = (ctx: CanvasRenderingContext2D): void => {
     if (this.livesLeft !== this.live) {
@@ -42,8 +44,8 @@ export class SimpleEnemy extends Enemy<SimpleEnemy> {
     ctx.beginPath();
     ctx.fillStyle = color;
     ctx.rect(
-      this.x + x * this.sizeBox + 1,
-      this.y + y * this.sizeBox + 1,
+      this.position.x + x * this.sizeBox + 1,
+      this.position.y + y * this.sizeBox + 1,
       this.sizeBox,
       this.sizeBox
     );

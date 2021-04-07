@@ -9,8 +9,8 @@ import { TowersBuilder } from './towers-builder';
 import { SimpleEnemy, StrongEnemy } from './enemies';
 
 // TODO: времееное решения. для демонстрации врагов
-const simple = new SimpleEnemy(2 * 30, 6 * 30);
-const strong = new StrongEnemy(1 * 30, 6 * 30);
+const simple = new SimpleEnemy({ x: 2 * 30, y: 6 * 30 });
+const strong = new StrongEnemy({ x: 1 * 30, y: 6 * 30 });
 simple.damage(20); // демонстрация нанесения урона
 strong.damage(55);
 export class Game {

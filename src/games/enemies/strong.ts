@@ -1,13 +1,17 @@
 import { Enemy } from './enemy';
+import { Position } from '../typing';
 
-export class StrongEnemy extends Enemy<StrongEnemy> {
-  name = 'strong';
-
-  live = 180;
-
-  livesLeft = 180;
-
-  speed = 10;
+export class StrongEnemy extends Enemy {
+  constructor(position: Position) {
+    super({
+      name: 'strong',
+      size: 30,
+      live: 180,
+      livesLeft: 180,
+      speed: 10,
+      position,
+    });
+  }
 
   draw = (ctx: CanvasRenderingContext2D): void => {
     if (this.livesLeft !== this.live) {
@@ -16,8 +20,8 @@ export class StrongEnemy extends Enemy<StrongEnemy> {
 
     const fifty = this.size / 2;
 
-    const x = this.x + fifty;
-    const y = this.y + fifty;
+    const x = this.position.x + fifty;
+    const y = this.position.y + fifty;
 
     ctx.beginPath();
     ctx.fillStyle = '#8FEC34';
