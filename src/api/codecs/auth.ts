@@ -14,3 +14,16 @@ export function encodeSignUpRequest(info: SignUpRequestInfo): SignUpRequestDto {
     password: info.password,
   };
 }
+
+export function decodeSigIn(dto: SignInDto): SignInInfo {
+  return {
+    id: dto.id,
+  };
+}
+
+export function encodeSignInRequest(info: SignInRequestInfo): SignInRequestDto {
+  return {
+    login: info.login,
+    password: info.password,
+  };
+}

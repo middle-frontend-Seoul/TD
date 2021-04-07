@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
+import React, { FC, useState, useCallback } from 'react';
 import { Space } from 'components-ui/space';
-import './signup.scss';
+import './auth.scss';
 import { Form } from 'components-ui/form/form';
 import { useHistory } from 'react-router';
 import { Block } from 'components-ui/block';
@@ -11,11 +11,11 @@ import {
   isValidLogin,
   isValidPassword,
   validationMessages,
-} from './utils/validation';
+} from 'utils/validation';
 
-const PageSignup: FC = () => {
+const PageSignUp: FC = () => {
   const history = useHistory();
-  const [signUpError, setSignUpError] = React.useState('');
+  const [signUpError, setSignUpError] = useState('');
   const signUpFields = [
     {
       placeholder: 'Login',
@@ -43,7 +43,7 @@ const PageSignup: FC = () => {
     },
   ];
 
-  const signUp = React.useCallback(
+  const signUp = useCallback(
     (info: SignUpRequestInfo) => {
       authApi.signUp(info).then(({ data, error }) => {
         if (data) {
@@ -55,7 +55,7 @@ const PageSignup: FC = () => {
         }
       });
     },
-    [history]
+    [history, setSignUpError]
   );
 
   const validation = (values: Record<string, string>) => {
@@ -93,11 +93,11 @@ const PageSignup: FC = () => {
           buttonText="Создать аккаунт"
           title="Tower Defence"
         />
-        {signUpError && <div className="signup-error">{signUpError}</div>}
+        {signUpError && <div className="auth-error">{signUpError}</div>}
       </Block>
     </Space>
   );
 };
 
-export { PageSignup };
-export default PageSignup;
+export { PageSignUp };
+export default PageSignUp;
