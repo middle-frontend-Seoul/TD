@@ -10,13 +10,9 @@ type UserDto = {
 }
 type UserInfo = {
   id: number;
-  firstName: string;
-  secondName: string;
-  displayName: string | null;
   login: string;
   avatar: string | null;
   email: string;
-  phone: string;
 };
 
 type UserRequestDto = {
@@ -28,12 +24,8 @@ type UserRequestDto = {
   phone?: string;
 }
 type UserRequestInfo = {
-  firstName: string;
-  secondName: string;
-  displayName: string;
   login: string;
   email: string;
-  phone?: string;
 }
 
 type UserPasswordRequestDto = {

@@ -1,24 +1,20 @@
 export function decodeUser(dto: UserDto): UserInfo {
   return {
     id: dto.id,
-    firstName: dto.first_name,
-    secondName: dto.second_name,
-    displayName: dto.display_name,
     login: dto.login,
     avatar: dto.avatar,
     email: dto.email,
-    phone: dto.phone,
   };
 }
 
 export function encodeUserRequest(info: UserRequestInfo): UserRequestDto {
   return {
-    first_name: info.firstName,
-    second_name: info.secondName,
-    display_name: info.displayName,
+    first_name: info.login,
+    second_name: info.login,
+    display_name: info.login,
     login: info.login,
     email: info.email,
-    phone: info.phone,
+    phone: '8888888888',
   };
 }
 

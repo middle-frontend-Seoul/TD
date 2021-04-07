@@ -12,12 +12,8 @@ import './profile-form.scss';
 
 const defaultUserValues = {
   id: 0,
-  firstName: '',
-  secondName: '',
-  displayName: '',
   login: '',
   email: '',
-  phone: '',
   avatar: '',
 };
 
@@ -64,15 +60,6 @@ export const ProfileForm: FC<IProfileFormProps> = ({
     <form className={classes} onSubmit={profileForm.handleSubmit}>
       <div className="profile-form__items">
         <FieldProfile
-          label="Никнейм"
-          name="displayName"
-          type="text"
-          error={profileForm.errors.displayName}
-          value={profileForm.values.displayName}
-          onChange={profileForm.handleChange}
-          disabled={!isUpdate}
-        />
-        <FieldProfile
           label="Логин"
           name="login"
           type="text"
@@ -87,33 +74,6 @@ export const ProfileForm: FC<IProfileFormProps> = ({
           type="text"
           error={profileForm.errors.email}
           value={profileForm.values.email}
-          onChange={profileForm.handleChange}
-          disabled={!isUpdate}
-        />
-        <FieldProfile
-          label="Телефон"
-          name="phone"
-          type="text"
-          error={profileForm.errors.phone}
-          value={profileForm.values.phone}
-          onChange={profileForm.handleChange}
-          disabled={!isUpdate}
-        />
-        <FieldProfile
-          label="Имя"
-          name="firstName"
-          type="text"
-          error={profileForm.errors.firstName}
-          value={profileForm.values.firstName}
-          onChange={profileForm.handleChange}
-          disabled={!isUpdate}
-        />
-        <FieldProfile
-          label="Фамилия"
-          name="secondName"
-          type="text"
-          error={profileForm.errors.secondName}
-          value={profileForm.values.secondName}
           onChange={profileForm.handleChange}
           disabled={!isUpdate}
         />

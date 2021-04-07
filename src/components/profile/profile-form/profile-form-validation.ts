@@ -3,7 +3,6 @@ import {
   isValidEmail,
   isValidLogin,
   isValidPassword,
-  isValidPhone,
   validationMessages,
 } from 'utils/validation';
 
@@ -12,11 +11,6 @@ export const validation = (
 ): Record<string, string> => {
   const errors: Record<string, string> = {};
 
-  if (!values.displayName) {
-    errors.displayName = validationMessages.isRequire;
-  } else if (!isValidLogin(values.displayName)) {
-    errors.displayName = validationMessages.invalidFormat;
-  }
   if (!values.login) {
     errors.login = validationMessages.isRequire;
   } else if (!isValidLogin(values.login)) {
@@ -26,21 +20,6 @@ export const validation = (
     errors.email = validationMessages.isRequire;
   } else if (!isValidEmail(values.email)) {
     errors.email = validationMessages.invalidFormat;
-  }
-  if (!values.phone) {
-    errors.phone = validationMessages.isRequire;
-  } else if (!isValidPhone(values.phone)) {
-    errors.phone = validationMessages.invalidFormat;
-  }
-  if (!values.firstName) {
-    errors.firstName = validationMessages.isRequire;
-  } else if (!isValidLogin(values.firstName)) {
-    errors.firstName = validationMessages.invalidFormat;
-  }
-  if (!values.secondName) {
-    errors.secondName = validationMessages.isRequire;
-  } else if (!isValidLogin(values.secondName)) {
-    errors.secondName = validationMessages.invalidFormat;
   }
 
   if (values.newPassword && !values.newPassword2) {
