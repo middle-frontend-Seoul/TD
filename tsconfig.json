@@ -4,7 +4,7 @@
       "dom",
       "es2017"
     ],
-    "module": "esnext",
+    "module": "commonjs",
     "moduleResolution": "node",
     "target": "es5",
     "jsx": "react",
@@ -20,7 +20,8 @@
     "baseUrl": "src"
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "server/**/*"
   ],
   "exclude": [
     "node_modules",
