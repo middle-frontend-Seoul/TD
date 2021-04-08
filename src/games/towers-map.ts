@@ -1,4 +1,6 @@
 import { Tower } from './towers';
+import { Enemy } from './enemies';
+import { isRadius } from './helpers';
 import { GameError } from './game-error';
 import { Position, GridType } from './typing';
 
@@ -35,6 +37,31 @@ export class TowersMap {
 
     this.places.push({ tower, position });
     return true;
+  };
+
+  /**
+   * Метод проверяет наличие врагов
+   * в радиусе действия   *
+   */
+  public update = (entities: Enemy[]): void => {
+    this.places.forEach(({ tower, position }) => {
+      const radius = tower.getRaduis() * this.size;
+      const center: Position = {
+        x: position.x + this.size / 2,
+        y: position.y + this.size / 2,
+      };
+
+      const [enemy] = entities.filter((entity) =>
+        isRadius(entity.getPositions(), center, radius)
+      );
+
+      // TODO: временное решение
+      if (enemy && tower.getActive()) {
+        enemy.damage(tower.getDamage());
+        tower.setActive(false);
+        setTimeout(() => tower.setActive(true), 1000);
+      }
+    });
   };
 
   protected isFreeSpace = ({ x, y }: Position): boolean =>

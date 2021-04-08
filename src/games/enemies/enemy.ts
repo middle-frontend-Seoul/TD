@@ -41,6 +41,10 @@ export abstract class Enemy extends InterfaceMoveMap {
     this.livesLeft -= damage;
   };
 
+  isLive = (): boolean => {
+    return this.livesLeft > 0;
+  };
+
   drawLive = (ctx: CanvasRenderingContext2D): void => {
     const { x, y } = this.position;
     const size = this.size - 4;
