@@ -8,6 +8,18 @@ type GridPosition = {
 
 const GRID_FIRST_ROW = 0;
 
+export const isRadius = (
+  point: Position,
+  center: Position,
+  radius: number
+): boolean => {
+  return (
+    (center.x - point.x) * (center.x - point.x) +
+      (center.y - point.y) * (center.y - point.y) <
+    radius * radius
+  );
+};
+
 export const getStartPosition = (grid: GridType, size: number): Position => {
   const { row, cell } = grid.reduce(
     (prev, curr, i) => {

@@ -47,7 +47,7 @@ export class Game {
   public start = async (): Promise<void> => {
     try {
       await this.map.init();
-      this.addEnemy();
+      setInterval(() => this.addEnemy(), 3000);
       this.animation();
     } catch (error) {
       throw new GameError('При старте игры возникла ошибка', error);
@@ -68,15 +68,16 @@ export class Game {
 
   private update = (): void => {
     this.moveMap.update();
+    this.towersMap.update(this.moveMap.getEntities());
   };
 
   private draw = (): void => {
     const ctx = this.canvas.getCtx();
     this.canvas.clear();
     this.map.drawGrid(ctx);
+    this.towersMap.draw(ctx);
     this.moveMap.draw(ctx);
     this.moveCursor.draw(ctx);
-    this.towersMap.draw(ctx);
   };
 
   public getCursor(): Cursor {

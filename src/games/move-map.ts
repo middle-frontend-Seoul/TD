@@ -14,6 +14,10 @@ export class MoveMap<T extends InterfaceMoveMap> {
     this.size = size;
   }
 
+  public draw = (ctx: CanvasRenderingContext2D): void => {
+    this.entities.forEach((entity) => entity.draw(ctx));
+  };
+
   public push = (entity: T): void => {
     if (!(entity instanceof InterfaceMoveMap)) {
       throw new GameError(`${entity}: не экземпляр класса InterfaceMoveMap`);
@@ -22,10 +26,10 @@ export class MoveMap<T extends InterfaceMoveMap> {
     this.entities.push(entity);
   };
 
-  public draw = (ctx: CanvasRenderingContext2D): void => {
-    this.entities.forEach((entity) => entity.draw(ctx));
-  };
-
+  /**
+   * Метод обновляет координаты
+   * для каждой сущности (entities)
+   */
   public update = (): void => {
     const hashAntonymTrackway = {
       right: 'left',
@@ -34,6 +38,7 @@ export class MoveMap<T extends InterfaceMoveMap> {
       bottom: 'top',
     };
 
+    this.entities = this.entities.filter((entity: any) => entity.isLive());
     this.entities.forEach((entity) => {
       const trackway = entity.getDirection();
       const { x, y } = entity.getPositions();
@@ -90,4 +95,8 @@ export class MoveMap<T extends InterfaceMoveMap> {
       }
     });
   };
+
+  public getEntities(): T[] {
+    return this.entities;
+  }
 }
