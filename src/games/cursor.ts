@@ -1,5 +1,6 @@
 import { EventBus, EventNames } from './event-bus';
 import { Canvas } from './canvas';
+import { Position } from './typing';
 
 export class Cursor {
   size: number;
@@ -10,7 +11,7 @@ export class Cursor {
 
   mouse = { x: 0, y: 0 };
 
-  position = { x: -1, y: -1 };
+  position: Position = { x: -1, y: -1 };
 
   mouseInCanvas = false;
 
@@ -42,7 +43,7 @@ export class Cursor {
 
   private click = (event: MouseEvent): void => {
     if (this.mouseInCanvas) {
-      this.event().emit(EventNames.clickInCanavs, this.getPosition(event));
+      this.event().emit(EventNames.clickInCanvas, this.getPosition(event));
     }
   };
 

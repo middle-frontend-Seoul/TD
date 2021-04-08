@@ -7,7 +7,7 @@ export enum EventNames {
   escape = 'escape',
   moveInCanvas = 'mousemove:incanvas',
   moveOutCanvas = 'mousemove:outcanvas',
-  clickInCanavs = 'click:incanvas',
+  clickInCanvas = 'click:incanvas',
 }
 
 export class EventBus {

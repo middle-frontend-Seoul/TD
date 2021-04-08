@@ -31,7 +31,7 @@ export class TowersBuilder {
     }
 
     this.event().on(EventNames.escape, this.onDrop);
-    this.event().on(EventNames.clickInCanavs, this.clickInCanvas);
+    this.event().on(EventNames.clickInCanvas, this.clickInCanvas);
 
     TowersBuilder.instance = this;
   }
