@@ -37,7 +37,7 @@ export class Game {
     this.canvas = new Canvas(canvas);
     this.cursor = new Cursor(this.canvas, size);
 
-    this.moveMap = new MoveMap();
+    this.moveMap = new MoveMap(grid, size);
     this.moveCursor = new MoveCursor();
 
     this.towersMap = new TowersMap(grid, size);
@@ -55,14 +55,19 @@ export class Game {
   };
 
   public animation(): void {
+    this.update();
     this.draw();
     requestAnimationFrame(this.animation.bind(this));
   }
 
-  private addEnemy = () => {
+  private addEnemy = (): void => {
     const position = getStartPosition(this.grid, this.size);
     const enemy = new SimpleEnemy(position);
     this.moveMap.push(enemy);
+  };
+
+  private update = (): void => {
+    this.moveMap.update();
   };
 
   private draw = (): void => {
