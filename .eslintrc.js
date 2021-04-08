@@ -23,6 +23,10 @@ module.exports = {
     '@typescript-eslint/no-empty-interface': ['warn'],
     'max-classes-per-file': 'off',
     'lines-between-class-members': 'off',
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true, argsIgnorePattern: '^_' }],
+
+    // react-hooks
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'error',
   },

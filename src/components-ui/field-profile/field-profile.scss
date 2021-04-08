@@ -1,0 +1,31 @@
+.field-profile {
+  display: flex;
+  height: 40px;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  font-size: $font-size-base;
+
+  &:not(:last-child) {
+    border-bottom: solid 1px $text-color-grey;
+  }
+
+  &__label {
+    color: $text-color-grey;
+  }
+
+  &__error {
+    color: $error-color;
+    margin-left: $padding-sm;
+  }
+
+  &__input {
+    color: $text-color;
+    text-align: right;
+    height: 100%;
+    width: 30%;
+    background-color: transparent;
+    outline: none;
+    border: none;
+  }
+}

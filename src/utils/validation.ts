@@ -6,15 +6,21 @@ export const validationMessages = {
 };
 
 export function isValidLogin(value: string): boolean {
-  return /^[A-Za-z0-9]*$/.test(value);
+  return Boolean(value) && /^[A-Za-z0-9]*$/.test(value);
 }
 
 export function isValidEmail(value: string): boolean {
-  return /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value);
+  return (
+    Boolean(value) && /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
+  );
 }
 
 export function isValidPassword(value: string): boolean {
-  return /^.{5,}$/.test(value);
+  return Boolean(value) && /^.{5,}$/.test(value);
+}
+
+export function isValidPhone(value: string): boolean {
+  return Boolean(value) && /^[0-9]*$/.test(value);
 }
 
 export function isPasswordEqual(
