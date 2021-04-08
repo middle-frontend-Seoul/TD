@@ -4,9 +4,24 @@ import path from 'path';
 
 const PORT: string | number = process.env.PORT || 4000;
 
+const scriptSources = ["'self'", "'unsafe-inline'", "'unsafe-eval'"];
+const styleSources = ["'self'", "'unsafe-inline'"];
+const connectSources = ["'self'", 'https://ya-praktikum.tech'];
+
 const app = express();
 
 app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: scriptSources,
+      scriptSrcElem: scriptSources,
+      styleSrc: styleSources,
+      connectSrc: connectSources,
+    },
+  })
+);
 
 app.use(express.static(path.join(__dirname, '../dist')));
 
