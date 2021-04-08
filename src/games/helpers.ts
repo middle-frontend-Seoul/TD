@@ -19,7 +19,7 @@ export const getStartPosition = (grid: GridType, size: number): Position => {
   );
 
   const x = cell * size - size;
-  const y = row * size - size;
+  const y = row * size;
   return { x, y };
 };
 

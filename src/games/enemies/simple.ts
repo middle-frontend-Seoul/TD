@@ -10,7 +10,7 @@ export class SimpleEnemy extends Enemy {
       size: 30,
       live: 100,
       livesLeft: 100,
-      speed: 10,
+      speed: 0.8,
       position,
     });
   }
