@@ -12,7 +12,7 @@ export const userApi = {
 
   updateUser: async (data: UserRequestInfo): Promise<ApiResponse<UserInfo>> => {
     const { response, error } = await http.put<UserDto>(
-      '/user/profile1',
+      '/user/profile',
       User.encodeUserRequest(data)
     );
     return {
