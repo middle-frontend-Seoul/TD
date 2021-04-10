@@ -8,13 +8,15 @@ declare global {
     data?: any;
   };
 
+  type HttpError = AxiosError;
+
   type HttpResponse<Dto> = {
     response?: AxiosResponse<Dto>;
-    error?: AxiosError;
+    error?: HttpError;
   };
-  
+
   type ApiResponse<Info> = {
     data?: Info;
-    error?: AxiosError;
+    error?: HttpError;
   };
 }

@@ -2,14 +2,6 @@ import { http } from 'network/http';
 import { User } from './codecs';
 
 export const userApi = {
-  getCurrentUser: async (): Promise<ApiResponse<UserInfo>> => {
-    const { response, error } = await http.get<UserDto>(`/auth/user`);
-    return {
-      data: response && User.decodeUser(response.data || {}),
-      error,
-    };
-  },
-
   getUser: async (id: number): Promise<ApiResponse<UserInfo>> => {
     const { response, error } = await http.get<UserDto>(`/user/user/${id}`);
     return {
@@ -20,7 +12,7 @@ export const userApi = {
 
   updateUser: async (data: UserRequestInfo): Promise<ApiResponse<UserInfo>> => {
     const { response, error } = await http.put<UserDto>(
-      '/user/profile',
+      '/user/profile1',
       User.encodeUserRequest(data)
     );
     return {

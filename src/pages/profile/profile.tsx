@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 import { Link } from 'components-ui/link';
 import { Block } from 'components-ui/block';
@@ -9,21 +10,22 @@ import { ProfileForm } from 'components/profile/profile-form';
 import { HOME } from 'core/url';
 import { isValuesChange } from 'utils/formHelpers';
 import { useMountEffect } from 'utils/hooks';
-import { userApi } from 'api/user-api';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { getCurrentUser } from 'redux/slices/authSlice';
+import { updateUser, updatePassword } from 'redux/slices/userSlice';
 
 import defaultAvatar from './images/default-avatar.png';
 import './profile.scss';
 
 const PageProfile: FC = () => {
-  const [response, setResponse] = useState<ApiResponse<UserInfo>>({});
+  const dispatch = useAppDispatch();
+  const currentUser = useAppSelector((state) => state.auth.currentUser);
   const [profileUpdateError, setProfileUpdateError] = React.useState('');
   const [passwordUpdateError, setPasswordUpdateError] = React.useState('');
   const [isUpdate, setUpdate] = useState(false);
 
-  const { data: currentUser } = response;
-
   useMountEffect(() => {
-    userApi.getCurrentUser().then(setResponse);
+    dispatch(getCurrentUser());
   });
 
   const handleProfileSubmit = async (
@@ -33,29 +35,33 @@ const PageProfile: FC = () => {
     let updateError = false;
 
     if (isValuesChange<UserInfo>(updateData, currentUser)) {
-      const { error: errorUpdateProfile } = await userApi.updateUser(
-        updateData
-      );
-      if (errorUpdateProfile) {
+      try {
+        const resultAction = await dispatch(updateUser(updateData));
+        unwrapResult(resultAction);
+      } catch (error) {
         updateError = true;
-        setProfileUpdateError(errorUpdateProfile.response?.data.reason);
+        setProfileUpdateError(error.response?.data.reason);
       }
     }
 
     if (oldPassword && newPassword) {
-      const { error: errorUpdatePassword } = await userApi.updatePassword({
-        oldPassword,
-        newPassword,
-      });
-      if (errorUpdatePassword) {
+      try {
+        const resultAction = await dispatch(
+          updatePassword({
+            oldPassword,
+            newPassword,
+          })
+        );
+        unwrapResult(resultAction);
+      } catch (error) {
         updateError = true;
-        setPasswordUpdateError(errorUpdatePassword.response?.data.reason);
+        setPasswordUpdateError(error.response?.data.reason);
       }
     }
 
     if (!updateError) {
       setUpdate(false);
-      userApi.getCurrentUser().then(setResponse);
+      dispatch(getCurrentUser());
     }
   };
 

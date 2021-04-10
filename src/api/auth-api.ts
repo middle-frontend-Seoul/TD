@@ -1,7 +1,15 @@
 import { http } from 'network/http';
-import { Auth } from 'api/codecs';
+import { Auth, User } from 'api/codecs';
 
 export const authApi = {
+  getCurrentUser: async (): Promise<ApiResponse<UserInfo>> => {
+    const { response, error } = await http.get<UserDto>(`/auth/user`);
+    return {
+      data: response && User.decodeUser(response.data || {}),
+      error,
+    };
+  },
+
   signIn: async (data: SignInRequestInfo): Promise<ApiResponse<SignInInfo>> => {
     const { response, error } = await http.post<SignInDto>(
       '/auth/signin',

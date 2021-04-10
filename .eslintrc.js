@@ -21,10 +21,12 @@ module.exports = {
     'max-classes-per-file': 'off',
     'lines-between-class-members': 'off',
     'no-unused-vars': 'off',
+    'no-param-reassign': ['error', { 'props': true, 'ignorePropertyModificationsFor': ['state'] }],
     '@typescript-eslint/no-unused-vars': [
       'error',
       { ignoreRestSiblings: true, argsIgnorePattern: '^_' },
     ],
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
 
     // react-hooks
     'react-hooks/rules-of-hooks': 'error',

@@ -1,10 +1,11 @@
 import React, { FC, useState, useCallback } from 'react';
+import { unwrapResult } from '@reduxjs/toolkit';
+
 import { Space } from 'components-ui/space';
 import './auth.scss';
 import { Form } from 'components-ui/form/form';
 import { useHistory } from 'react-router';
 import { Block } from 'components-ui/block';
-import { authApi } from 'api/auth-api';
 import {
   isPasswordEqual,
   isValidEmail,
@@ -12,9 +13,12 @@ import {
   isValidPassword,
   validationMessages,
 } from 'utils/validation';
+import { useAppDispatch } from 'redux/hooks';
+import { signUp } from 'redux/slices/authSlice';
 
 const PageSignUp: FC = () => {
   const history = useHistory();
+  const dispatch = useAppDispatch();
   const [signUpError, setSignUpError] = useState('');
   const signUpFields = [
     {
@@ -43,19 +47,19 @@ const PageSignUp: FC = () => {
     },
   ];
 
-  const signUp = useCallback(
-    (info: SignUpRequestInfo) => {
-      authApi.signUp(info).then(({ data, error }) => {
-        if (data) {
-          history.push({
-            pathname: '/',
-          });
-        } else if (error?.response) {
-          setSignUpError(error.response.data.reason);
-        }
-      });
+  const onSubmit = useCallback(
+    async (info: SignUpRequestInfo) => {
+      try {
+        const resultAction = await dispatch(signUp(info));
+        unwrapResult(resultAction);
+        history.push({
+          pathname: '/',
+        });
+      } catch (error) {
+        setSignUpError(error.response?.data.reason);
+      }
     },
-    [history, setSignUpError]
+    [dispatch, history, setSignUpError]
   );
 
   const validation = (values: Record<string, string>) => {
@@ -87,7 +91,7 @@ const PageSignUp: FC = () => {
     <Space>
       <Block style={{ width: '400px', height: '420px' }}>
         <Form
-          onSubmit={signUp}
+          onSubmit={onSubmit}
           fields={signUpFields}
           validation={validation}
           buttonText="Создать аккаунт"

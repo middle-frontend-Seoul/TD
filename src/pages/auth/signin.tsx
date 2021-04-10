@@ -1,18 +1,22 @@
 import React, { FC, useCallback, useState } from 'react';
+import { unwrapResult } from '@reduxjs/toolkit';
+
 import { Space } from 'components-ui/space';
 import './auth.scss';
 import { Form } from 'components-ui/form/form';
 import { useHistory } from 'react-router';
 import { Block } from 'components-ui/block';
-import { authApi } from 'api/auth-api';
 import {
   isValidLogin,
   isValidPassword,
   validationMessages,
 } from 'utils/validation';
+import { useAppDispatch } from 'redux/hooks';
+import { signIn } from 'redux/slices/authSlice';
 
 const PageSignIn: FC = () => {
   const history = useHistory();
+  const dispatch = useAppDispatch();
   const [signInError, setSignInError] = useState('');
   const signInFields = [
     {
@@ -29,19 +33,19 @@ const PageSignIn: FC = () => {
     },
   ];
 
-  const signIn = useCallback(
-    (info: SignInRequestInfo) => {
-      authApi.signIn(info).then(({ data, error }) => {
-        if (data) {
-          history.push({
-            pathname: '/',
-          });
-        } else if (error?.response) {
-          setSignInError(error.response.data.reason);
-        }
-      });
+  const onSubmit = useCallback(
+    async (info: SignInRequestInfo) => {
+      try {
+        const resultAction = await dispatch(signIn(info));
+        unwrapResult(resultAction);
+        history.push({
+          pathname: '/',
+        });
+      } catch (error) {
+        setSignInError(error.response?.data.reason);
+      }
     },
-    [history, setSignInError]
+    [dispatch, history, setSignInError]
   );
 
   const validation = (values: Record<string, string>) => {
@@ -63,7 +67,7 @@ const PageSignIn: FC = () => {
     <Space>
       <Block style={{ width: '400px', height: '320px' }}>
         <Form
-          onSubmit={signIn}
+          onSubmit={onSubmit}
           fields={signInFields}
           validation={validation}
           buttonText="Войти"

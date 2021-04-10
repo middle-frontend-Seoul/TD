@@ -30,10 +30,10 @@ export const Form: FC<FormProps> = ({
   const initVals = React.useMemo(
     () =>
       fields.reduce(
-        (res: Record<string, string>, { name, defaultValue = '' }) => {
-          res[name] = defaultValue;
-          return res;
-        },
+        (res: Record<string, string>, { name, defaultValue = '' }) => ({
+          ...res,
+          [name]: defaultValue,
+        }),
         {}
       ),
     [fields]
