@@ -7,3 +7,4 @@ webpack.*.js
 *.test.ts
 *.d.ts
 server.js
+service-worker.js
