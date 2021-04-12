@@ -1,10 +1,13 @@
 export class Canvas {
   private canvas: HTMLCanvasElement;
 
+  private rect: DOMRect;
+
   private ctx: CanvasRenderingContext2D;
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
+    this.rect = canvas.getBoundingClientRect();
     this.ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
 
     if (this.ctx === null) {
@@ -12,8 +15,16 @@ export class Canvas {
     }
   }
 
+  getCanvas(): HTMLCanvasElement {
+    return this.canvas;
+  }
+
   getCtx(): CanvasRenderingContext2D {
     return this.ctx;
+  }
+
+  getRect(): DOMRect {
+    return this.rect;
   }
 
   clear(): void {

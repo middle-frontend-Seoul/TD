@@ -9,3 +9,19 @@
   justify-content: center;
   align-items: flex-end;
 }
+
+.tools {
+  margin: 0 -6px;
+  padding: 0;
+
+  &__item {
+    padding: 0 6px;
+  }
+}
+
+.towers {
+  margin: 0;
+  padding: 8px 0;
+  display: inline-flex;
+  list-style: none;
+}
