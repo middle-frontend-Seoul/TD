@@ -38,7 +38,7 @@ export class MoveMap<T extends InterfaceMoveMap> {
       bottom: 'top',
     };
 
-    this.entities = this.entities.filter((entity: any) => entity.isLive());
+    this.entities = this.entities.filter((entity: T) => entity.isLive());
     this.entities.forEach((entity) => {
       const trackway = entity.getDirection();
       const { x, y } = entity.getPositions();

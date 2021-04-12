@@ -19,6 +19,8 @@ export abstract class InterfaceMoveMap {
 
   abstract draw(ctx: CanvasRenderingContext2D): void;
 
+  abstract isLive(): boolean;
+
   public setPositions(position: Position): void {
     this.position = position;
   }
