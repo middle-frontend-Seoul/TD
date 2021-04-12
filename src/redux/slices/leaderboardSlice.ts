@@ -1,58 +1,50 @@
-import {
-  createSlice,
-  createAsyncThunk,
-  SerializedError,
-} from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { leaderboardApi } from 'api/leaderboard-api';
 
 type LeaderboardState = {
   data?: LeaderboardInfo[];
   isLoading: boolean;
-  error?: SerializedError | HttpError;
+  error?: HttpError;
 };
 
 const initialState: LeaderboardState = {
   isLoading: false,
 };
 
-export const getAllLeaderboards = createAsyncThunk<
-  LeaderboardInfo[] | undefined,
-  LeaderboardRequestInfo,
-  { rejectValue: HttpError }
->('leaderboard/getAllLeaderboards', async (arg, thunkApi) => {
-  try {
-    const { data, error } = await leaderboardApi.getAllLeaderboards(arg);
-    if (error) {
-      return thunkApi.rejectWithValue(error);
-    }
-    return data;
-  } catch (error) {
-    return thunkApi.rejectWithValue(error);
-  }
-});
-
 export const leaderboardSlice = createSlice({
   name: 'leaderboard',
   initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder.addCase(getAllLeaderboards.pending, (state) => {
+  reducers: {
+    pending: (state) => {
       state.isLoading = true;
-    });
-    builder.addCase(getAllLeaderboards.fulfilled, (state, action) => {
+    },
+    fulfilled: (
+      state,
+      action: PayloadAction<LeaderboardInfo[] | undefined>
+    ) => {
       state.isLoading = false;
       state.data = action.payload;
-    });
-    builder.addCase(getAllLeaderboards.rejected, (state, action) => {
+    },
+    rejected: (state, action: PayloadAction<HttpError>) => {
       state.isLoading = false;
-      if (action.payload) {
-        state.error = action.payload;
-      } else {
-        state.error = action.error;
-      }
-    });
+      state.error = action.payload;
+    },
   },
 });
+
+const { pending, fulfilled, rejected } = leaderboardSlice.actions;
+
+export function getAllLeaderboards(arg: LeaderboardRequestInfo) {
+  return async (dispatch: AppDispatch) => {
+    dispatch(pending());
+    const { data, error } = await leaderboardApi.getAllLeaderboards(arg);
+    if (!error) {
+      dispatch(fulfilled(data));
+    } else {
+      dispatch(rejected(error));
+    }
+  };
+}
 
 export default leaderboardSlice.reducer;
