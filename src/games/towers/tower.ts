@@ -1,4 +1,5 @@
 import { Position } from '../typing';
+import { InterfaceMoveCursor } from '../interfaces/move-cursor';
 
 export type TowerProps = {
   size?: number;
@@ -8,7 +9,7 @@ export type TowerProps = {
   radius: number;
 };
 
-export abstract class Tower {
+export abstract class Tower extends InterfaceMoveCursor {
   abstract pathImage: string;
 
   protected size: number;
@@ -22,6 +23,7 @@ export abstract class Tower {
   protected radius: number;
 
   constructor(props: TowerProps) {
+    super();
     const { size = 30, name, price, color, radius } = props;
 
     this.size = size;

@@ -13,7 +13,7 @@ export class Cursor {
 
   position: Position = { x: -1, y: -1 };
 
-  mouseInCanvas = false;
+  isMouseInCanvas = false;
 
   constructor(canvas: Canvas, size: number) {
     const event = new EventBus();
@@ -42,7 +42,7 @@ export class Cursor {
   };
 
   private click = (event: MouseEvent): void => {
-    if (this.mouseInCanvas) {
+    if (this.isMouseInCanvas) {
       this.event().emit(EventNames.clickInCanvas, this.getPosition(event));
     }
   };
@@ -54,18 +54,18 @@ export class Cursor {
   };
 
   private mouseMoveInCanvas = () => {
-    this.mouseInCanvas = true;
+    this.isMouseInCanvas = true;
   };
 
   private mouseMoveOutCanvas = () => {
-    this.mouseInCanvas = false;
+    this.isMouseInCanvas = false;
   };
 
   private mousemove = (event: MouseEvent) => {
     this.mouse = { x: event.clientX, y: event.clientY };
     this.position = this.getPosition(event);
 
-    if (this.mouseInCanvas) {
+    if (this.isMouseInCanvas) {
       this.event().emit(EventNames.moveInCanvas, this.position);
     } else {
       this.event().emit(EventNames.moveOutCanvas, this.mouse);

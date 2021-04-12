@@ -1,4 +1,4 @@
-import { Move } from './move';
+import { MoveCursor } from './move-cursor';
 import { Canvas } from './canvas';
 import { GameMap } from './game-map';
 import { GameError } from './game-error';
@@ -14,7 +14,7 @@ export class Game {
 
   private towersBuilder: TowersBuilder;
 
-  private move: Move;
+  private moveCursor: MoveCursor;
 
   private canvas: Canvas;
 
@@ -22,11 +22,11 @@ export class Game {
 
   constructor(canvas: HTMLCanvasElement, grid: GridType, size = 30) {
     this.map = new GameMap(grid, size);
-    this.move = new Move();
+    this.moveCursor = new MoveCursor();
     this.canvas = new Canvas(canvas);
     this.cursor = new Cursor(this.canvas, size);
     this.towersMap = new TowersMap(grid, size);
-    this.towersBuilder = new TowersBuilder(this.towersMap, this.move);
+    this.towersBuilder = new TowersBuilder(this.towersMap, this.moveCursor);
   }
 
   public start = async (): Promise<void> => {
@@ -47,7 +47,7 @@ export class Game {
     const ctx = this.canvas.getCtx();
     this.canvas.clear();
     this.map.drawGrid(ctx);
-    this.move.draw(ctx);
+    this.moveCursor.draw(ctx);
     this.towersMap.draw(ctx);
   };
 

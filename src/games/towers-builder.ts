@@ -1,11 +1,11 @@
 import { EventBus, EventNames } from './event-bus';
 import { Tower as BaseTower } from './towers';
 import { Position } from './typing';
-import { Move } from './move';
+import { MoveCursor } from './move-cursor';
 import { TowersMap } from './towers-map';
 
 export class TowersBuilder {
-  private move: Move;
+  private moveCursor: MoveCursor;
 
   private map: TowersMap;
 
@@ -15,12 +15,12 @@ export class TowersBuilder {
 
   protected static instance: TowersBuilder;
 
-  constructor(map: TowersMap, move: Move) {
+  constructor(map: TowersMap, moveController: MoveCursor) {
     const event = new EventBus();
 
     this.map = map;
 
-    this.move = move;
+    this.moveCursor = moveController;
 
     this.tower = null;
 
@@ -44,11 +44,11 @@ export class TowersBuilder {
 
   public onDrag = (Tower: new (...arg: unknown[]) => BaseTower): void => {
     this.tower = new Tower();
-    this.move.onDrag(this.tower);
+    this.moveCursor.onDrag(this.tower);
   };
 
   public onDrop = (): void => {
     this.tower = null;
-    this.move.onDrop();
+    this.moveCursor.onDrop();
   };
 }

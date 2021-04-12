@@ -1,4 +1,4 @@
-export * from './move';
+export * from './move-cursor';
 export * from './game-error';
 export * from './game-map';
 export * from './helpers';

@@ -1,13 +1,13 @@
 import { EventBus, EventNames } from './event-bus';
 import { Position } from './typing';
+import { InterfaceMoveCursor } from './interfaces';
 
 export const ERROR_IS_NO_PLACE = 'IS NO PLACE';
 
-export class Move {
+export class MoveCursor {
   protected isMove = false;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  protected content: any | null;
+  protected content: InterfaceMoveCursor | null;
 
   protected position: Position | null;
 
@@ -34,7 +34,7 @@ export class Move {
     this.content.draw(ctx, this.position);
   };
 
-  public onDrag = <T>(content: T): void => {
+  public onDrag = <T extends InterfaceMoveCursor>(content: T): void => {
     this.isMove = true;
     this.content = content;
   };
