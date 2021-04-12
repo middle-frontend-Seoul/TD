@@ -5,7 +5,7 @@ export const userApi = {
   getUser: async (id: number): Promise<ApiResponse<UserInfo>> => {
     const { response, error } = await http.get<UserDto>(`/user/user/${id}`);
     return {
-      data: response && User.decodeUser(response.data || {}),
+      data: response && User.fromUserDto(response.data || {}),
       error,
     };
   },
@@ -13,18 +13,20 @@ export const userApi = {
   updateUser: async (data: UserRequestInfo): Promise<ApiResponse<UserInfo>> => {
     const { response, error } = await http.put<UserDto>(
       '/user/profile',
-      User.encodeUserRequest(data)
+      User.toUserRequestDto(data)
     );
     return {
-      data: response && User.decodeUser(response.data || {}),
+      data: response && User.fromUserDto(response.data || {}),
       error,
     };
   },
 
-  updateAvatar: async (avatar: FormData): Promise<ApiResponse<null>> => {
+  updateAvatar: async (
+    data: UserAvatarRequestInfo
+  ): Promise<ApiResponse<null>> => {
     const { response, error } = await http.put<null>(
       '/user/profile/avatar',
-      avatar
+      User.toUserAvatarRequestDto(data)
     );
     return {
       data: response && response.data,
@@ -37,7 +39,7 @@ export const userApi = {
   ): Promise<ApiResponse<null>> => {
     const { response, error } = await http.put<null>(
       '/user/password',
-      User.encodeUserPasswordRequest(data)
+      User.toUserPasswordRequestDto(data)
     );
     return {
       data: response && response.data,

@@ -23,11 +23,15 @@ export const getCurrentUser = createAsyncThunk<
   undefined,
   { rejectValue: HttpError }
 >('auth/getCurrentUser', async (_, thunkApi) => {
-  const { data, error } = await authApi.getCurrentUser();
-  if (error) {
+  try {
+    const { data, error } = await authApi.getCurrentUser();
+    if (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+    return data;
+  } catch (error) {
     return thunkApi.rejectWithValue(error);
   }
-  return data;
 });
 
 export const signIn = createAsyncThunk<
@@ -35,12 +39,16 @@ export const signIn = createAsyncThunk<
   SignInRequestInfo,
   { rejectValue: HttpError }
 >('auth/signIn', async (arg, thunkApi) => {
-  const { data, error } = await authApi.signIn(arg);
-  if (error) {
+  try {
+    const { data, error } = await authApi.signIn(arg);
+    if (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+    thunkApi.dispatch(getCurrentUser());
+    return data;
+  } catch (error) {
     return thunkApi.rejectWithValue(error);
   }
-  thunkApi.dispatch(getCurrentUser());
-  return data;
 });
 
 export const signUp = createAsyncThunk<
@@ -48,12 +56,16 @@ export const signUp = createAsyncThunk<
   SignUpRequestInfo,
   { rejectValue: HttpError }
 >('auth/signUp', async (arg, thunkApi) => {
-  const { data, error } = await authApi.signUp(arg);
-  if (error) {
+  try {
+    const { data, error } = await authApi.signUp(arg);
+    if (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+    thunkApi.dispatch(getCurrentUser());
+    return data;
+  } catch (error) {
     return thunkApi.rejectWithValue(error);
   }
-  thunkApi.dispatch(getCurrentUser());
-  return data;
 });
 
 export const logout = createAsyncThunk<
@@ -61,11 +73,15 @@ export const logout = createAsyncThunk<
   undefined,
   { rejectValue: HttpError }
 >('auth/logout', async (arg, thunkApi) => {
-  const { data, error } = await authApi.logout();
-  if (error) {
+  try {
+    const { data, error } = await authApi.logout();
+    if (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+    return data;
+  } catch (error) {
     return thunkApi.rejectWithValue(error);
   }
-  return data;
 });
 
 export const authSlice = createSlice({

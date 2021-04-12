@@ -5,7 +5,7 @@ export const authApi = {
   getCurrentUser: async (): Promise<ApiResponse<UserInfo>> => {
     const { response, error } = await http.get<UserDto>(`/auth/user`);
     return {
-      data: response && User.decodeUser(response.data || {}),
+      data: response && User.fromUserDto(response.data || {}),
       error,
     };
   },
@@ -13,10 +13,10 @@ export const authApi = {
   signIn: async (data: SignInRequestInfo): Promise<ApiResponse<SignInInfo>> => {
     const { response, error } = await http.post<SignInDto>(
       '/auth/signin',
-      Auth.encodeSignInRequest(data)
+      Auth.toSignInRequestDto(data)
     );
     return {
-      data: response && Auth.decodeSigIn(response.data || {}),
+      data: response && Auth.fromSigInDto(response.data || {}),
       error,
     };
   },
@@ -24,10 +24,10 @@ export const authApi = {
   signUp: async (data: SignUpRequestInfo): Promise<ApiResponse<SignUpInfo>> => {
     const { response, error } = await http.post<SignUpDto>(
       '/auth/signup',
-      Auth.encodeSignUpRequest(data)
+      Auth.toSignUpRequestDto(data)
     );
     return {
-      data: response && Auth.decodeSignUp(response.data || {}),
+      data: response && Auth.fromSignUpDto(response.data || {}),
       error,
     };
   },

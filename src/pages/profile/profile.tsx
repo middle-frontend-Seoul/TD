@@ -1,5 +1,4 @@
 import React, { FC, useState } from 'react';
-import { unwrapResult } from '@reduxjs/toolkit';
 
 import { Link } from 'components-ui/link';
 import { Block } from 'components-ui/block';
@@ -10,7 +9,7 @@ import { ProfileForm } from 'components/profile/profile-form';
 import { HOME } from 'core/url';
 import { isValuesChange } from 'utils/formHelpers';
 import { useMountEffect } from 'utils/hooks';
-import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { useAppSelector, useBoundAction } from 'redux/hooks';
 import { getCurrentUser } from 'redux/slices/authSlice';
 import { updateUser, updatePassword } from 'redux/slices/userSlice';
 
@@ -18,50 +17,38 @@ import defaultAvatar from './images/default-avatar.png';
 import './profile.scss';
 
 const PageProfile: FC = () => {
-  const dispatch = useAppDispatch();
+  const boundGetCurrentUser = useBoundAction(getCurrentUser);
+  const boundUpdateUser = useBoundAction(updateUser);
+  const boundUpdatePassword = useBoundAction(updatePassword);
   const currentUser = useAppSelector((state) => state.auth.currentUser);
-  const [profileUpdateError, setProfileUpdateError] = React.useState('');
-  const [passwordUpdateError, setPasswordUpdateError] = React.useState('');
+  const profileUpdateError = useAppSelector((state) => state.user.error.user);
+  const passwordUpdateError = useAppSelector(
+    (state) => state.user.error.password
+  );
   const [isUpdate, setUpdate] = useState(false);
 
   useMountEffect(() => {
-    dispatch(getCurrentUser());
+    boundGetCurrentUser();
   });
 
   const handleProfileSubmit = async (
     values: UserRequestInfo & UserPasswordRequestInfo
   ) => {
     const { oldPassword, newPassword, ...updateData } = values;
-    let updateError = false;
+    const onSuccess = () => {
+      setUpdate(false);
+      boundGetCurrentUser();
+    };
 
     if (isValuesChange<UserInfo>(updateData, currentUser)) {
-      try {
-        const resultAction = await dispatch(updateUser(updateData));
-        unwrapResult(resultAction);
-      } catch (error) {
-        updateError = true;
-        setProfileUpdateError(error.response?.data.reason);
-      }
+      boundUpdateUser({ payload: updateData, callback: { onSuccess } });
     }
 
     if (oldPassword && newPassword) {
-      try {
-        const resultAction = await dispatch(
-          updatePassword({
-            oldPassword,
-            newPassword,
-          })
-        );
-        unwrapResult(resultAction);
-      } catch (error) {
-        updateError = true;
-        setPasswordUpdateError(error.response?.data.reason);
-      }
-    }
-
-    if (!updateError) {
-      setUpdate(false);
-      dispatch(getCurrentUser());
+      boundUpdatePassword({
+        payload: { oldPassword, newPassword },
+        callback: { onSuccess },
+      });
     }
   };
 
@@ -96,12 +83,12 @@ const PageProfile: FC = () => {
               </div>
               {profileUpdateError && (
                 <div className="profile__submit-error">
-                  {profileUpdateError}
+                  {(profileUpdateError as HttpError)?.response?.data.reason}
                 </div>
               )}
               {passwordUpdateError && (
                 <div className="profile__submit-error">
-                  {passwordUpdateError}
+                  {(passwordUpdateError as HttpError)?.response?.data.reason}
                 </div>
               )}
             </Space>

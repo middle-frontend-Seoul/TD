@@ -21,11 +21,15 @@ export const getAllLeaderboards = createAsyncThunk<
   LeaderboardRequestInfo,
   { rejectValue: HttpError }
 >('leaderboard/getAllLeaderboards', async (arg, thunkApi) => {
-  const { data, error } = await leaderboardApi.getAllLeaderboards(arg);
-  if (error) {
+  try {
+    const { data, error } = await leaderboardApi.getAllLeaderboards(arg);
+    if (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+    return data;
+  } catch (error) {
     return thunkApi.rejectWithValue(error);
   }
-  return data;
 });
 
 export const leaderboardSlice = createSlice({

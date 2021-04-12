@@ -27,50 +27,78 @@ const initialState: UserState = {
 
 export const getUser = createAsyncThunk<
   UserInfo | undefined,
-  number,
+  AppActionParams<number, UserInfo | undefined>,
   { rejectValue: HttpError }
->('user/getUser', async (userId, thunkApi) => {
-  const { data, error } = await userApi.getUser(userId);
-  if (error) {
+>('user/getUser', async ({ payload: userId, callback }, thunkApi) => {
+  try {
+    const { data, error } = await userApi.getUser(userId);
+    if (error) {
+      callback?.onFailure?.();
+      return thunkApi.rejectWithValue(error);
+    }
+    callback?.onSuccess?.(data);
+    return data;
+  } catch (error) {
+    callback?.onFailure?.();
     return thunkApi.rejectWithValue(error);
   }
-  return data;
 });
 
 export const updateUser = createAsyncThunk<
   UserInfo | undefined,
-  UserRequestInfo,
+  AppActionParams<UserRequestInfo, UserInfo | undefined>,
   { rejectValue: HttpError }
->('user/updateUser', async (arg: UserRequestInfo, thunkApi) => {
-  const { data, error } = await userApi.updateUser(arg);
-  if (error) {
+>('user/updateUser', async ({ payload, callback }, thunkApi) => {
+  try {
+    const { data, error } = await userApi.updateUser(payload);
+    if (error) {
+      callback?.onFailure?.();
+      return thunkApi.rejectWithValue(error);
+    }
+    callback?.onSuccess?.(data);
+    return data;
+  } catch (error) {
+    callback?.onFailure?.();
     return thunkApi.rejectWithValue(error);
   }
-  return data;
 });
 
 export const updateAvatar = createAsyncThunk<
   null | undefined,
-  FormData,
+  AppActionParams<FileList, null | undefined>,
   { rejectValue: HttpError }
->('user/updateAvatar', async (avatar: FormData, thunkApi) => {
-  const { data, error } = await userApi.updateAvatar(avatar);
-  if (error) {
+>('user/updateAvatar', async ({ payload, callback }, thunkApi) => {
+  try {
+    const { data, error } = await userApi.updateAvatar(payload);
+    if (error) {
+      callback?.onFailure?.();
+      return thunkApi.rejectWithValue(error);
+    }
+    callback?.onSuccess?.(data);
+    return data;
+  } catch (error) {
+    callback?.onFailure?.();
     return thunkApi.rejectWithValue(error);
   }
-  return data;
 });
 
 export const updatePassword = createAsyncThunk<
   null | undefined,
-  UserPasswordRequestInfo,
+  AppActionParams<UserPasswordRequestInfo, null | undefined>,
   { rejectValue: HttpError }
->('user/updatePassword', async (arg: UserPasswordRequestInfo, thunkApi) => {
-  const { data, error } = await userApi.updatePassword(arg);
-  if (error) {
+>('user/updatePassword', async ({ payload, callback }, thunkApi) => {
+  try {
+    const { data, error } = await userApi.updatePassword(payload);
+    if (error) {
+      callback?.onFailure?.();
+      return thunkApi.rejectWithValue(error);
+    }
+    callback?.onSuccess?.(data);
+    return data;
+  } catch (error) {
+    callback?.onFailure?.();
     return thunkApi.rejectWithValue(error);
   }
-  return data;
 });
 
 export const userSlice = createSlice({
