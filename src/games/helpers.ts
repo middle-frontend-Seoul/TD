@@ -10,9 +10,9 @@ const GRID_FIRST_ROW = 0;
 
 export const getGridPosition = (
   size: number,
-  procent: number
+  percent: number
 ): GridPosition => {
-  const width = (size * procent) / 100;
+  const width = (size * percent) / 100;
   const offset = Math.floor((size - width) / 2);
 
   return {
@@ -48,7 +48,7 @@ export const getGridSize = (grid: GridType): GetGridSizeReturn => {
   };
 };
 
-export const loadingImage = (src: string): Promise<HTMLImageElement> => {
+export const loadImage = (src: string): Promise<HTMLImageElement> => {
   return new Promise((res, rej) => {
     const image = new Image();
     image.onload = () => res(image);
