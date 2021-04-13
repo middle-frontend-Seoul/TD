@@ -51,19 +51,26 @@ export class TowersMap {
    * - врагу получившему урон обновляет значение здоровья
    */
   public update = (entities: Enemy[]): void => {
+    const fiftySize = Math.floor(this.size / 2);
+
     this.places
       .filter(({ tower }) => tower.getActive())
       .forEach(({ tower, position }) => {
         const radius = tower.getRaduis() * this.size;
         const center: Position = {
-          x: position.x + this.size / 2,
-          y: position.y + this.size / 2,
+          x: position.x + fiftySize,
+          y: position.y + fiftySize,
         };
 
         const [first] = entities
           .map<EnemyRect>((enemy) => {
             const { x, y } = enemy.getPositions();
-            const distance = (center.x - x) ** 2 + (center.y - y) ** 2;
+            const enemyX = x + fiftySize;
+            const enemyY = y + fiftySize;
+
+            const distance =
+              (center.x - enemyX) ** 2 + (center.y - enemyY) ** 2;
+
             return {
               enemy,
               distance,
