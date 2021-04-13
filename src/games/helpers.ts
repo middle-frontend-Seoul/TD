@@ -48,7 +48,7 @@ export const getGridSize = (grid: GridType): GetGridSizeReturn => {
   };
 };
 
-export const loadingImage = (src: string): Promise<HTMLImageElement> => {
+export const loadImage = (src: string): Promise<HTMLImageElement> => {
   return new Promise((res, rej) => {
     const image = new Image();
     image.onload = () => res(image);

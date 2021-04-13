@@ -3,7 +3,7 @@ import way from 'images/way-play.png';
 
 import { GameError } from './game-error';
 import { GridType } from './typing';
-import { getGridSize, loadingImage } from './helpers';
+import { getGridSize, loadImage } from './helpers';
 
 export class GameMap {
   private size: number;
@@ -29,8 +29,8 @@ export class GameMap {
 
   async init(): Promise<void> {
     try {
-      this.imgBG = await loadingImage(bg);
-      this.imgWay = await loadingImage(way);
+      this.imgBG = await loadImage(bg);
+      this.imgWay = await loadImage(way);
     } catch (error) {
       throw new GameError('Ошибка загрузки изображения', error);
     }
