@@ -47,7 +47,7 @@ export class Game {
   public start = async (): Promise<void> => {
     try {
       await this.map.init();
-      setInterval(() => this.addEnemy(), 3000);
+      this.addEnemy(); // времмено дабавляем врага для демонстрации работы
       this.animation();
     } catch (error) {
       throw new GameError('При старте игры возникла ошибка', error);
