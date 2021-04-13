@@ -3,10 +3,7 @@ module.exports = {
   parserOptions: {
     project: './tsconfig.json',
   },
-  plugins: [
-    '@typescript-eslint',
-    'react-hooks',
-  ],
+  plugins: ['@typescript-eslint', 'react-hooks'],
   extends: ['airbnb-typescript-prettier'],
   settings: {
     'import/resolver': {
@@ -24,7 +21,10 @@ module.exports = {
     'max-classes-per-file': 'off',
     'lines-between-class-members': 'off',
     'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true, argsIgnorePattern: '^_' }],
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      { ignoreRestSiblings: true, argsIgnorePattern: '^_' },
+    ],
 
     // react-hooks
     'react-hooks/rules-of-hooks': 'error',
