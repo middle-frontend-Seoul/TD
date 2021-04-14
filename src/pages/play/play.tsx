@@ -72,7 +72,6 @@ const PagePlay: FC = () => {
     });
   }, [gameManager]);
 
-
   // ceйчас api довольно бесполезная, сделано для соответствия требованиям 6-го спринта
   // TODO: изменить document.documentElement на block когда приложение научится масштабировать canvas
   const changeFullscreenMode = () => {
@@ -106,8 +105,18 @@ const PagePlay: FC = () => {
             values={[200010, '#1', 3, '30 B']}
           />
         </div>
-        <div className="fullscreen-button" onClick={changeFullscreenMode}>
-          {isFullscreenMode ? <img src={closeFS} /> : <img src={openFS} />}
+        <div
+          onKeyDown={changeFullscreenMode}
+          className="fullscreen-button"
+          role="button"
+          tabIndex={0}
+          onClick={changeFullscreenMode}
+        >
+          {isFullscreenMode ? (
+            <img alt="" src={closeFS} />
+          ) : (
+            <img alt="" src={openFS} />
+          )}
         </div>
       </div>
       <Modal isOpen={isMenuVisible} onClose={onClickCloseMenu}>
