@@ -21,7 +21,7 @@ module.exports = {
     'max-classes-per-file': 'off',
     'lines-between-class-members': 'off',
     'no-unused-vars': 'off',
-    'no-param-reassign': ['error', { 'props': true, 'ignorePropertyModificationsFor': ['state'] }],
+    'no-param-reassign': ['error', { 'props': true, 'ignorePropertyModificationsFor': ['state', 'res', 'ctx'] }],
     '@typescript-eslint/no-unused-vars': [
       'error',
       { ignoreRestSiblings: true, argsIgnorePattern: '^_' },

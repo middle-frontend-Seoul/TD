@@ -1,5 +1,5 @@
 import { Action, ThunkAction } from '@reduxjs/toolkit';
-import rootReducer from 'redux/rootReducer';
+import rootReducer from 'redux/root-reducer';
 import { store } from 'redux/store';
 
 declare global {
@@ -9,6 +9,13 @@ declare global {
     <I extends any[], R extends Action>(actionCreator: (...args: I) => R): (...args: I) => R;
     <I extends any[], R extends any>(actionCreator: (...args: I) => ThunkAction<R>): (...args: I) => R;
   };
+
+  type StateStatus = 'idle' | 'pending' | 'success' | 'failure';
+
+  type AppError = {
+    name?: string;
+    message?: string;
+  }
 
   type AppActionParams<T, R> = {
     payload: T;

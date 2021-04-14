@@ -6,8 +6,8 @@ import { Title } from 'components-ui/title';
 import { Space } from 'components-ui/space';
 import { Button } from 'components-ui/button';
 import { PLAY, PROFILE, STATISTICS, FORUM } from 'core/url';
-import { useAppDispatch } from 'redux/hooks';
-import { logout } from 'redux/slices/authSlice';
+import { useBoundAction } from 'redux/hooks';
+import { logout } from 'redux/slices/auth-slice';
 
 import map1 from './images/map1.png';
 import map2 from './images/map2.png';
@@ -16,7 +16,7 @@ import map3 from './images/map3.png';
 import './home.scss';
 
 const PageHome: FC = () => {
-  const dispatch = useAppDispatch();
+  const actionLogout = useBoundAction(logout);
   return (
     <Space type="vertical">
       <Block center page="home" type="flex" className="home-block">
@@ -43,7 +43,7 @@ const PageHome: FC = () => {
         <Link type="button" to={FORUM}>
           Форум
         </Link>
-        <Button radius onClick={() => dispatch(logout())}>
+        <Button radius onClick={actionLogout}>
           Выйти из игры
         </Button>
       </Space>

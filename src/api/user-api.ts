@@ -1,5 +1,5 @@
 import { http } from 'network/http';
-import { User } from './codecs';
+import { User } from 'api/codecs';
 
 export const userApi = {
   getUser: async (id: number): Promise<ApiResponse<UserInfo>> => {
@@ -24,7 +24,7 @@ export const userApi = {
   updateAvatar: async (
     data: UserAvatarRequestInfo
   ): Promise<ApiResponse<null>> => {
-    const { response, error } = await http.put<null>(
+    const { response, error } = await http.put<undefined>(
       '/user/profile/avatar',
       User.toUserAvatarRequestDto(data)
     );
@@ -37,7 +37,7 @@ export const userApi = {
   updatePassword: async (
     data: UserPasswordRequestInfo
   ): Promise<ApiResponse<null>> => {
-    const { response, error } = await http.put<null>(
+    const { response, error } = await http.put<undefined>(
       '/user/password',
       User.toUserPasswordRequestDto(data)
     );

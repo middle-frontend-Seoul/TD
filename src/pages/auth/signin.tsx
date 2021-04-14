@@ -1,8 +1,6 @@
-import React, { FC, useCallback, useState } from 'react';
-import { unwrapResult } from '@reduxjs/toolkit';
+import React, { FC, useCallback, useEffect } from 'react';
 
 import { Space } from 'components-ui/space';
-import './auth.scss';
 import { Form } from 'components-ui/form/form';
 import { useHistory } from 'react-router';
 import { Block } from 'components-ui/block';
@@ -11,13 +9,17 @@ import {
   isValidPassword,
   validationMessages,
 } from 'utils/validation';
-import { useAppDispatch } from 'redux/hooks';
-import { signIn } from 'redux/slices/authSlice';
+import { useAppSelector, useBoundAction } from 'redux/hooks';
+import { signIn } from 'redux/slices/auth-slice';
+
+import './auth.scss';
 
 const PageSignIn: FC = () => {
   const history = useHistory();
-  const dispatch = useAppDispatch();
-  const [signInError, setSignInError] = useState('');
+  const actionSignIn = useBoundAction(signIn);
+  const authError = useAppSelector((state) => state.auth.error);
+  const authStatus = useAppSelector((state) => state.auth.authStatus);
+
   const signInFields = [
     {
       placeholder: 'Login',
@@ -33,19 +35,19 @@ const PageSignIn: FC = () => {
     },
   ];
 
+  useEffect(() => {
+    if (authStatus === 'success') {
+      history.push({
+        pathname: '/',
+      });
+    }
+  }, [actionSignIn, authStatus, history]);
+
   const onSubmit = useCallback(
     async (info: SignInRequestInfo) => {
-      try {
-        const resultAction = await dispatch(signIn(info));
-        unwrapResult(resultAction);
-        history.push({
-          pathname: '/',
-        });
-      } catch (error) {
-        setSignInError(error.response?.data.reason);
-      }
+      actionSignIn(info);
     },
-    [dispatch, history, setSignInError]
+    [actionSignIn]
   );
 
   const validation = (values: Record<string, string>) => {
@@ -73,7 +75,7 @@ const PageSignIn: FC = () => {
           buttonText="Войти"
           title="Tower Defence"
         />
-        {signInError && <div className="auth-error">{signInError}</div>}
+        {authError && <div className="auth-error">{authError.message}</div>}
       </Block>
     </Space>
   );

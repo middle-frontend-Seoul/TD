@@ -1,5 +1,5 @@
 import { http } from 'network/http';
-import { Leaderboard } from './codecs';
+import { Leaderboard } from 'api/codecs';
 
 export const leaderboardApi = {
   getAllLeaderboards: async (

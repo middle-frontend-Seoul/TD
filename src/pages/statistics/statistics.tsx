@@ -7,7 +7,7 @@ import { Table, TableColumn } from 'components-ui/table';
 import { HOME } from 'core/url';
 import { DEFAULT_PAGE_SIZE } from 'constants/defaults';
 import { useAppSelector, useBoundAction } from 'redux/hooks';
-import { getAllLeaderboards } from 'redux/slices/leaderboardSlice';
+import { getAllLeaderboards } from 'redux/slices/leaderboard-slice';
 
 import './statistics.scss';
 
