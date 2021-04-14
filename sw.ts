@@ -6,9 +6,6 @@ const urls = [
   '/auth/signup',
   '/profile',
   '/statistics',
-  '/forum',
-  '/forum/:section',
-  '/forum/:section/show/:id',
 ];
 
 self.addEventListener('install', (event: any) => {
@@ -24,7 +21,18 @@ self.addEventListener('install', (event: any) => {
   );
 });
 
-self.addEventListener('activate', function (event: any) {});
+self.addEventListener('activate', (event: any) => {
+  event.waitUntil(
+    caches.keys().then(function(cacheNames) {
+      return Promise.all(
+        cacheNames.filter(function(cacheName) {
+        }).map(function(cacheName) {
+          return caches.delete(cacheName);
+        })
+      );
+    })
+  );
+});
 
 self.addEventListener('fetch', (event: any) => {
   event.respondWith(
