@@ -17,12 +17,15 @@ import { Button } from 'components-ui/button';
 import { Game, Towers } from 'games';
 
 import sell from 'images/tools/sell.png';
+import openFS from 'images/tools/open-fullscreen.png';
+import closeFS from 'images/tools/exit-fullscreen.png';
 import { gridPlayOne } from './grid';
 import './style.scss';
 
 const PagePlay: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [gameManager, setGameManager] = useState<Game>();
+  const [isFullscreenMode, setFullscreenMode] = useState<boolean>(false);
 
   // TODO: информация об ошибке в стайте является временныь решением
   const [error, setError] = useState('');
@@ -69,6 +72,18 @@ const PagePlay: FC = () => {
     });
   }, [gameManager]);
 
+
+  // ceйчас api довольно бесполезная, сделано для соответствия требованиям 6-го спринта
+  // TODO: изменить document.documentElement на block когда приложение научится масштабировать canvas
+  const changeFullscreenMode = () => {
+    setFullscreenMode(!isFullscreenMode);
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  };
+
   return (
     <Block relative page="play">
       {error && <div>{error}</div>}
@@ -90,6 +105,9 @@ const PagePlay: FC = () => {
             names={['Очки', 'Волна', 'Жизни', 'Ресурсы']}
             values={[200010, '#1', 3, '30 B']}
           />
+        </div>
+        <div className="fullscreen-button" onClick={changeFullscreenMode}>
+          {isFullscreenMode ? <img src={closeFS} /> : <img src={openFS} />}
         </div>
       </div>
       <Modal isOpen={isMenuVisible} onClose={onClickCloseMenu}>
