@@ -1,9 +1,12 @@
 node_modules
 __stories__
+__test__
+test
 dist
 
 .*rc.js
 webpack.*.js
+jest.config.js
 *.test.ts
 *.d.ts
 server.js
