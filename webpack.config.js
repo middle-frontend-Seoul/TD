@@ -9,7 +9,7 @@ const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 module.exports = {
   mode: 'development',
   entry: './src/index.tsx',
-
+  devtool: 'source-map',
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
@@ -59,11 +59,6 @@ module.exports = {
       {
         test: /\.html$/i,
         loader: 'html-loader',
-      },
-      {
-        test: /\.js$/,
-        enforce: 'pre',
-        use: ['source-map-loader'],
       },
     ],
   },

@@ -1,4 +1,4 @@
-export function decodeUser(dto: UserDto): UserInfo {
+export function fromUserDto(dto: UserDto): UserInfo {
   return {
     id: dto.id,
     login: dto.login,
@@ -7,7 +7,7 @@ export function decodeUser(dto: UserDto): UserInfo {
   };
 }
 
-export function encodeUserRequest(info: UserRequestInfo): UserRequestDto {
+export function toUserRequestDto(info: UserRequestInfo): UserRequestDto {
   return {
     first_name: info.login,
     second_name: info.login,
@@ -18,7 +18,7 @@ export function encodeUserRequest(info: UserRequestInfo): UserRequestDto {
   };
 }
 
-export function encodeUserPasswordRequest(
+export function toUserPasswordRequestDto(
   info: UserPasswordRequestInfo
 ): UserPasswordRequestDto {
   return {
@@ -27,12 +27,10 @@ export function encodeUserPasswordRequest(
   };
 }
 
-export function encodeUserAvatarRequest(
+export function toUserAvatarRequestDto(
   info: UserAvatarRequestInfo
 ): UserAvatarRequestDto {
   const avatarFormData = new FormData();
-  avatarFormData.append('avatar', info.avatarFiles[0]);
-  return {
-    avatar: avatarFormData,
-  };
+  avatarFormData.append('avatar', info[0]);
+  return avatarFormData;
 }

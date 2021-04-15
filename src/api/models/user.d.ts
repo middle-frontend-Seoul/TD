@@ -37,9 +37,5 @@ type UserPasswordRequestInfo = {
   newPassword: string;
 }
 
-type UserAvatarRequestDto = {
-  avatar: FormData;
-};
-type UserAvatarRequestInfo = {
-  avatarFiles: FileList;
-};
+type UserAvatarRequestDto = FormData;
+type UserAvatarRequestInfo = FileList;

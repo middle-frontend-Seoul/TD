@@ -80,6 +80,7 @@
     "webpackbar": "5.0.0-3"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "1.5.1",
     "@types/express": "4.17.11",
     "@types/helmet": "4.0.0",
     "@types/node": "14.14.37",
@@ -93,6 +94,7 @@
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-final-form": "6.5.3",
+    "react-redux": "7.2.3",
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",
     "ts-node": "9.1.1",
