@@ -1,0 +1,39 @@
+.forum {
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+
+  &-table {
+    color: #ffffff;
+    width: 100%;
+  }
+
+  &-body {
+    overflow-y: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 80px;
+  }
+
+  &-body::-webkit-scrollbar {
+    width: 2px;
+  }
+  &-body::-webkit-scrollbar-track {
+    background: green;
+  }
+  &-body::-webkit-scrollbar-thumb {
+    background: rgb(4, 65, 4);
+  }
+
+  &-footer {
+    position: absolute;
+    padding-top: 8px;
+    height: 60px;
+    left: 0;
+    right: 0;
+    bottom: 15px;
+    text-align: center;
+  }
+}

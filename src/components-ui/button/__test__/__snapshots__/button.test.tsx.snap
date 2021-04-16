@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders button base 1`] = `
+<button
+  className="button button_use-default button_size-medium"
+  onClick={[Function]}
+  type="button"
+>
+  test button
+</button>
+`;
+
+exports[`renders button size 1`] = `
+<button
+  className="button button_use-default button_size-xsmall"
+  onClick={[Function]}
+  type="button"
+>
+  size
+</button>
+`;

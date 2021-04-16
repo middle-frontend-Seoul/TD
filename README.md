@@ -1,5 +1,28 @@
 # Tower Defense project
 
+## Локальный запуск и разработка
+Скопировать `.env.sample` в `.env` и указать нужные переменные окружения.
+
+```
+npm i
+npm start
+```
+
+## сборка и запуск локально в докер контейнере
+docker build --tag seoul-td .
+docker run -d -p 5000:4000 --name seoul-td seoul-td
+docker stop seoul-td
+docker rm seoul-td
+
+## Деплой на heroku:
+
+heroku login
+heroku container:login
+heroku create my-app (название приложения - выполняется один раз)
+heroku container:push web
+heroku container:release web
+heroku open // открываем приложение
+
 ## Описание проекта:
 Игра, представитель жанра "Tower Defense". Суть игры сводится к уничтожению волн наступающих противников, которые с каждым новым раундом становятся сильнее и многочисленнее. Устранение врагов происходит с помощью различных  башен, которые игрок расставляет по уровню на свое усмотрение.
 

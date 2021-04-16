@@ -1,0 +1,19 @@
+.profile-form {
+  &__items {
+    margin-bottom: $padding-md;
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__button {
+    &_hidden {
+      display: none;
+    }
+    &_cancel {
+      margin-left: $padding-md;
+    }
+  }
+}

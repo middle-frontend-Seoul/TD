@@ -1,0 +1,35 @@
+.play-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 12px;
+  position: relative;
+  .fullscreen-button {
+    position: absolute;
+    right: 10px;
+    top: -40px;
+    cursor: pointer;
+    outline: none;
+  }
+}
+.play-stats {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.tools {
+  margin: 0 -6px;
+  padding: 0;
+
+  &__item {
+    padding: 0 6px;
+  }
+}
+
+.towers {
+  margin: 0;
+  padding: 8px 0;
+  display: inline-flex;
+  list-style: none;
+}

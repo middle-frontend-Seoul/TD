@@ -1,0 +1,10 @@
+.statistics-block {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.statistics-table {
+  color: $text-color;
+  width: 100%;
+}
