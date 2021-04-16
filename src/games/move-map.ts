@@ -52,10 +52,10 @@ export class MoveMap<T extends InterfaceMoveMap> {
       const gridPosition = { x: gridXLeftTopPoint, y: gridYLeftTopPoint };
 
       const trackwayIsClear = {
-        right: !!this.grid[gridPosition.y][gridPosition.x + 1],
-        top: !!this.grid[gridPosition.y - 1][gridPosition.x],
-        left: !!this.grid[gridPosition.y][gridPosition.x - 1],
-        bottom: !!this.grid[gridPosition.y + 1][gridPosition.x],
+        right: Boolean(this.grid[gridPosition.y][gridPosition.x + 1]),
+        top: Boolean(this.grid[gridPosition.y - 1][gridPosition.x]),
+        left: Boolean(this.grid[gridPosition.y][gridPosition.x - 1]),
+        bottom: Boolean(this.grid[gridPosition.y + 1][gridPosition.x]),
       };
 
       const keys = Object.keys(trackwayIsClear);
