@@ -6,7 +6,7 @@ export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export const useBoundAction: UseBoundAction = (
-  actionCreator: (...args: any[]) => any
+  actionCreator: (...args: any[]) => any // eslint-disable-line
 ) => {
   const dispatch = useAppDispatch();
 
