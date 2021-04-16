@@ -1,10 +1,9 @@
-import React, { FC, useState, useCallback } from 'react';
+import React, { FC, useEffect, useCallback } from 'react';
+
 import { Space } from 'components-ui/space';
-import './auth.scss';
 import { Form } from 'components-ui/form/form';
 import { useHistory } from 'react-router';
 import { Block } from 'components-ui/block';
-import { authApi } from 'api/auth-api';
 import {
   isPasswordEqual,
   isValidEmail,
@@ -12,10 +11,17 @@ import {
   isValidPassword,
   validationMessages,
 } from 'utils/validation';
+import { useAppSelector, useBoundAction } from 'redux/hooks';
+import { signUp } from 'redux/slices/auth-slice';
+
+import './auth.scss';
 
 const PageSignUp: FC = () => {
   const history = useHistory();
-  const [signUpError, setSignUpError] = useState('');
+  const actionSignUp = useBoundAction(signUp);
+  const authError = useAppSelector((state) => state.auth.error);
+  const authStatus = useAppSelector((state) => state.auth.authStatus);
+
   const signUpFields = [
     {
       placeholder: 'Login',
@@ -43,19 +49,19 @@ const PageSignUp: FC = () => {
     },
   ];
 
-  const signUp = useCallback(
-    (info: SignUpRequestInfo) => {
-      authApi.signUp(info).then(({ data, error }) => {
-        if (data) {
-          history.push({
-            pathname: '/',
-          });
-        } else if (error?.response) {
-          setSignUpError(error.response.data.reason);
-        }
+  useEffect(() => {
+    if (authStatus === 'success') {
+      history.push({
+        pathname: '/',
       });
+    }
+  }, [actionSignUp, authStatus, history]);
+
+  const onSubmit = useCallback(
+    async (info: SignUpRequestInfo) => {
+      actionSignUp(info);
     },
-    [history, setSignUpError]
+    [actionSignUp]
   );
 
   const validation = (values: Record<string, string>) => {
@@ -87,13 +93,13 @@ const PageSignUp: FC = () => {
     <Space>
       <Block style={{ width: '400px', height: '420px' }}>
         <Form
-          onSubmit={signUp}
+          onSubmit={onSubmit}
           fields={signUpFields}
           validation={validation}
           buttonText="Создать аккаунт"
           title="Tower Defence"
         />
-        {signUpError && <div className="auth-error">{signUpError}</div>}
+        {authError && <div className="auth-error">{authError.message}</div>}
       </Block>
     </Space>
   );

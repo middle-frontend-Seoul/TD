@@ -1,19 +1,25 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useEffect } from 'react';
+
 import { Space } from 'components-ui/space';
-import './auth.scss';
 import { Form } from 'components-ui/form/form';
 import { useHistory } from 'react-router';
 import { Block } from 'components-ui/block';
-import { authApi } from 'api/auth-api';
 import {
   isValidLogin,
   isValidPassword,
   validationMessages,
 } from 'utils/validation';
+import { useAppSelector, useBoundAction } from 'redux/hooks';
+import { signIn } from 'redux/slices/auth-slice';
+
+import './auth.scss';
 
 const PageSignIn: FC = () => {
   const history = useHistory();
-  const [signInError, setSignInError] = useState('');
+  const actionSignIn = useBoundAction(signIn);
+  const authError = useAppSelector((state) => state.auth.error);
+  const authStatus = useAppSelector((state) => state.auth.authStatus);
+
   const signInFields = [
     {
       placeholder: 'Login',
@@ -29,19 +35,19 @@ const PageSignIn: FC = () => {
     },
   ];
 
-  const signIn = useCallback(
-    (info: SignInRequestInfo) => {
-      authApi.signIn(info).then(({ data, error }) => {
-        if (data) {
-          history.push({
-            pathname: '/',
-          });
-        } else if (error?.response) {
-          setSignInError(error.response.data.reason);
-        }
+  useEffect(() => {
+    if (authStatus === 'success') {
+      history.push({
+        pathname: '/',
       });
+    }
+  }, [actionSignIn, authStatus, history]);
+
+  const onSubmit = useCallback(
+    async (info: SignInRequestInfo) => {
+      actionSignIn(info);
     },
-    [history, setSignInError]
+    [actionSignIn]
   );
 
   const validation = (values: Record<string, string>) => {
@@ -63,13 +69,13 @@ const PageSignIn: FC = () => {
     <Space>
       <Block style={{ width: '400px', height: '320px' }}>
         <Form
-          onSubmit={signIn}
+          onSubmit={onSubmit}
           fields={signInFields}
           validation={validation}
           buttonText="Войти"
           title="Tower Defence"
         />
-        {signInError && <div className="auth-error">{signInError}</div>}
+        {authError && <div className="auth-error">{authError.message}</div>}
       </Block>
     </Space>
   );

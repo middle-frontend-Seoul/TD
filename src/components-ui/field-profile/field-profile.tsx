@@ -1,4 +1,4 @@
-import React, { FC, ChangeEvent, useRef } from 'react';
+import React, { FC, ChangeEvent, useRef, useEffect } from 'react';
 import cn from 'classnames';
 
 import './field-profile.scss';
@@ -8,6 +8,7 @@ export interface IFieldProfileProps {
   label: string;
   name: string;
   type: string;
+  focus?: boolean;
   value?: string | null;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
@@ -20,6 +21,7 @@ export const FieldProfile: FC<IFieldProfileProps> = ({
   name,
   type,
   value,
+  focus = false,
   onChange,
   disabled,
   error,
@@ -27,6 +29,12 @@ export const FieldProfile: FC<IFieldProfileProps> = ({
   const classes = cn(className, 'field-profile');
 
   const inputEl = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (inputEl.current && focus) {
+      inputEl.current.focus();
+    }
+  }, [inputEl, focus]);
 
   const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
     onChange(event);

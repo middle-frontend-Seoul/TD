@@ -10,3 +10,4 @@ jest.config.js
 *.test.ts
 *.d.ts
 server.js
+sw.ts
