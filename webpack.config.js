@@ -8,13 +8,15 @@ const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 
 module.exports = {
   mode: 'development',
-  entry: './src/index.tsx',
+  entry: {
+    main: './src/index.tsx',
+    sw: './sw.ts',
+  },
   devtool: 'source-map',
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
-    filename: 'app.js',
-    publicPath: '/',
+    filename: '[name].js',
   },
   resolve: {
     modules: [path.resolve(__dirname, 'src'), 'node_modules'],
