@@ -12,7 +12,7 @@ module.exports = {
     main: './src/index.tsx',
     sw: './sw.ts',
   },
-
+  devtool: 'source-map',
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
@@ -61,11 +61,6 @@ module.exports = {
       {
         test: /\.html$/i,
         loader: 'html-loader',
-      },
-      {
-        test: /\.js$/,
-        enforce: 'pre',
-        use: ['source-map-loader'],
       },
     ],
   },

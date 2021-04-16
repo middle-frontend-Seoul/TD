@@ -22,46 +22,46 @@ export class Cursor {
     this.canvas = canvas;
     this.event = () => event;
 
-    window.addEventListener('click', this.click);
-    window.addEventListener('keydown', this.keydown);
-    window.addEventListener('mousemove', this.mousemove);
+    window.addEventListener('click', this.onClick);
+    window.addEventListener('keydown', this.onKeyDown);
+    window.addEventListener('mousemove', this.onMouseMove);
 
     const element = this.canvas.getCanvas();
-    element.addEventListener('mouseenter', this.mouseMoveInCanvas);
-    element.addEventListener('mouseleave', this.mouseMoveOutCanvas);
+    element.addEventListener('mouseenter', this.onMouseMoveInCanvas);
+    element.addEventListener('mouseleave', this.onMouseMoveOutCanvas);
   }
 
   removeEventListener = (): void => {
-    window.removeEventListener('click', this.click);
-    window.removeEventListener('keydown', this.keydown);
-    window.removeEventListener('mousemove', this.mousemove);
+    window.removeEventListener('click', this.onClick);
+    window.removeEventListener('keydown', this.onKeyDown);
+    window.removeEventListener('mousemove', this.onMouseMove);
 
     const element = this.canvas.getCanvas();
-    element.removeEventListener('mouseenter', this.mouseMoveInCanvas);
-    element.removeEventListener('mouseleave', this.mouseMoveOutCanvas);
+    element.removeEventListener('mouseenter', this.onMouseMoveInCanvas);
+    element.removeEventListener('mouseleave', this.onMouseMoveOutCanvas);
   };
 
-  private click = (event: MouseEvent): void => {
+  private onClick = (event: MouseEvent): void => {
     if (this.isMouseInCanvas) {
       this.event().emit(EventNames.clickInCanvas, this.getPosition(event));
     }
   };
 
-  private keydown = ({ key }: KeyboardEvent) => {
+  private onKeyDown = ({ key }: KeyboardEvent) => {
     if (key.toLocaleLowerCase() === 'escape') {
       this.event().emit(EventNames.escape);
     }
   };
 
-  private mouseMoveInCanvas = () => {
+  private onMouseMoveInCanvas = () => {
     this.isMouseInCanvas = true;
   };
 
-  private mouseMoveOutCanvas = () => {
+  private onMouseMoveOutCanvas = () => {
     this.isMouseInCanvas = false;
   };
 
-  private mousemove = (event: MouseEvent) => {
+  private onMouseMove = (event: MouseEvent) => {
     this.mouse = { x: event.clientX, y: event.clientY };
     this.position = this.getPosition(event);
 

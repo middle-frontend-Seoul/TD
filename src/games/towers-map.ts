@@ -33,8 +33,16 @@ export class TowersMap {
       throw new GameError('Здесь нельзя устанавливать башню');
     }
 
+    if (!(tower instanceof Tower)) {
+      throw new GameError('Не является экземпляром класса Tower');
+    }
+
     this.places.push({ tower, position });
     return true;
+  };
+
+  public getPlaces = (): PlaceType[] => {
+    return this.places;
   };
 
   protected isFreeSpace = ({ x, y }: Position): boolean =>
