@@ -63,6 +63,7 @@ export const ProfileForm: FC<IProfileFormProps> = ({
           label="Логин"
           name="login"
           type="text"
+          focus={isUpdate}
           error={profileForm.errors.login}
           value={profileForm.values.login}
           onChange={profileForm.handleChange}
