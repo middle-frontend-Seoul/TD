@@ -15,27 +15,45 @@ import {
   PageForumDetails,
   PageForumSection,
 } from 'pages';
+import { ProtectedRoute } from 'core/protected-route';
+import { useMountEffect } from 'utils/hooks';
+import { useBoundAction } from 'redux/hooks';
+import { getCurrentUser } from 'redux/slices/auth-slice';
 
 import './app.scss';
 
-const App: FC = () => (
-  <Router>
-    <Layout>
-      <Switch>
-        <Route path={URL.HOME} component={PageHome} exact />
-        <Route path={URL.PLAY} component={PagePlay} />
-        <Route path={URL.FORUM_DETAILS} component={PageForumDetails} />
-        <Route path={URL.FORUM_SECTION} component={PageForumSection} />
-        <Route path={URL.FORUM} component={PageForum} />
-        <Route path={URL.SIGNIN} component={PageSignIn} />
-        <Route path={URL.SIGNUP} component={PageSignUp} />
-        <Route path={URL.PROFILE} component={PageProfile} />
-        <Route path={URL.STATISTICS} component={PageStatistics} />
-        <Route component={PageError} />
-      </Switch>
-    </Layout>
-  </Router>
-);
+const App: FC = () => {
+  const actionGetCurrentUser = useBoundAction(getCurrentUser);
+
+  useMountEffect(() => {
+    actionGetCurrentUser();
+  });
+
+  return (
+    <Router>
+      <Layout>
+        <Switch>
+          <ProtectedRoute path={URL.HOME} component={PageHome} exact />
+          <ProtectedRoute path={URL.PLAY} component={PagePlay} />
+          <ProtectedRoute
+            path={URL.FORUM_DETAILS}
+            component={PageForumDetails}
+          />
+          <ProtectedRoute
+            path={URL.FORUM_SECTION}
+            component={PageForumSection}
+          />
+          <ProtectedRoute path={URL.FORUM} component={PageForum} />
+          <ProtectedRoute path={URL.PROFILE} component={PageProfile} />
+          <ProtectedRoute path={URL.STATISTICS} component={PageStatistics} />
+          <Route path={URL.SIGNIN} component={PageSignIn} />
+          <Route path={URL.SIGNUP} component={PageSignUp} />
+          <Route component={PageError} />
+        </Switch>
+      </Layout>
+    </Router>
+  );
+};
 
 export { App };
 export default App;

@@ -1,24 +1,25 @@
-import React, { FC, useCallback, useEffect } from 'react';
+import React, { FC, useCallback } from 'react';
+import { useLocation, Redirect } from 'react-router-dom';
 
 import { Space } from 'components-ui/space';
 import { Form } from 'components-ui/form/form';
-import { useHistory } from 'react-router';
 import { Block } from 'components-ui/block';
 import {
   isValidLogin,
   isValidPassword,
   validationMessages,
 } from 'utils/validation';
+import * as URL from 'core/url';
 import { useAppSelector, useBoundAction } from 'redux/hooks';
 import { signIn } from 'redux/slices/auth-slice';
 
 import './auth.scss';
 
 const PageSignIn: FC = () => {
-  const history = useHistory();
+  const location = useLocation();
   const actionSignIn = useBoundAction(signIn);
-  const authError = useAppSelector((state) => state.auth.error);
-  const authStatus = useAppSelector((state) => state.auth.authStatus);
+  const currentUser = useAppSelector((state) => state.auth.currentUser);
+  const authError = useAppSelector((state) => state.auth.error.auth);
 
   const signInFields = [
     {
@@ -34,14 +35,6 @@ const PageSignIn: FC = () => {
       defaultValue: '',
     },
   ];
-
-  useEffect(() => {
-    if (authStatus === 'success') {
-      history.push({
-        pathname: '/',
-      });
-    }
-  }, [actionSignIn, authStatus, history]);
 
   const onSubmit = useCallback(
     async (info: SignInRequestInfo) => {
@@ -64,6 +57,14 @@ const PageSignIn: FC = () => {
     }
     return errors;
   };
+
+  const fromUrl = location.state?.from
+    ? location.state.from.pathname + location.state.from.search
+    : undefined;
+
+  if (currentUser) {
+    return <Redirect to={fromUrl || URL.HOME} />;
+  }
 
   return (
     <Space>
