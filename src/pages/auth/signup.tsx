@@ -1,5 +1,4 @@
 import React, { FC, useCallback } from 'react';
-import { useLocation, Redirect } from 'react-router-dom';
 
 import { Space } from 'components-ui/space';
 import { Form } from 'components-ui/form/form';
@@ -11,16 +10,14 @@ import {
   isValidPassword,
   validationMessages,
 } from 'utils/validation';
-import * as URL from 'core/url';
 import { useAppSelector, useBoundAction } from 'redux/hooks';
 import { signUp } from 'redux/slices/auth-slice';
+import { withAuth } from './with-auth';
 
 import './auth.scss';
 
-const PageSignUp: FC = () => {
-  const location = useLocation();
+const PageSignUp: FC = withAuth(() => {
   const actionSignUp = useBoundAction(signUp);
-  const currentUser = useAppSelector((state) => state.auth.currentUser);
   const authError = useAppSelector((state) => state.auth.error.auth);
 
   const signUpFields = [
@@ -82,14 +79,6 @@ const PageSignUp: FC = () => {
     return errors;
   };
 
-  const fromUrl = location.state?.from
-    ? location.state.from.pathname + location.state.from.search
-    : undefined;
-
-  if (currentUser) {
-    return <Redirect to={fromUrl || URL.HOME} />;
-  }
-
   return (
     <Space>
       <Block style={{ width: '400px', height: '420px' }}>
@@ -104,7 +93,7 @@ const PageSignUp: FC = () => {
       </Block>
     </Space>
   );
-};
+});
 
 export { PageSignUp };
 export default PageSignUp;
