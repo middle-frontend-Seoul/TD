@@ -1,14 +1,21 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useCallback } from 'react';
 
 import { Link } from 'components-ui/link';
 import { Button } from 'components-ui/button';
 import { Block } from 'components-ui/block';
 import { Space } from 'components-ui/space';
+import { Loading } from 'components-ui/loading';
 import { Table, TableColumn } from 'components-ui/table';
 import { FORUM } from 'core/url';
 
+import { useUrlParams } from 'hooks/use-url-params';
+import { useUrlNextPage } from 'hooks/use-url-next-page';
+import { useAppSelector, useBoundAction } from 'redux/hooks';
+import { getSubThemes } from 'redux/slices/forum-slice';
+
 import './style.scss';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const columns: TableColumn<any>[] = [
   {
     key: 'name',
@@ -31,32 +38,51 @@ const columns: TableColumn<any>[] = [
 ];
 
 const PageForumSection: FC = () => {
+  const params = useUrlParams();
+  const nextPage = useUrlNextPage();
+
+  const isLoading = useAppSelector((state) => state.forum.isLoadingSubThemes);
+  const data = useAppSelector((state) => state.forum.subThemes);
+  const page = params.get('page') || '1';
+  const pages = useAppSelector((state) => state.forum.pages);
+  const currentPage = useAppSelector((state) => state.forum.currentPage);
+
+  const actionGetThemes = useBoundAction(getSubThemes);
+
+  const handleNextPage = useCallback(() => {
+    const newPage = currentPage + 1;
+    nextPage(newPage);
+  }, [nextPage, currentPage]);
+
+  const handlePrevPage = useCallback(() => {
+    const newPage = currentPage - 1;
+    nextPage(newPage);
+  }, [nextPage, currentPage]);
+
+  useEffect(() => {
+    actionGetThemes(page);
+  }, [page, actionGetThemes]);
+
   return (
     <Space type="vertical">
       <Block title="Форум" page="forum">
         <div className="forum">
           <div className="forum-body">
-            <Table
-              className="forum-table"
-              columns={columns}
-              dataSource={[
-                {
-                  name: 'Основные правила',
-                  messages: 'Ответы: 7',
-                  view: 'Просмотры: 101',
-                },
-                {
-                  name: 'Рекомендации',
-                  messages: 'Ответы: 7',
-                  view: 'Просмотры: 101',
-                },
-                {
-                  name: 'Вариации правил',
-                  messages: 'Ответы: 7',
-                  view: 'Просмотры: 101',
-                },
-              ]}
-            />
+            {isLoading ? (
+              <Loading className="forum-loading" />
+            ) : (
+              <Table
+                className="forum-table"
+                columns={columns}
+                dataSource={data}
+                pagination={{
+                  page: currentPage,
+                  pages,
+                  handlePrev: handlePrevPage,
+                  handleNext: handleNextPage,
+                }}
+              />
+            )}
           </div>
           <div className="forum-footer">
             <Button type="button" use="primary" size="xsmall">
