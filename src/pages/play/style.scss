@@ -2,6 +2,14 @@
   display: flex;
   justify-content: space-between;
   padding: 0 12px;
+  position: relative;
+  .fullscreen-button {
+    position: absolute;
+    right: 10px;
+    top: -40px;
+    cursor: pointer;
+    outline: none;
+  }
 }
 .play-stats {
   display: flex;
