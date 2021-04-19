@@ -1,7 +1,12 @@
 // требует обзор
 // eslint-disable-next-line import/no-cycle
-import { Theme, SubTheme } from 'redux/slices/forum-slice';
-import { Pages, ResponseThemes, ResponseSubThemes } from 'api/models/forum.d';
+import { Theme, SubTheme, ThemeMessage } from 'redux/slices/forum-slice';
+import {
+  Pages,
+  ResponseThemes,
+  ResponseSubThemes,
+  ResponseMessage,
+} from 'api/models/forum.d';
 
 export type ThemesType = Pages<Theme>;
 
@@ -19,6 +24,26 @@ export const codeThemes = (res: ResponseThemes): ThemesType => {
     currentPage: res.current_page,
     pages: res.pages,
     data,
+  };
+};
+
+export type MessagesType = {
+  theme: Pick<Theme, 'id' | 'code' | 'name'>;
+  messages: ThemeMessage[];
+};
+
+export const codeMessages = (res: ResponseMessage): MessagesType => {
+  const { messages, id, code, name } = res;
+  const themeMessages = messages.map<ThemeMessage>((item) => ({
+    id: item.id,
+    date: item.date,
+    userName: item.user_name,
+    message: item.message,
+  }));
+
+  return {
+    theme: { id, code, name },
+    messages: themeMessages,
   };
 };
 

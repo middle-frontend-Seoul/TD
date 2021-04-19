@@ -29,6 +29,7 @@ export type ForumState = {
   isLoadingThemes: boolean;
   isLoadingSubThemes: boolean;
   currentPage: number;
+  title: string;
   pages: number;
   themes: Theme[];
   subThemes: SubTheme[];
@@ -40,6 +41,7 @@ export const initialState: ForumState = {
   isLoading: false,
   isLoadingThemes: false,
   isLoadingSubThemes: false,
+  title: '',
   themes: [],
   messages: [],
   subThemes: [],
@@ -60,6 +62,10 @@ export const slice = createSlice({
       state.pages = payload.pages || 1;
     },
 
+    setTitle: (state, { payload }: PayloadAction<string>) => {
+      state.title = payload;
+    },
+
     themesRequest: (state) => {
       state.isLoadingThemes = true;
     },
@@ -74,6 +80,10 @@ export const slice = createSlice({
 
     messagesRequest: (state) => {
       state.isLoading = true;
+    },
+    messagesSuccess: (state, { payload }: PayloadAction<ThemeMessage[]>) => {
+      state.isLoading = false;
+      state.messages = payload;
     },
     messagesFailure: (state, { payload }: PayloadAction<unknown>) => {
       state.isLoading = false;
@@ -115,9 +125,23 @@ export function getThemes(page: string | number) {
   };
 }
 
-export function getMessages() {
+export function getMessages(id: string | number) {
   return async (dispatch: AppDispatch) => {
     dispatch(slice.actions.messagesRequest());
+    try {
+      const { data, error } = await forumApi.getMessages(id);
+
+      if (error) {
+        dispatch(slice.actions.messagesFailure(error));
+      }
+
+      if (data) {
+        dispatch(slice.actions.messagesSuccess(data.messages));
+        dispatch(slice.actions.setTitle(data.theme.name));
+      }
+    } catch (error) {
+      dispatch(slice.actions.messagesFailure(error));
+    }
   };
 }
 

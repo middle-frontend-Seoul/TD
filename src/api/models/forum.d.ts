@@ -29,3 +29,15 @@ export type ResponseSubTheme = {
 };
 
 export type ResponseSubThemes = ResponsePages<ResponseSubTheme>;
+
+export type ResponseMessage = {
+  id: number;
+  code: string;
+  name: string;
+  messages: {
+    id: number;
+    date: Date;
+    user_name: string;
+    message: string;
+  }[];
+};

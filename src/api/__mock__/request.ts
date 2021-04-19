@@ -1,9 +1,11 @@
+import messages from './forum/messages.json';
 import themesPage1 from './forum/themes-page-1.json';
 import themesPage2 from './forum/themes-page-2.json';
 import subThemesPage1 from './forum/sub-themes-page-1.json';
 import subThemesPage2 from './forum/sub-themes-page-2.json';
 
 const hashMoks = {
+  messages,
   themes: {
     1: themesPage1,
     2: themesPage2,

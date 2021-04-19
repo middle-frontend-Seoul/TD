@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useCallback } from 'react';
+import { Link as RouteLink } from 'react-router-dom';
 
 import { Link } from 'components-ui/link';
 import { Button } from 'components-ui/button';
@@ -6,7 +7,7 @@ import { Block } from 'components-ui/block';
 import { Space } from 'components-ui/space';
 import { Loading } from 'components-ui/loading';
 import { Table, TableColumn } from 'components-ui/table';
-import { FORUM } from 'core/url';
+import { FORUM, FORUM_DETAILS } from 'core/url';
 
 import { useUrlParams } from 'hooks/use-url-params';
 import { useUrlNextPage } from 'hooks/use-url-next-page';
@@ -22,6 +23,14 @@ const columns: TableColumn<any>[] = [
     dataIndex: 'name',
     width: '65%',
     title: 'Раздел: Правила игры в Кинг',
+    render: (val, row) => (
+      <RouteLink
+        className="forum-link"
+        to={FORUM_DETAILS.replace(':id', row.id)}
+      >
+        {val}
+      </RouteLink>
+    ),
   },
   {
     key: 'messages',
