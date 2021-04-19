@@ -7,12 +7,18 @@ type AuthState = {
   currentUser?: UserInfo;
   loadingStatus: StateStatus;
   authStatus: StateStatus;
-  error?: SerializedError | HttpError;
+  error: AuthError;
 };
 
 const initialState: AuthState = {
   loadingStatus: 'idle',
   authStatus: 'idle',
+  error: {},
+};
+
+type AuthError = {
+  currentUser?: SerializedError;
+  auth?: SerializedError;
 };
 
 export const authSlice = createSlice({
@@ -31,36 +37,36 @@ export const authSlice = createSlice({
     },
     getCurrentUserFailure: (state, action: PayloadAction<SerializedError>) => {
       state.loadingStatus = 'failure';
-      state.error = action.payload;
+      state.error.currentUser = action.payload;
     },
 
     signInPending: (state) => {
       state.authStatus = 'pending';
-      state.error = undefined;
+      state.error.auth = undefined;
     },
     signInSuccess: (state) => {
       state.authStatus = 'success';
     },
     signInFailure: (state, action: PayloadAction<SerializedError>) => {
       state.authStatus = 'failure';
-      state.error = action.payload;
+      state.error.auth = action.payload;
     },
 
     signUpPending: (state) => {
       state.authStatus = 'pending';
-      state.error = undefined;
+      state.error.auth = undefined;
     },
     signUpSuccess: (state) => {
       state.authStatus = 'success';
     },
     signUpFailure: (state, action: PayloadAction<SerializedError>) => {
       state.authStatus = 'failure';
-      state.error = action.payload;
+      state.error.auth = action.payload;
     },
 
     logoutPending: (state) => {
       state.authStatus = 'pending';
-      state.error = undefined;
+      state.error.auth = undefined;
     },
     logoutSuccess: (state) => {
       state.authStatus = 'success';
@@ -68,7 +74,7 @@ export const authSlice = createSlice({
     },
     logoutFailure: (state, action: PayloadAction<SerializedError>) => {
       state.authStatus = 'failure';
-      state.error = action.payload;
+      state.error.auth = action.payload;
     },
   },
 });
