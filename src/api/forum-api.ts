@@ -20,7 +20,18 @@ export type GetMessages = ApiResponse<MessagesType>;
 
 export type GetSubThemes = ApiResponse<SubThemesType>;
 
+export type CreateTheme = ApiResponse<boolean>;
+
 export const forumApi = {
+  createTheme: async (values: Record<string, string>): Promise<CreateTheme> => {
+    // tmp - эмитация добавления темы
+    await new Promise((res) => setTimeout(() => res(values), 1000));
+    return {
+      data: true,
+      error: undefined,
+    };
+  },
+
   getThemes: async (page: string | number = 1): Promise<GetThemes> => {
     const res = await mockRequest<ResponseThemes>('themes', page);
     return {

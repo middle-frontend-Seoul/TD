@@ -5,6 +5,18 @@
   flex-direction: column;
   justify-content: center;
   background-color: white;
+  border: 1px solid;
+  border-color: $border-color;
+  transition: border-color 0.3s;
+
+  &.error {
+    border-color: $error-color;
+
+    .defaultValue {
+      color: $error-color;
+    }
+  }
+
   &.small {
     width: $input-width-sm;
     height: $input-height-sm;
@@ -23,7 +35,7 @@
 
   .defaultValue {
     color: $text-color-secondary;
-     &.small {
+    &.small {
       padding-left: 4px;
       font-size: 8px;
     }

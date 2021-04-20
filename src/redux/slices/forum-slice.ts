@@ -25,6 +25,10 @@ export type ThemeMessage = {
 };
 
 export type ForumState = {
+  createRequest: boolean;
+  createSuccess: unknown;
+  createFailure: unknown;
+  isOpen: boolean;
   isLoading: boolean;
   isLoadingThemes: boolean;
   isLoadingSubThemes: boolean;
@@ -38,6 +42,10 @@ export type ForumState = {
 };
 
 export const initialState: ForumState = {
+  createRequest: false,
+  createSuccess: null,
+  createFailure: null,
+  isOpen: false,
   isLoading: false,
   isLoadingThemes: false,
   isLoadingSubThemes: false,
@@ -60,6 +68,26 @@ export const slice = createSlice({
     ) => {
       state.currentPage = payload.currentPage || 1;
       state.pages = payload.pages || 1;
+    },
+
+    create: (state) => {
+      state.createRequest = true;
+    },
+    success: (state, { payload }: PayloadAction<unknown>) => {
+      state.isOpen = false;
+      state.createRequest = false;
+      state.createFailure = null;
+      state.createSuccess = payload;
+    },
+    failure: (state, { payload }: PayloadAction<unknown>) => {
+      state.isOpen = false;
+      state.createRequest = false;
+      state.createSuccess = null;
+      state.createFailure = payload;
+    },
+
+    setOpen: (state, { payload }: PayloadAction<boolean>) => {
+      state.isOpen = payload;
     },
 
     setTitle: (state, { payload }: PayloadAction<string>) => {
@@ -103,6 +131,29 @@ export const slice = createSlice({
     },
   },
 });
+
+export function setOpen(visible: boolean) {
+  return (dispatch: AppDispatch) => dispatch(slice.actions.setOpen(visible));
+}
+
+export function create(values: Record<string, string>) {
+  return async (dispatch: AppDispatch) => {
+    dispatch(slice.actions.create());
+    try {
+      const { data, error } = await forumApi.createTheme(values);
+
+      if (error) {
+        dispatch(slice.actions.failure(error));
+      }
+
+      if (data) {
+        dispatch(slice.actions.success(true));
+      }
+    } catch (error) {
+      dispatch(slice.actions.failure(error));
+    }
+  };
+}
 
 export function getThemes(page: string | number) {
   return async (dispatch: AppDispatch) => {
