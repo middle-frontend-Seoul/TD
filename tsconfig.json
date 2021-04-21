@@ -2,7 +2,8 @@
   "compilerOptions": {
     "lib": [
       "dom",
-      "es2017"
+      "es2017",
+      "webworker"
     ],
     "module": "commonjs",
     "moduleResolution": "node",
@@ -16,7 +17,7 @@
     "experimentalDecorators": true,
     "skipLibCheck": true,
     "declaration": false,
-    "sourceMap": false,
+    "sourceMap": true,
     "baseUrl": "src"
   },
   "include": [

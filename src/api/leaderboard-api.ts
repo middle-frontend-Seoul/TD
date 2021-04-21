@@ -1,5 +1,5 @@
 import { http } from 'network/http';
-import { Leaderboard } from './codecs';
+import { Leaderboard } from 'api/codecs';
 
 export const leaderboardApi = {
   getAllLeaderboards: async (
@@ -7,11 +7,11 @@ export const leaderboardApi = {
   ): Promise<ApiResponse<LeaderboardInfo[]>> => {
     const { response, error } = await http.post<LeaderboardDto[]>(
       '/leaderboard/all',
-      Leaderboard.encodeLeaderboardRequest(data)
+      Leaderboard.toLeaderboardRequestDto(data)
     );
     return {
       data:
-        response && (response.data || []).map(Leaderboard.decodeLeaderboard),
+        response && (response.data || []).map(Leaderboard.fromLeaderboardDto),
       error,
     };
   },

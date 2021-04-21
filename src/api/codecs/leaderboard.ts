@@ -1,4 +1,4 @@
-export function decodeLeaderboard(dto: LeaderboardDto): LeaderboardInfo {
+export function fromLeaderboardDto(dto: LeaderboardDto): LeaderboardInfo {
   return {
     id: dto.data.id,
     login: dto.data.login,
@@ -8,7 +8,7 @@ export function decodeLeaderboard(dto: LeaderboardDto): LeaderboardInfo {
   };
 }
 
-export function encodeLeaderboardRequest(
+export function toLeaderboardRequestDto(
   info: LeaderboardRequestInfo
 ): LeaderboardRequestDto {
   return {

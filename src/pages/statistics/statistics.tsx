@@ -5,8 +5,9 @@ import { Block } from 'components-ui/block';
 import { Space } from 'components-ui/space';
 import { Table, TableColumn } from 'components-ui/table';
 import { HOME } from 'core/url';
-import { leaderboardApi } from 'api/leaderboard-api';
 import { DEFAULT_PAGE_SIZE } from 'constants/defaults';
+import { useAppSelector, useBoundAction } from 'redux/hooks';
+import { getAllLeaderboards } from 'redux/slices/leaderboard-slice';
 
 import './statistics.scss';
 
@@ -37,18 +38,17 @@ const generateRowKey = (rowData: LeaderboardInfo) =>
   `${rowData.id}-${rowData.login}-${rowData.score}`;
 
 const PageStatistics: FC = () => {
-  const [response, setResponse] = useState<ApiResponse<LeaderboardInfo[]>>({});
+  const actionGetAllLeaderboards = useBoundAction(getAllLeaderboards);
+  const allLeaderboards = useAppSelector((state) => state.leaderboard.data);
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    leaderboardApi
-      .getAllLeaderboards({
-        ratingFieldName: 'score',
-        cursor: (currentPage - 1) * DEFAULT_PAGE_SIZE,
-        limit: DEFAULT_PAGE_SIZE,
-      })
-      .then(setResponse);
-  }, [currentPage]);
+    actionGetAllLeaderboards({
+      ratingFieldName: 'score',
+      cursor: (currentPage - 1) * DEFAULT_PAGE_SIZE,
+      limit: DEFAULT_PAGE_SIZE,
+    });
+  }, [actionGetAllLeaderboards, currentPage]);
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
@@ -57,7 +57,7 @@ const PageStatistics: FC = () => {
   };
 
   const handleNextPage = () => {
-    if (response.data && response.data.length === DEFAULT_PAGE_SIZE) {
+    if (allLeaderboards && allLeaderboards.length === DEFAULT_PAGE_SIZE) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -75,7 +75,7 @@ const PageStatistics: FC = () => {
             rowKey={generateRowKey}
             className="statistics-table"
             columns={columns}
-            dataSource={response.data}
+            dataSource={allLeaderboards}
             pagination={{
               page: currentPage,
               handlePrev: handlePrevPage,

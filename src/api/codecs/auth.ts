@@ -1,10 +1,10 @@
-export function decodeSignUp(dto: SignUpDto): SignUpInfo {
+export function fromSignUpDto(dto: SignUpDto): SignUpInfo {
   return {
     id: dto.id,
   };
 }
 
-export function encodeSignUpRequest(info: SignUpRequestInfo): SignUpRequestDto {
+export function toSignUpRequestDto(info: SignUpRequestInfo): SignUpRequestDto {
   return {
     first_name: info.login,
     second_name: info.login,
@@ -15,13 +15,13 @@ export function encodeSignUpRequest(info: SignUpRequestInfo): SignUpRequestDto {
   };
 }
 
-export function decodeSigIn(dto: SignInDto): SignInInfo {
+export function fromSigInDto(dto: SignInDto): SignInInfo {
   return {
     id: dto.id,
   };
 }
 
-export function encodeSignInRequest(info: SignInRequestInfo): SignInRequestDto {
+export function toSignInRequestDto(info: SignInRequestInfo): SignInRequestDto {
   return {
     login: info.login,
     password: info.password,

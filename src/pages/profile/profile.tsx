@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 
 import { Link } from 'components-ui/link';
 import { Block } from 'components-ui/block';
@@ -9,53 +9,57 @@ import { ProfileForm } from 'components/profile/profile-form';
 import { HOME } from 'core/url';
 import { isValuesChange } from 'utils/formHelpers';
 import { useMountEffect } from 'utils/hooks';
-import { userApi } from 'api/user-api';
+import { useAppSelector, useBoundAction } from 'redux/hooks';
+import { getCurrentUser } from 'redux/slices/auth-slice';
+import { updateUser, updatePassword } from 'redux/slices/user-slice';
 
 import defaultAvatar from './images/default-avatar.png';
 import './profile.scss';
 
 const PageProfile: FC = () => {
-  const [response, setResponse] = useState<ApiResponse<UserInfo>>({});
-  const [profileUpdateError, setProfileUpdateError] = React.useState('');
-  const [passwordUpdateError, setPasswordUpdateError] = React.useState('');
+  const actionGetCurrentUser = useBoundAction(getCurrentUser);
+  const actionUpdateUser = useBoundAction(updateUser);
+  const actionUpdatePassword = useBoundAction(updatePassword);
+
+  const currentUser = useAppSelector((state) => state.auth.currentUser);
+  const profileUpdateError = useAppSelector((state) => state.user.error.user);
+  const profileUpdateStatus = useAppSelector(
+    (state) => state.user.mutatingUserStatus
+  );
+  const passwordUpdateError = useAppSelector(
+    (state) => state.user.error.password
+  );
+  const passwordUpdateStatus = useAppSelector(
+    (state) => state.user.mutatingPasswordStatus
+  );
+
   const [isUpdate, setUpdate] = useState(false);
 
-  const { data: currentUser } = response;
-
   useMountEffect(() => {
-    userApi.getCurrentUser().then(setResponse);
+    actionGetCurrentUser();
   });
+
+  useEffect(() => {
+    if (
+      profileUpdateStatus !== 'pending' &&
+      passwordUpdateStatus !== 'pending'
+    ) {
+      setUpdate(false);
+      actionGetCurrentUser();
+    }
+  }, [actionGetCurrentUser, profileUpdateStatus, passwordUpdateStatus]);
 
   const handleProfileSubmit = async (
     values: UserRequestInfo & UserPasswordRequestInfo
   ) => {
     const { oldPassword, newPassword, ...updateData } = values;
-    let updateError = false;
 
     if (isValuesChange<UserInfo>(updateData, currentUser)) {
-      const { error: errorUpdateProfile } = await userApi.updateUser(
-        updateData
-      );
-      if (errorUpdateProfile) {
-        updateError = true;
-        setProfileUpdateError(errorUpdateProfile.response?.data.reason);
-      }
+      actionUpdateUser(updateData);
     }
 
     if (oldPassword && newPassword) {
-      const { error: errorUpdatePassword } = await userApi.updatePassword({
-        oldPassword,
-        newPassword,
-      });
-      if (errorUpdatePassword) {
-        updateError = true;
-        setPasswordUpdateError(errorUpdatePassword.response?.data.reason);
-      }
-    }
-
-    if (!updateError) {
-      setUpdate(false);
-      userApi.getCurrentUser().then(setResponse);
+      actionUpdatePassword({ oldPassword, newPassword });
     }
   };
 
@@ -70,6 +74,7 @@ const PageProfile: FC = () => {
             <Space type="vertical" position="center">
               <div className="profile">
                 <ProfileForm
+                  key={`${isUpdate}`}
                   className="profile__profile-form"
                   initialValues={currentUser}
                   onSubmit={handleProfileSubmit}
@@ -90,12 +95,12 @@ const PageProfile: FC = () => {
               </div>
               {profileUpdateError && (
                 <div className="profile__submit-error">
-                  {profileUpdateError}
+                  {profileUpdateError.message}
                 </div>
               )}
               {passwordUpdateError && (
                 <div className="profile__submit-error">
-                  {passwordUpdateError}
+                  {passwordUpdateError.message}
                 </div>
               )}
             </Space>
