@@ -1,6 +1,13 @@
 import { Tower } from './towers';
+import { Enemy } from './enemies';
 import { GameError } from './game-error';
 import { Position, GridType } from './typing';
+
+export type EnemyRect = {
+  enemy: Enemy;
+  distance: number;
+  isRadius: boolean;
+};
 
 export type PlaceType = {
   tower: Tower;
@@ -43,6 +50,48 @@ export class TowersMap {
 
   public getPlaces = (): PlaceType[] => {
     return this.places;
+  };
+
+  /**
+   * Метод при каждом рендеринге (обновлении)
+   * - проверяет наличие врагов в радиусе поражения башни
+   * - проверяет готовность каждой башни к выстрегу
+   * - врагу получившему урон обновляет значение здоровья
+   */
+  public update = (entities: Enemy[]): void => {
+    this.places
+      .filter(({ tower }) => tower.getActive())
+      .forEach(({ tower, position }) => {
+        const radius = tower.getRaduis() * this.size;
+        const center: Position = {
+          x: position.x + this.size / 2,
+          y: position.y + this.size / 2,
+        };
+
+        const [first] = entities
+          .map<EnemyRect>((enemy) => {
+            const { x, y } = enemy.getPositions();
+            const distance = (center.x - x) ** 2 + (center.y - y) ** 2;
+            return {
+              enemy,
+              distance,
+              isRadius: distance < radius ** 2,
+            };
+          })
+          .filter(({ isRadius }) => isRadius)
+          .sort((a, b) => a.distance - b.distance);
+
+        this.shoot(tower, first);
+      });
+  };
+
+  protected shoot = (tower: Tower, enemyRect?: EnemyRect): void => {
+    if (!tower.getActive() || !enemyRect) return;
+    const { enemy } = enemyRect;
+
+    tower.setActive(false);
+    enemy.damage(tower.getDamage());
+    setTimeout(() => tower.setActive(true), tower.getReloadTime());
   };
 
   protected isFreeSpace = ({ x, y }: Position): boolean =>

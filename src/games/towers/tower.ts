@@ -7,10 +7,14 @@ export type TowerProps = {
   price: number;
   color: string;
   radius: number;
+  damage?: number;
+  reloadTime?: number;
 };
 
 export abstract class Tower extends InterfaceMoveCursor {
   abstract pathImage: string;
+
+  protected active: boolean;
 
   protected size: number;
 
@@ -22,15 +26,30 @@ export abstract class Tower extends InterfaceMoveCursor {
 
   protected radius: number;
 
+  protected damage: number;
+
+  protected reloadTime: number;
+
   constructor(props: TowerProps) {
     super();
-    const { size = 30, name, price, color, radius } = props;
+    const {
+      size = 30,
+      name,
+      price,
+      color,
+      radius,
+      damage = 10,
+      reloadTime = 1500,
+    } = props;
 
     this.size = size;
     this.name = name;
     this.price = price;
     this.color = color;
     this.radius = radius;
+    this.damage = damage;
+    this.active = true;
+    this.reloadTime = reloadTime;
   }
 
   abstract draw(ctx: CanvasRenderingContext2D, position: Position): void;
@@ -50,11 +69,31 @@ export abstract class Tower extends InterfaceMoveCursor {
     ctx.stroke();
   };
 
+  setActive(val: boolean): void {
+    this.active = val;
+  }
+
+  getActive(): boolean {
+    return this.active;
+  }
+
   getName(): string {
     return this.name;
   }
 
   getPrice(): number {
     return this.price;
+  }
+
+  getRaduis(): number {
+    return this.radius;
+  }
+
+  getDamage(): number {
+    return this.damage;
+  }
+
+  getReloadTime(): number {
+    return this.reloadTime;
   }
 }

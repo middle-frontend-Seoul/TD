@@ -15,12 +15,12 @@ export class TowersBuilder {
 
   protected static instance: TowersBuilder;
 
-  constructor(map: TowersMap, moveController: MoveCursor) {
+  constructor(map: TowersMap, moveCursor: MoveCursor) {
     const event = new EventBus();
 
     this.map = map;
 
-    this.moveCursor = moveController;
+    this.moveCursor = moveCursor;
 
     this.tower = null;
 

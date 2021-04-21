@@ -1,5 +1,5 @@
 import { GameError } from './game-error';
-import { GridType } from './typing';
+import { GridType, Position } from './typing';
 
 type GridPosition = {
   width: number;
@@ -7,6 +7,21 @@ type GridPosition = {
 };
 
 const GRID_FIRST_ROW = 0;
+
+export const getStartPosition = (grid: GridType, size: number): Position => {
+  const { row, cell } = grid.reduce(
+    (prev, curr, i) => {
+      // eslint-disable-next-line no-param-reassign
+      prev.row = curr[prev.cell] ? i : prev.row;
+      return prev;
+    },
+    { row: 0, cell: 0 }
+  );
+
+  const x = cell * size - size;
+  const y = row * size;
+  return { x, y };
+};
 
 export const getGridPosition = (
   size: number,
