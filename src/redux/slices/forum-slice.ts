@@ -38,7 +38,7 @@ export const initialState: ForumState = {
   pages: 1,
 };
 
-export const slice = createSlice({
+export const forumSlice = createSlice({
   name: 'forum',
   initialState,
   reducers: {
@@ -74,41 +74,50 @@ export const slice = createSlice({
       state.title = payload;
     },
 
-    themesRequest: (state) => {
+    getThemesPending: (state) => {
       state.themesStatus = 'pending';
     },
-    themesSuccess: (state, { payload }: PayloadAction<ThemeInfo[]>) => {
+    getThemesSuccess: (state, { payload }: PayloadAction<ThemeInfo[]>) => {
       state.themesStatus = 'success';
       state.themes = payload;
     },
-    themesFailure: (state, { payload }: PayloadAction<SerializedError>) => {
+    getThemesFailure: (state, { payload }: PayloadAction<SerializedError>) => {
       state.themesStatus = 'failure';
       state.error = payload;
     },
 
-    messagesRequest: (state) => {
+    getMessagesPending: (state) => {
       state.messagesStatus = 'pending';
     },
-    messagesSuccess: (
+    getMessagesSuccess: (
       state,
       { payload }: PayloadAction<ThemeMessageInfo[]>
     ) => {
       state.messagesStatus = 'success';
       state.messages = payload;
     },
-    messagesFailure: (state, { payload }: PayloadAction<SerializedError>) => {
+    getMessagesFailure: (
+      state,
+      { payload }: PayloadAction<SerializedError>
+    ) => {
       state.messagesStatus = 'failure';
       state.error = payload;
     },
 
-    subThemesRequest: (state) => {
+    getSubThemesPending: (state) => {
       state.subTheemsStatus = 'pending';
     },
-    subThemesSuccess: (state, { payload }: PayloadAction<SubThemeInfo[]>) => {
+    getSubThemesSuccess: (
+      state,
+      { payload }: PayloadAction<SubThemeInfo[]>
+    ) => {
       state.subTheemsStatus = 'success';
       state.subThemes = payload;
     },
-    subThemesFailure: (state, { payload }: PayloadAction<SerializedError>) => {
+    getSubThemesFailure: (
+      state,
+      { payload }: PayloadAction<SerializedError>
+    ) => {
       state.subTheemsStatus = 'failure';
       state.error = payload;
     },
@@ -116,88 +125,91 @@ export const slice = createSlice({
 });
 
 export function setOpen(visible: boolean) {
-  return (dispatch: AppDispatch) => dispatch(slice.actions.setOpen(visible));
+  return (dispatch: AppDispatch) =>
+    dispatch(forumSlice.actions.setOpen(visible));
 }
 
 export function create(values: Record<string, string>) {
   return async (dispatch: AppDispatch) => {
-    dispatch(slice.actions.create());
+    dispatch(forumSlice.actions.create());
     try {
       const { data, error } = await forumApi.createTheme(values);
 
       if (error) {
-        dispatch(slice.actions.failure(formatHttpError(error)));
+        dispatch(forumSlice.actions.failure(formatHttpError(error)));
       }
 
       if (data) {
-        dispatch(slice.actions.success(true));
+        dispatch(forumSlice.actions.success(true));
       }
     } catch (error) {
-      dispatch(slice.actions.failure(formatError(error)));
+      dispatch(forumSlice.actions.failure(formatError(error)));
     }
   };
 }
 
 export function getThemes(page: string | number) {
   return async (dispatch: AppDispatch) => {
-    dispatch(slice.actions.themesRequest());
+    dispatch(forumSlice.actions.getThemesPending());
     try {
       const { data, error } = await forumApi.getThemes(page);
 
       if (error) {
-        dispatch(slice.actions.themesFailure(formatHttpError(error)));
+        dispatch(forumSlice.actions.getThemesFailure(formatHttpError(error)));
       }
 
       if (data) {
         const { currentPage = 1, pages = 1 } = data;
-        dispatch(slice.actions.setPage({ currentPage, pages }));
-        dispatch(slice.actions.themesSuccess(data.data));
+        dispatch(forumSlice.actions.setPage({ currentPage, pages }));
+        dispatch(forumSlice.actions.getThemesSuccess(data.data));
       }
     } catch (error) {
-      dispatch(slice.actions.themesFailure(formatError(error)));
+      dispatch(forumSlice.actions.getThemesFailure(formatError(error)));
     }
   };
 }
 
 export function getMessages(id: string | number) {
   return async (dispatch: AppDispatch) => {
-    dispatch(slice.actions.messagesRequest());
+    dispatch(forumSlice.actions.getMessagesPending());
     try {
       const { data, error } = await forumApi.getMessages(id);
 
       if (error) {
-        dispatch(slice.actions.messagesFailure(formatHttpError(error)));
+        dispatch(forumSlice.actions.getMessagesFailure(formatHttpError(error)));
       }
 
       if (data) {
-        dispatch(slice.actions.messagesSuccess(data.messages));
-        dispatch(slice.actions.setTitle(data.theme.name));
+        dispatch(forumSlice.actions.getMessagesSuccess(data.messages));
+        dispatch(forumSlice.actions.setTitle(data.theme.name));
       }
     } catch (error) {
-      dispatch(slice.actions.messagesFailure(formatError(error)));
+      dispatch(forumSlice.actions.getMessagesFailure(formatError(error)));
     }
   };
 }
 
 export function getSubThemes(page: string | number) {
   return async (dispatch: AppDispatch) => {
-    dispatch(slice.actions.subThemesRequest());
+    dispatch(forumSlice.actions.getSubThemesPending());
     try {
       const { data, error } = await forumApi.getSubThemes(page);
 
       if (error) {
-        dispatch(slice.actions.subThemesFailure(formatHttpError(error)));
+        dispatch(
+          forumSlice.actions.getSubThemesFailure(formatHttpError(error))
+        );
       }
 
       if (data) {
         const { currentPage = 1, pages = 1 } = data;
-        dispatch(slice.actions.setPage({ currentPage, pages }));
-        dispatch(slice.actions.subThemesSuccess(data.data));
+        dispatch(forumSlice.actions.setPage({ currentPage, pages }));
+        dispatch(forumSlice.actions.getSubThemesSuccess(data.data));
       }
     } catch (error) {
-      dispatch(slice.actions.subThemesFailure(formatError(error)));
+      dispatch(forumSlice.actions.getSubThemesFailure(formatError(error)));
     }
   };
 }
 
-export default slice.reducer;
+export default forumSlice.reducer;
