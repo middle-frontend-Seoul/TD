@@ -20,7 +20,7 @@ const PageForumDetails: FC = () => {
   const params = useParams<{ id: string }>();
 
   const isOpenModal = useAppSelector((state) => state.forum.isOpen);
-  const isLoading = useAppSelector((state) => state.forum.isLoading);
+  const status = useAppSelector((state) => state.forum.messagesStatus);
   const isLoadingCreate = useAppSelector((state) => state.forum.createRequest);
 
   const messages = useAppSelector((state) => state.forum.messages);
@@ -43,30 +43,37 @@ const PageForumDetails: FC = () => {
     }
   }, [params.id, actionGetMessages]);
 
+  // Render
+  // ---------------
+
+  const renderBody = () => {
+    switch (status) {
+      case 'pending':
+        return <Loading className="forum-loading" />;
+      case 'failure':
+        return 'Возникла ошибка';
+      case 'success':
+        return messages.map((msg) => (
+          <ForumMassage
+            date={msg.date}
+            userName={msg.userName}
+            message={msg.message}
+          />
+        ));
+      default:
+        return null;
+    }
+  };
+
   return (
     <Space type="vertical">
+      <Modal isOpen={isOpenModal} onClose={handleOnClose} node={document.body}>
+        <MessageForm loading={isLoadingCreate} onSubmit={actionMessageCreate} />
+      </Modal>
       <Block title="Форум" page="forum">
         <div className="forum-detail">
-          <Modal isOpen={isOpenModal} onClose={handleOnClose}>
-            <MessageForm
-              loading={isLoadingCreate}
-              onSubmit={actionMessageCreate}
-            />
-          </Modal>
           <div className="forum-detail__title">Тема: {title}</div>
-          <div className="forum-detail__message">
-            {isLoading ? (
-              <Loading className="forum-loading" />
-            ) : (
-              messages.map((msg) => (
-                <ForumMassage
-                  date={msg.date}
-                  userName={msg.userName}
-                  message={msg.message}
-                />
-              ))
-            )}
-          </div>
+          <div className="forum-detail__message">{renderBody()}</div>
           <div className="forum-detail__button">
             <Button use="primary" size="small" onClick={handleOnOpen}>
               Добавить сообщение

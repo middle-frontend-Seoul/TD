@@ -1,14 +1,8 @@
 import { mockRequest } from 'api/__mock__/request'; // временно
-
 import {
-  ResponseThemes,
-  ResponseSubThemes,
-  ResponseMessage,
-} from 'api/models/forum.d';
-import {
-  codeThemes,
-  codeSubThemes,
-  codeMessages,
+  fromThemesDto,
+  fromMessagesDto,
+  fromSubThemesDto,
   ThemesType,
   MessagesType,
   SubThemesType,
@@ -33,9 +27,9 @@ export const forumApi = {
   },
 
   getThemes: async (page: string | number = 1): Promise<GetThemes> => {
-    const res = await mockRequest<ResponseThemes>('themes', page);
+    const res = await mockRequest<ThemesDto>('themes', page);
     return {
-      data: res && codeThemes(res),
+      data: res && fromThemesDto(res),
       error: undefined,
     };
   },
@@ -43,17 +37,17 @@ export const forumApi = {
   getMessages: async (id: string | number): Promise<GetMessages> => {
     // eslint-disable-next-line no-console
     console.log(id);
-    const res = await mockRequest<ResponseMessage>('messages');
+    const res = await mockRequest<MessagesDto>('messages');
     return {
-      data: res && codeMessages(res),
+      data: res && fromMessagesDto(res),
       error: undefined,
     };
   },
 
   getSubThemes: async (page: string | number = 1): Promise<GetSubThemes> => {
-    const res = await mockRequest<ResponseSubThemes>('subthemes', page);
+    const res = await mockRequest<SubThemesDto>('subthemes', page);
     return {
-      data: res && codeSubThemes(res),
+      data: res && fromSubThemesDto(res),
       error: undefined,
     };
   },

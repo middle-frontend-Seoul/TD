@@ -1,18 +1,8 @@
-// требует обзор
-// eslint-disable-next-line import/no-cycle
-import { Theme, SubTheme, ThemeMessage } from 'redux/slices/forum-slice';
-import {
-  Pages,
-  ResponseThemes,
-  ResponseSubThemes,
-  ResponseMessage,
-} from 'api/models/forum.d';
+export type ThemesType = PagesInfo<ThemeInfo>;
 
-export type ThemesType = Pages<Theme>;
-
-export const codeThemes = (res: ResponseThemes): ThemesType => {
+export const fromThemesDto = (res: ThemesDto): ThemesType => {
   const items = res.data || [];
-  const data = items.map<Theme>((item) => ({
+  const data = items.map<ThemeInfo>((item) => ({
     id: item.id,
     name: item.name,
     code: item.code,
@@ -28,13 +18,13 @@ export const codeThemes = (res: ResponseThemes): ThemesType => {
 };
 
 export type MessagesType = {
-  theme: Pick<Theme, 'id' | 'code' | 'name'>;
-  messages: ThemeMessage[];
+  theme: Pick<ThemeInfo, 'id' | 'code' | 'name'>;
+  messages: ThemeMessageInfo[];
 };
 
-export const codeMessages = (res: ResponseMessage): MessagesType => {
+export const fromMessagesDto = (res: MessagesDto): MessagesType => {
   const { messages, id, code, name } = res;
-  const themeMessages = messages.map<ThemeMessage>((item) => ({
+  const themeMessages = messages.map<ThemeMessageInfo>((item) => ({
     id: item.id,
     date: item.date,
     userName: item.user_name,
@@ -47,11 +37,11 @@ export const codeMessages = (res: ResponseMessage): MessagesType => {
   };
 };
 
-export type SubThemesType = Pages<SubTheme>;
+export type SubThemesType = PagesInfo<SubThemeInfo>;
 
-export const codeSubThemes = (res: ResponseSubThemes): SubThemesType => {
+export const fromSubThemesDto = (res: SubThemesDto): SubThemesType => {
   const items = res.data || [];
-  const data = items.map<SubTheme>((item) => ({
+  const data = items.map<SubThemeInfo>((item) => ({
     id: item.id,
     name: item.name,
     code: item.code,

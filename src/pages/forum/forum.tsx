@@ -53,7 +53,7 @@ const PageForum: FC = () => {
   const nextPage = useUrlNextPage();
 
   const isOpenModal = useAppSelector((state) => state.forum.isOpen);
-  const isLoading = useAppSelector((state) => state.forum.isLoadingThemes);
+  const status = useAppSelector((state) => state.forum.themesStatus);
   const isLoadingCreate = useAppSelector((state) => state.forum.createRequest);
 
   const data = useAppSelector((state) => state.forum.themes);
@@ -64,6 +64,9 @@ const PageForum: FC = () => {
   const actionGetThemes = useBoundAction(getThemes);
   const actionThemeCreate = useBoundAction(create);
   const actionSetOpen = useBoundAction(setOpen);
+  useEffect(() => {
+    actionGetThemes(page);
+  }, [page, actionGetThemes]);
 
   const handleNextPage = useCallback(() => {
     const newPage = currentPage + 1;
@@ -83,37 +86,42 @@ const PageForum: FC = () => {
     actionSetOpen(false);
   }, [actionSetOpen]);
 
-  useEffect(() => {
-    actionGetThemes(page);
-  }, [page, actionGetThemes]);
+  // Render
+  // ---------------
+
+  const renderBody = () => {
+    switch (status) {
+      case 'pending':
+        return <Loading className="forum-loading" />;
+      case 'failure':
+        return 'Возникла ошибка';
+      case 'success':
+        return (
+          <Table
+            className="forum-table"
+            columns={columns}
+            dataSource={data}
+            pagination={{
+              page: currentPage,
+              pages,
+              handlePrev: handlePrevPage,
+              handleNext: handleNextPage,
+            }}
+          />
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <Space type="vertical">
+      <Modal isOpen={isOpenModal} onClose={handleOnClose} node={document.body}>
+        <ThemeForm loading={isLoadingCreate} onSubmit={actionThemeCreate} />
+      </Modal>
       <Block title="Форум" page="forum">
         <div className="forum">
-          <div className="forum-body">
-            <Modal isOpen={isOpenModal} onClose={handleOnClose}>
-              <ThemeForm
-                loading={isLoadingCreate}
-                onSubmit={actionThemeCreate}
-              />
-            </Modal>
-            {isLoading ? (
-              <Loading className="forum-loading" />
-            ) : (
-              <Table
-                className="forum-table"
-                columns={columns}
-                dataSource={data}
-                pagination={{
-                  page: currentPage,
-                  pages,
-                  handlePrev: handlePrevPage,
-                  handleNext: handleNextPage,
-                }}
-              />
-            )}
-          </div>
+          <div className="forum-body">{renderBody()}</div>
           <div className="forum-footer">
             <Button
               type="button"

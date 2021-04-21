@@ -1,61 +1,41 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, SerializedError } from '@reduxjs/toolkit';
+import { formatError, formatHttpError } from 'utils/format';
 import { forumApi } from 'api/forum-api';
-
-export type Theme = {
-  id: number | string;
-  name: string;
-  code: string;
-  themeCount: number;
-  messageCount: number;
-};
-
-export type SubTheme = {
-  id: number | string;
-  name: string;
-  code: string;
-  viewCount: number;
-  messageCount: number;
-};
-
-export type ThemeMessage = {
-  id: number | string;
-  userName: string;
-  message: string;
-  date: Date;
-};
 
 export type ForumState = {
   createRequest: boolean;
   createSuccess: unknown;
   createFailure: unknown;
+
   isOpen: boolean;
-  isLoading: boolean;
-  isLoadingThemes: boolean;
-  isLoadingSubThemes: boolean;
+
+  themesStatus: StateStatus;
+  messagesStatus: StateStatus;
+  subTheemsStatus: StateStatus;
+
   currentPage: number;
   title: string;
   pages: number;
-  themes: Theme[];
-  subThemes: SubTheme[];
-  messages: ThemeMessage[];
-  error: unknown;
+  themes: ThemeInfo[];
+  subThemes: SubThemeInfo[];
+  messages: ThemeMessageInfo[];
+  error?: SerializedError;
 };
 
 export const initialState: ForumState = {
+  themesStatus: 'idle',
+  messagesStatus: 'idle',
+  subTheemsStatus: 'idle',
   createRequest: false,
   createSuccess: null,
   createFailure: null,
   isOpen: false,
-  isLoading: false,
-  isLoadingThemes: false,
-  isLoadingSubThemes: false,
   title: '',
   themes: [],
   messages: [],
   subThemes: [],
   currentPage: 1,
   pages: 1,
-  error: null,
 };
 
 export const slice = createSlice({
@@ -95,38 +75,41 @@ export const slice = createSlice({
     },
 
     themesRequest: (state) => {
-      state.isLoadingThemes = true;
+      state.themesStatus = 'pending';
     },
-    themesSuccess: (state, { payload }: PayloadAction<Theme[]>) => {
-      state.isLoadingThemes = false;
+    themesSuccess: (state, { payload }: PayloadAction<ThemeInfo[]>) => {
+      state.themesStatus = 'success';
       state.themes = payload;
     },
-    themesFailure: (state, { payload }: PayloadAction<unknown>) => {
-      state.isLoadingThemes = false;
+    themesFailure: (state, { payload }: PayloadAction<SerializedError>) => {
+      state.themesStatus = 'failure';
       state.error = payload;
     },
 
     messagesRequest: (state) => {
-      state.isLoading = true;
+      state.messagesStatus = 'pending';
     },
-    messagesSuccess: (state, { payload }: PayloadAction<ThemeMessage[]>) => {
-      state.isLoading = false;
+    messagesSuccess: (
+      state,
+      { payload }: PayloadAction<ThemeMessageInfo[]>
+    ) => {
+      state.messagesStatus = 'success';
       state.messages = payload;
     },
-    messagesFailure: (state, { payload }: PayloadAction<unknown>) => {
-      state.isLoading = false;
+    messagesFailure: (state, { payload }: PayloadAction<SerializedError>) => {
+      state.messagesStatus = 'failure';
       state.error = payload;
     },
 
     subThemesRequest: (state) => {
-      state.isLoadingSubThemes = true;
+      state.subTheemsStatus = 'pending';
     },
-    subThemesSuccess: (state, { payload }: PayloadAction<SubTheme[]>) => {
-      state.isLoadingSubThemes = false;
+    subThemesSuccess: (state, { payload }: PayloadAction<SubThemeInfo[]>) => {
+      state.subTheemsStatus = 'success';
       state.subThemes = payload;
     },
-    subThemesFailure: (state, { payload }: PayloadAction<unknown>) => {
-      state.isLoadingSubThemes = false;
+    subThemesFailure: (state, { payload }: PayloadAction<SerializedError>) => {
+      state.subTheemsStatus = 'failure';
       state.error = payload;
     },
   },
@@ -143,14 +126,14 @@ export function create(values: Record<string, string>) {
       const { data, error } = await forumApi.createTheme(values);
 
       if (error) {
-        dispatch(slice.actions.failure(error));
+        dispatch(slice.actions.failure(formatHttpError(error)));
       }
 
       if (data) {
         dispatch(slice.actions.success(true));
       }
     } catch (error) {
-      dispatch(slice.actions.failure(error));
+      dispatch(slice.actions.failure(formatError(error)));
     }
   };
 }
@@ -162,7 +145,7 @@ export function getThemes(page: string | number) {
       const { data, error } = await forumApi.getThemes(page);
 
       if (error) {
-        dispatch(slice.actions.themesFailure(error));
+        dispatch(slice.actions.themesFailure(formatHttpError(error)));
       }
 
       if (data) {
@@ -171,7 +154,7 @@ export function getThemes(page: string | number) {
         dispatch(slice.actions.themesSuccess(data.data));
       }
     } catch (error) {
-      dispatch(slice.actions.themesFailure(error));
+      dispatch(slice.actions.themesFailure(formatError(error)));
     }
   };
 }
@@ -183,7 +166,7 @@ export function getMessages(id: string | number) {
       const { data, error } = await forumApi.getMessages(id);
 
       if (error) {
-        dispatch(slice.actions.messagesFailure(error));
+        dispatch(slice.actions.messagesFailure(formatHttpError(error)));
       }
 
       if (data) {
@@ -191,7 +174,7 @@ export function getMessages(id: string | number) {
         dispatch(slice.actions.setTitle(data.theme.name));
       }
     } catch (error) {
-      dispatch(slice.actions.messagesFailure(error));
+      dispatch(slice.actions.messagesFailure(formatError(error)));
     }
   };
 }
@@ -203,7 +186,7 @@ export function getSubThemes(page: string | number) {
       const { data, error } = await forumApi.getSubThemes(page);
 
       if (error) {
-        dispatch(slice.actions.subThemesFailure(error));
+        dispatch(slice.actions.subThemesFailure(formatHttpError(error)));
       }
 
       if (data) {
@@ -212,7 +195,7 @@ export function getSubThemes(page: string | number) {
         dispatch(slice.actions.subThemesSuccess(data.data));
       }
     } catch (error) {
-      dispatch(slice.actions.subThemesFailure(error));
+      dispatch(slice.actions.subThemesFailure(formatError(error)));
     }
   };
 }

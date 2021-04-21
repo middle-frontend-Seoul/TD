@@ -1,16 +1,4 @@
-export type ResponsePages<T> = {
-  current_page: number;
-  pages: number;
-  data: T[];
-};
-
-export type Pages<T> = {
-  currentPage: number;
-  pages: number;
-  data: T[];
-};
-
-export type ResponseTheme = {
+type ThemeDto = {
   id: number;
   code: string;
   name: string;
@@ -18,9 +6,17 @@ export type ResponseTheme = {
   message_count: number;
 };
 
-export type ResponseThemes = ResponsePages<ResponseTheme>;
+type ThemeInfo = {
+  id: number | string;
+  name: string;
+  code: string;
+  themeCount: number;
+  messageCount: number;
+};
 
-export type ResponseSubTheme = {
+type ThemesDto = PagesDto<ThemeDto>;
+
+type SubThemeDto = {
   id: number;
   code: string;
   name: string;
@@ -28,9 +24,17 @@ export type ResponseSubTheme = {
   message_count: number;
 };
 
-export type ResponseSubThemes = ResponsePages<ResponseSubTheme>;
+type SubThemeInfo = {
+  id: number | string;
+  name: string;
+  code: string;
+  viewCount: number;
+  messageCount: number;
+};
 
-export type ResponseMessage = {
+type SubThemesDto = PagesDto<SubThemeDto>;
+
+type MessagesDto = {
   id: number;
   code: string;
   name: string;
@@ -40,4 +44,11 @@ export type ResponseMessage = {
     user_name: string;
     message: string;
   }[];
+};
+
+type ThemeMessageInfo = {
+  id: number | string;
+  userName: string;
+  message: string;
+  date: Date;
 };
