@@ -10,6 +10,7 @@ import { Enemy, SimpleEnemy } from './enemies';
 
 export class Game {
   private ticker: number;
+  private lastTime: number;
 
   private map: GameMap;
 
@@ -35,6 +36,7 @@ export class Game {
     size = 30
   ) {
     this.ticker = -1;
+    this.lastTime = 0;
 
     this.map = new GameMap(grid, size);
     this.canvas = new Canvas(canvas);
@@ -72,6 +74,7 @@ export class Game {
   }
 
   public animation(): void {
+    this.fps();
     this.update();
     this.draw();
     this.ticker = requestAnimationFrame(this.animation.bind(this));
@@ -81,6 +84,16 @@ export class Game {
     const position = { ...this.map.getStartPosition() };
     const enemy = new SimpleEnemy(position);
     this.moveMap.push(enemy);
+  };
+
+  private fps = (): void => {
+    if (!this.lastTime) {
+      this.lastTime = performance.now();
+    } else {
+      const fps = 1000 / (performance.now() - this.lastTime);
+      console.log(fps);
+      this.lastTime = 0;
+    }
   };
 
   private update = (): void => {
