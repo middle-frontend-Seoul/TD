@@ -50,13 +50,15 @@ const PagePlay: FC = () => {
   }, [canvasRef]);
 
   const onClickPause = useCallback(() => {
-    gameManager?.pause();
-    setMenuVisible(true);
+    if (gameManager?.pause()) {
+      setMenuVisible(true);
+    }
   }, [gameManager]);
 
   const onClickCloseMenu = useCallback(() => {
-    gameManager?.start();
-    setMenuVisible(false);
+    if (gameManager?.start()) {
+      setMenuVisible(false);
+    }
   }, [gameManager]);
 
   // -- Renders --

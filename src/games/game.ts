@@ -53,17 +53,19 @@ export class Game {
     this.addEnemy(); // времмено дабавляем врага для демонстрации работы
   }
 
-  public start(): void {
+  public start(): boolean {
     const boundAnimation = this.animation.bind(this);
     this.ticker = window.setInterval(
       () => requestAnimationFrame(boundAnimation),
       1000 / TARGET_FPS
     );
     boundAnimation();
+    return true;
   }
 
-  public pause(): void {
+  public pause(): boolean {
     window.clearInterval(this.ticker);
+    return true;
   }
 
   public gameOver(): void {

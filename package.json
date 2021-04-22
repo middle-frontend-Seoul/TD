@@ -74,6 +74,7 @@
     "style-resources-loader": "1.4.1",
     "ts-jest": "26.5.4",
     "ts-loader": "8.0.18",
+    "url-loader": "4.1.1",
     "webpack": "5.26.3",
     "webpack-cli": "4.5.0",
     "webpack-dev-server": "3.11.2",
