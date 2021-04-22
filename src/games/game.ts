@@ -9,8 +9,6 @@ import { TowersBuilder } from './towers-builder';
 import { Enemy, SimpleEnemy } from './enemies';
 import { getStartPosition } from './helpers';
 
-const TARGET_FPS = 60;
-
 export class Game {
   private ticker: number;
 
@@ -54,29 +52,25 @@ export class Game {
   }
 
   public start(): boolean {
-    const boundAnimation = this.animation.bind(this);
-    this.ticker = window.setInterval(
-      () => requestAnimationFrame(boundAnimation),
-      1000 / TARGET_FPS
-    );
-    boundAnimation();
+    this.ticker = requestAnimationFrame(this.animation.bind(this));
     return true;
   }
 
   public pause(): boolean {
-    window.clearInterval(this.ticker);
+    cancelAnimationFrame(this.ticker);
     return true;
   }
 
   public gameOver(): void {
     setTimeout(() => {
-      window.clearInterval(this.ticker);
+      cancelAnimationFrame(this.ticker);
     }, 100);
   }
 
   public animation(): void {
     this.update();
     this.draw();
+    this.ticker = requestAnimationFrame(this.animation.bind(this));
   }
 
   private addEnemy = (): void => {
