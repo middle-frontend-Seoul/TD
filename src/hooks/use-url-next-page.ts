@@ -10,7 +10,7 @@ export const useUrlNextPage = () => {
   return useCallback(
     (page: number | string) => {
       params.set('page', String(page));
-      const url = [location.pathname, params.toString()].join('?');
+      const url = `${location.pathname}?${params}`;
       history.push(url);
     },
     [history, location, params]

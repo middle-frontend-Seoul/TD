@@ -10,7 +10,9 @@ export interface IModalProps {
 }
 
 export const Modal: FC<IModalProps> = ({ isOpen, children, onClose, node }) => {
-  if (!isOpen) return null;
+  if (!isOpen) {
+    return null;
+  }
 
   const child = (
     <div className="modal">
