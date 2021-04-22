@@ -32,20 +32,32 @@ const PagePlay: FC = () => {
   const [isMenuVisible, setMenuVisible] = useState(false);
 
   useEffect(() => {
-    if (!canvasRef.current) return;
+    let game: Game;
+    if (canvasRef.current) {
+      try {
+        game = new Game(canvasRef.current, gridPlayOne);
+        game.init();
+        game.start();
 
-    try {
-      const game = new Game(canvasRef.current, gridPlayOne);
-      game.start();
-
-      setGameManager(game);
-    } catch (err) {
-      setError(err.message);
+        setGameManager(game);
+      } catch (err) {
+        setError(err.message);
+      }
     }
+    return () => {
+      game?.gameOver();
+    };
   }, [canvasRef]);
 
-  const onClickPause = useCallback(() => setMenuVisible(true), []);
-  const onClickCloseMenu = useCallback(() => setMenuVisible(false), []);
+  const onClickPause = useCallback(() => {
+    gameManager?.pause();
+    setMenuVisible(true);
+  }, [gameManager]);
+
+  const onClickCloseMenu = useCallback(() => {
+    gameManager?.start();
+    setMenuVisible(false);
+  }, [gameManager]);
 
   // -- Renders --
   // -------------
