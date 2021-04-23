@@ -62,14 +62,3 @@ export const getGridSize = (grid: GridType): GetGridSizeReturn => {
     width,
   };
 };
-
-export const loadImage = (src: string): Promise<HTMLImageElement> => {
-  return new Promise((res, rej) => {
-    const image = new Image();
-    image.onload = () => res(image);
-    image.onerror = rej;
-    image.src = src;
-  });
-};
-
-export const cloneNode = <T extends Node>(node: T): T => <T>node.cloneNode();

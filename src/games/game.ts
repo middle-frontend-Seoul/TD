@@ -2,7 +2,6 @@ import { MoveCursor } from './move-cursor';
 import { MoveMap } from './move-map';
 import { Canvas } from './canvas';
 import { GameMap } from './game-map';
-import { GameError } from './game-error';
 import { Cursor } from './cursor';
 import { GridType } from './typing';
 import { TowersMap } from './towers-map';
@@ -11,6 +10,8 @@ import { Enemy, SimpleEnemy } from './enemies';
 import { getStartPosition } from './helpers';
 
 export class Game {
+  private ticker: number;
+
   private grid: GridType;
 
   private size: number;
@@ -30,6 +31,8 @@ export class Game {
   private cursor: Cursor;
 
   constructor(canvas: HTMLCanvasElement, grid: GridType, size = 30) {
+    this.ticker = -1;
+
     this.grid = grid;
     this.size = size;
 
@@ -44,20 +47,30 @@ export class Game {
     this.towersBuilder = new TowersBuilder(this.towersMap, this.moveCursor);
   }
 
-  public start = async (): Promise<void> => {
-    try {
-      await this.map.init();
-      this.addEnemy(); // времмено дабавляем врага для демонстрации работы
-      this.animation();
-    } catch (error) {
-      throw new GameError('При старте игры возникла ошибка', error);
-    }
-  };
+  public init(): void {
+    this.addEnemy(); // времмено дабавляем врага для демонстрации работы
+  }
+
+  public start(): boolean {
+    this.ticker = requestAnimationFrame(this.animation.bind(this));
+    return true;
+  }
+
+  public pause(): boolean {
+    cancelAnimationFrame(this.ticker);
+    return true;
+  }
+
+  public gameOver(): void {
+    setTimeout(() => {
+      cancelAnimationFrame(this.ticker);
+    }, 100);
+  }
 
   public animation(): void {
     this.update();
     this.draw();
-    requestAnimationFrame(this.animation.bind(this));
+    this.ticker = requestAnimationFrame(this.animation.bind(this));
   }
 
   private addEnemy = (): void => {
