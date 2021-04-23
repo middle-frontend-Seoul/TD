@@ -1,8 +1,9 @@
 import bg from 'images/bg-play.png';
 import way from 'images/way-play.png';
 
-import { GridType } from './typing';
-import { getGridSize } from './helpers';
+import { GridType, Position } from 'games/typing';
+import { getGridSize, getStartPosition, getEndPosition } from 'games/helpers';
+import { GameError } from '../game-error';
 
 export class GameMap {
   private size: number;
@@ -17,6 +18,10 @@ export class GameMap {
 
   private imgWay: HTMLImageElement;
 
+  protected startPosition: Position;
+
+  protected endPosition: Position;
+
   constructor(grid: GridType, size = 30) {
     const { width, height } = getGridSize(grid);
 
@@ -29,6 +34,18 @@ export class GameMap {
     this.imgWay = new Image();
     this.imgBG.src = bg;
     this.imgWay.src = way;
+
+    this.startPosition = { x: 0, y: 0 };
+    this.endPosition = { x: 0, y: 0 };
+  }
+
+  async init(): Promise<void> {
+    try {
+      this.startPosition = getStartPosition(this.grid, this.size);
+      this.endPosition = getEndPosition(this.grid, this.size);
+    } catch (error) {
+      throw new GameError('Ошибка расчёта карты');
+    }
   }
 
   drawGrid(ctx: CanvasRenderingContext2D): void {
@@ -48,5 +65,13 @@ export class GameMap {
         );
       }
     }
+  }
+
+  public getStartPosition(): Position {
+    return this.startPosition;
+  }
+
+  public getEndPosition(): Position {
+    return this.endPosition;
   }
 }

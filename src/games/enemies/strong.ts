@@ -10,6 +10,7 @@ export class StrongEnemy extends Enemy {
       livesLeft: 180,
       speed: 0.8,
       position,
+      damage: 2,
     });
   }
 

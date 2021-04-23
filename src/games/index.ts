@@ -1,6 +1,6 @@
 export * from './move-cursor';
 export * from './game-error';
-export * from './game-map';
+export * from './maps/game-map';
 export * from './helpers';
 export * from './canvas';
 export * from './cursor';
