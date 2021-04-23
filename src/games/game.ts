@@ -26,10 +26,14 @@ export class Game {
   private cursor: Cursor;
 
   private hp: number;
-  // @ts-ignore
   private onGameEnded: () => void;
 
-  constructor(canvas: HTMLCanvasElement, grid: GridType, onGameEnded: () => void, size = 30) {
+  constructor(
+    canvas: HTMLCanvasElement,
+    grid: GridType,
+    onGameEnded: () => void,
+    size = 30
+  ) {
     this.ticker = -1;
 
     this.map = new GameMap(grid, size);

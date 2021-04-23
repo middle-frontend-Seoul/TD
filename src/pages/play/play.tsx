@@ -36,6 +36,10 @@ const PagePlay: FC = () => {
 
   const history = useHistory();
 
+  const onGameEnded = () => {
+    setGameEnded(true);
+  };
+
   useEffect(() => {
     let game: Game;
     if (canvasRef.current) {
@@ -53,10 +57,6 @@ const PagePlay: FC = () => {
       game?.gameOver();
     };
   }, [canvasRef]);
-
-  const onGameEnded = () => {
-    setGameEnded(true);
-  };
 
   const onClickPause = useCallback(() => {
     if (gameManager?.pause()) {
@@ -110,7 +110,7 @@ const PagePlay: FC = () => {
     history.push({
       pathname: '/',
     });
-  }
+  };
 
   return (
     <Block relative page="play">
@@ -157,7 +157,7 @@ const PagePlay: FC = () => {
       </Modal>
       <Modal isOpen={isGameEnded} onClose={returnToMain}>
         <Space>
-          <div className={"end-game-title"}>Игра завершена</div>
+          <div className="end-game-title">Игра завершена</div>
           <Button radius>Завершить игру</Button>
         </Space>
       </Modal>
