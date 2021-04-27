@@ -7,6 +7,8 @@ import React, {
   useCallback,
 } from 'react';
 
+import { useHistory } from 'react-router';
+
 import { Card } from 'components-ui/card';
 import { Space } from 'components-ui/space';
 import { Stats } from 'components-ui/stats';
@@ -19,7 +21,7 @@ import { Game, Towers } from 'games';
 import sell from 'images/tools/sell.png';
 import openFS from 'images/tools/open-fullscreen.png';
 import closeFS from 'images/tools/exit-fullscreen.png';
-import { gridPlayOne } from './grid';
+import { gridPlayOne } from '../../games/maps/grid_1';
 import './style.scss';
 
 const PagePlay: FC = () => {
@@ -30,12 +32,19 @@ const PagePlay: FC = () => {
   // TODO: информация об ошибке в стайте является временныь решением
   const [error, setError] = useState('');
   const [isMenuVisible, setMenuVisible] = useState(false);
+  const [isGameEnded, setGameEnded] = useState(false);
+
+  const history = useHistory();
+
+  const onGameEnded = () => {
+    setGameEnded(true);
+  };
 
   useEffect(() => {
     let game: Game;
     if (canvasRef.current) {
       try {
-        game = new Game(canvasRef.current, gridPlayOne);
+        game = new Game(canvasRef.current, gridPlayOne, onGameEnded);
         game.init();
         game.start();
 
@@ -97,6 +106,12 @@ const PagePlay: FC = () => {
     }
   };
 
+  const returnToMain = () => {
+    history.push({
+      pathname: '/',
+    });
+  };
+
   return (
     <Block relative page="play">
       {error && <div>{error}</div>}
@@ -137,6 +152,12 @@ const PagePlay: FC = () => {
         <Space>
           <Button radius>Продолжить</Button>
           <Button radius>Начать сначала</Button>
+          <Button radius>Завершить игру</Button>
+        </Space>
+      </Modal>
+      <Modal isOpen={isGameEnded} onClose={returnToMain}>
+        <Space>
+          <div className="end-game-title">Игра завершена</div>
           <Button radius>Завершить игру</Button>
         </Space>
       </Modal>

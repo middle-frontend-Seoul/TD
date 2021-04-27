@@ -99,4 +99,8 @@ export class MoveMap<T extends InterfaceMoveMap> {
   public getEntities(): T[] {
     return this.entities;
   }
+
+  public remove = (index: number): void => {
+    this.entities.splice(index, 1);
+  };
 }

@@ -8,6 +8,7 @@ type EnemyProps = {
   live: number;
   livesLeft: number;
   position: Position;
+  damage: number;
 };
 
 export abstract class Enemy extends InterfaceMoveMap {
@@ -23,7 +24,17 @@ export abstract class Enemy extends InterfaceMoveMap {
 
   protected position: Position;
 
-  constructor({ name, live, livesLeft, size, position, speed }: EnemyProps) {
+  protected damage: number;
+
+  constructor({
+    name,
+    live,
+    livesLeft,
+    size,
+    position,
+    speed,
+    damage,
+  }: EnemyProps) {
     super(position);
     this.name = name;
 
@@ -33,11 +44,13 @@ export abstract class Enemy extends InterfaceMoveMap {
     this.size = size;
     this.speed = speed;
     this.position = position;
+
+    this.damage = damage;
   }
 
   abstract draw(ctx: CanvasRenderingContext2D): void;
 
-  damage = (damage: number): void => {
+  recieveDamage = (damage: number): void => {
     this.livesLeft -= damage;
   };
 
@@ -60,5 +73,9 @@ export abstract class Enemy extends InterfaceMoveMap {
     ctx.fillStyle = '#FF0000';
     ctx.rect(x + 2, y - 4, width, 2);
     ctx.fill();
+  };
+
+  public getDamage = (): number => {
+    return this.damage;
   };
 }

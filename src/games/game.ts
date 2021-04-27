@@ -1,20 +1,15 @@
 import { MoveCursor } from './move-cursor';
 import { MoveMap } from './move-map';
 import { Canvas } from './canvas';
-import { GameMap } from './game-map';
+import { GameMap } from './maps/game-map';
 import { Cursor } from './cursor';
 import { GridType } from './typing';
 import { TowersMap } from './towers-map';
 import { TowersBuilder } from './towers-builder';
 import { Enemy, SimpleEnemy } from './enemies';
-import { getStartPosition } from './helpers';
 
 export class Game {
   private ticker: number;
-
-  private grid: GridType;
-
-  private size: number;
 
   private map: GameMap;
 
@@ -30,11 +25,16 @@ export class Game {
 
   private cursor: Cursor;
 
-  constructor(canvas: HTMLCanvasElement, grid: GridType, size = 30) {
-    this.ticker = -1;
+  private hp: number;
+  private onGameEnded: () => void;
 
-    this.grid = grid;
-    this.size = size;
+  constructor(
+    canvas: HTMLCanvasElement,
+    grid: GridType,
+    onGameEnded: () => void,
+    size = 30
+  ) {
+    this.ticker = -1;
 
     this.map = new GameMap(grid, size);
     this.canvas = new Canvas(canvas);
@@ -45,10 +45,14 @@ export class Game {
 
     this.towersMap = new TowersMap(grid, size);
     this.towersBuilder = new TowersBuilder(this.towersMap, this.moveCursor);
+
+    this.hp = 5;
+    this.onGameEnded = onGameEnded;
   }
 
   public init(): void {
-    this.addEnemy(); // времмено дабавляем врага для демонстрации работы
+    this.map.init();
+    setInterval(this.addEnemy, 1000); // времмено дабавляем врагов для демонстрации работы
   }
 
   public start(): boolean {
@@ -74,7 +78,7 @@ export class Game {
   }
 
   private addEnemy = (): void => {
-    const position = getStartPosition(this.grid, this.size);
+    const position = { ...this.map.getStartPosition() };
     const enemy = new SimpleEnemy(position);
     this.moveMap.push(enemy);
   };
@@ -82,6 +86,16 @@ export class Game {
   private update = (): void => {
     this.moveMap.update();
     this.towersMap.update(this.moveMap.getEntities());
+    this.moveMap.getEntities().forEach((enemy, index) => {
+      if (enemy.getPositions().x > this.map.getEndPosition().x) {
+        this.hp -= enemy.getDamage();
+        this.moveMap.remove(index);
+        if (this.hp <= 0) {
+          this.gameOver();
+          this.onGameEnded();
+        }
+      }
+    });
   };
 
   private draw = (): void => {

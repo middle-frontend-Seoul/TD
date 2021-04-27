@@ -23,6 +23,21 @@ export const getStartPosition = (grid: GridType, size: number): Position => {
   return { x, y };
 };
 
+export const getEndPosition = (grid: GridType, size: number): Position => {
+  const { row, cell } = grid.reduce(
+    (prev, curr, i) => {
+      // eslint-disable-next-line no-param-reassign
+      prev.row = curr[prev.cell] ? i : prev.row;
+      return prev;
+    },
+    { row: 0, cell: size - 1 }
+  );
+
+  const x = cell * size + size;
+  const y = row * size;
+  return { x, y };
+};
+
 export const getGridPosition = (
   size: number,
   procent: number

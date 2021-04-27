@@ -90,7 +90,7 @@ export class TowersMap {
     const { enemy } = enemyRect;
 
     tower.setActive(false);
-    enemy.damage(tower.getDamage());
+    enemy.recieveDamage(tower.getDamage());
     setTimeout(() => tower.setActive(true), tower.getReloadTime());
   };
 
