@@ -1,0 +1,83 @@
+{
+  "current_page": 1,
+  "pages": 2,
+  "data": [
+    {
+      "id": 1,
+      "code": "subthema-1",
+      "name": "Подтема номре 1",
+      "view_сount": 22,
+      "message_count": 12
+    },
+    {
+      "id": 2,
+      "code": "subthema-2",
+      "name": "Подтема номре 2",
+      "view_сount": 22,
+      "message_count": 12
+    },
+    {
+      "id": 3,
+      "code": "subthema-3",
+      "name": "Подтема номре 3",
+      "view_сount": 22,
+      "message_count": 12
+    },
+    {
+      "id": 4,
+      "code": "subthema-4",
+      "name": "Подтема номре 4",
+      "view_сount": 22,
+      "message_count": 12
+    },
+    {
+      "id": 5,
+      "code": "subthema-5",
+      "name": "Подтема номре 5",
+      "view_сount": 22,
+      "message_count": 12
+    },
+    {
+      "id": 6,
+      "code": "subthema-6",
+      "name": "Подтема номре 6",
+      "view_сount": 22,
+      "message_count": 12
+    },
+    {
+      "id": 7,
+      "code": "subthema-7",
+      "name": "Подтема номре 7",
+      "view_сount": 22,
+      "message_count": 12
+    },
+    {
+      "id": 8,
+      "code": "subthema-8",
+      "name": "Подтема номре 8",
+      "view_сount": 22,
+      "message_count": 12
+    },
+    {
+      "id": 9,
+      "code": "subthema-9",
+      "name": "Подтема номре 9",
+      "view_сount": 22,
+      "message_count": 12
+    },
+    {
+      "id": 10,
+      "code": "subthema-10",
+      "name": "Подтема номре 10",
+      "view_сount": 22,
+      "message_count": 12
+    },
+    {
+      "id": 11,
+      "code": "subthema-11",
+      "name": "Подтема номре 11",
+      "view_сount": 22,
+      "message_count": 12
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-import React, { FC, ChangeEvent, useState, useRef } from 'react';
+import React, { FC, ChangeEvent, useEffect, useState, useRef } from 'react';
 import cn from 'classnames';
 
 import './input.scss';
@@ -11,6 +11,7 @@ export interface InputProps {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   id?: string;
+  error?: string;
   name: string;
   type: string | undefined;
 }
@@ -19,6 +20,7 @@ export const Input: FC<InputProps> = ({
   size = 'medium',
   placeholder = '',
   value,
+  error,
   onChange,
   name,
   id,
@@ -27,6 +29,11 @@ export const Input: FC<InputProps> = ({
   const [isHidden, setIsHidden] = useState<boolean>(true);
   const [labelStyle, setLabelStyle] = useState<string>('default');
   const inputEl = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputEl?.current?.focus();
+  }, [isHidden]);
+
   const handleLeave = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     if (!value) {
@@ -34,6 +41,7 @@ export const Input: FC<InputProps> = ({
       setLabelStyle('');
     }
   };
+
   const handleClick = () => {
     if (isHidden) {
       setIsHidden(false);
@@ -44,6 +52,7 @@ export const Input: FC<InputProps> = ({
       }
     }
   };
+
   const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.value !== '' || !placeholder) {
       setLabelStyle(`top`);
@@ -52,15 +61,13 @@ export const Input: FC<InputProps> = ({
     }
     onChange(event);
   };
-  React.useEffect(() => {
-    inputEl?.current?.focus();
-  }, [isHidden]);
+
   return (
     <div
       onKeyDown={handleClick}
       role="button"
       tabIndex={0}
-      className={cn('input-field', size)}
+      className={cn('input-field', size, { error: !!error })}
       onClick={handleClick}
     >
       <div className={cn('defaultValue', labelStyle, size)}>{placeholder}</div>

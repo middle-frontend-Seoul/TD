@@ -1,0 +1,20 @@
+{
+  "current_page": 2,
+  "pages": 2,
+  "data": [
+    {
+      "id": 11,
+      "code": "forum-11",
+      "name": "Тема номре 11",
+      "theme_сount": 22,
+      "message_count": 12
+    },
+    {
+      "id": 12,
+      "code": "forum-12",
+      "name": "Тема номре 12",
+      "theme_сount": 2,
+      "message_count": 8
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "current_page": 2,
+  "pages": 2,
+  "data": [
+    {
+      "id": 11,
+      "code": "subthema-11",
+      "name": "Подтема номре 11",
+      "view_сount": 22,
+      "message_count": 12
+    }
+  ]
+}

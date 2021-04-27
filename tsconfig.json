@@ -1,10 +1,6 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "es2017",
-      "webworker"
-    ],
+    "lib": ["dom", "es2017", "webworker"],
     "module": "commonjs",
     "moduleResolution": "node",
     "target": "es5",
@@ -15,17 +11,12 @@
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
+    "resolveJsonModule": true,
     "skipLibCheck": true,
     "declaration": false,
     "sourceMap": true,
     "baseUrl": "src"
   },
-  "include": [
-    "src/**/*",
-    "server/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/*.js"
-  ]
+  "include": ["src/**/*", "server/**/*"],
+  "exclude": ["node_modules", "**/*.js"]
 }
