@@ -5,6 +5,7 @@ import React, {
   useState,
   useEffect,
   useCallback,
+  useReducer,
 } from 'react';
 
 import { useHistory } from 'react-router';
@@ -16,7 +17,7 @@ import { Block } from 'components-ui/block';
 import { Modal } from 'components-ui/modal';
 import { Button } from 'components-ui/button';
 
-import { Game } from 'games/game';
+import { Game, uiReducer, initialUIState } from 'games/game';
 import { Towers } from 'games/towers/towers';
 
 import sell from 'images/tools/sell.png';
@@ -35,20 +36,15 @@ const PagePlay: FC = () => {
   // TODO: информация об ошибке в стайте является временныь решением
   const [error, setError] = useState('');
   const [isMenuVisible, setMenuVisible] = useState(false);
-  const [isGameEnded, setGameEnded] = useState(false);
+  const [uiState, setUIState] = useReducer(uiReducer, initialUIState);
 
   const history = useHistory();
-
-  const onGameEnded = () => {
-    setGameEnded(true);
-  };
 
   useEffect(() => {
     let game: Game;
     if (canvasRef.current) {
       try {
-        game = new Game(canvasRef.current, gridPlayOne, onGameEnded, TILE_SIZE);
-        game.init();
+        game = new Game(canvasRef.current, gridPlayOne, setUIState, TILE_SIZE);
         game.start();
 
         setGameManager(game);
@@ -133,8 +129,9 @@ const PagePlay: FC = () => {
             Пауза
           </Button>
           <Stats
-            names={['Очки', 'Волна', 'Жизни', 'Ресурсы']}
-            values={[200010, '#1', 3, '30 B']}
+            score={uiState.score}
+            wave={uiState.wave}
+            lives={uiState.lives}
           />
         </div>
         <div
@@ -160,7 +157,7 @@ const PagePlay: FC = () => {
           </Button>
         </Space>
       </Modal>
-      <Modal isOpen={isGameEnded} onClose={() => undefined}>
+      <Modal isOpen={uiState.isGameEnded} onClose={() => undefined}>
         <Space>
           <div className="end-game-title">Игра завершена</div>
           <Button radius onClick={returnToMain}>

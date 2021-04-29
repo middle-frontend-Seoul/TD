@@ -4,7 +4,11 @@ import { Renderable } from './renderable';
 export class EntityRenderer<T extends Renderable> {
   protected entities: T[] = [];
 
-  public add(entity: T) {
+  init() {
+    this.entities = [];
+  }
+
+  add(entity: T) {
     this.entities.push(entity);
   }
 

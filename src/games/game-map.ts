@@ -1,11 +1,14 @@
 import bg from 'images/bg-play.png';
 import way from 'images/way-play.png';
 
+import { EventBus, EventNames } from 'games/event-bus';
 import { GridType, Position, GridPosition } from 'games/typing';
 import { getGridSize, getStartPosition, getEndPosition } from 'games/helpers';
 import { GameError } from 'games/game-error';
 
 export class GameMap {
+  protected event: () => EventBus;
+
   private tileSize: number;
 
   private width: number;
@@ -25,13 +28,12 @@ export class GameMap {
 
   protected endPosition: Position;
 
-  private hp = 5;
-  private gameOver: () => void;
+  constructor(grid: GridType, tileSize = 30) {
+    const event = new EventBus();
+    this.event = () => event;
 
-  constructor(grid: GridType, gameOver: () => void, tileSize = 30) {
     const { width, height } = getGridSize(grid);
 
-    this.gameOver = gameOver;
     this.tileSize = tileSize;
     this.grid = grid;
     this.width = width;
@@ -75,14 +77,8 @@ export class GameMap {
     }
   }
 
-  update() {
-    if (this.hp <= 0) {
-      this.gameOver();
-    }
-  }
-
   public handleDamage(damage: number) {
-    this.hp -= damage;
+    this.event().emit(EventNames.enemyPassed, damage);
   }
 
   public getStartPosition(): Position {

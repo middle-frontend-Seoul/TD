@@ -1,9 +1,13 @@
 import { Renderable } from 'games/interfaces/renderable';
+import { Position } from 'games/typing';
+import { EventBus, EventNames } from 'games/event-bus';
 import { GameMap } from 'games/game-map';
 
 export type Direction = 'top' | 'left' | 'right' | 'bottom';
 
 export abstract class Enemy extends Renderable {
+  protected event: () => EventBus;
+
   protected abstract name: string;
 
   protected abstract speed: number;
@@ -19,6 +23,12 @@ export abstract class Enemy extends Renderable {
   protected direction: Direction = 'right'; // TODO - после ввода path в Map direction уже будет не нужно
 
   public isAlive = true;
+
+  constructor(position: Position = { x: 0, y: 0 }) {
+    super(position);
+    const event = new EventBus();
+    this.event = () => event;
+  }
 
   update(map: GameMap) {
     if (this.position.x > map.getEndPosition().x) {
@@ -45,10 +55,10 @@ export abstract class Enemy extends Renderable {
       const gridPosition = { x: gridXLeftTopPoint, y: gridYLeftTopPoint };
 
       const trackwayIsClear = {
-        right: Boolean(grid[gridPosition.y][gridPosition.x + 1]),
-        top: Boolean(grid[gridPosition.y - 1][gridPosition.x]),
-        left: Boolean(grid[gridPosition.y][gridPosition.x - 1]),
-        bottom: Boolean(grid[gridPosition.y + 1][gridPosition.x]),
+        right: grid[gridPosition.y][gridPosition.x + 1] === 1,
+        top: grid[gridPosition.y - 1][gridPosition.x] === 1,
+        left: grid[gridPosition.y][gridPosition.x - 1] === 1,
+        bottom: grid[gridPosition.y + 1][gridPosition.x] === 1,
       };
 
       const keys = Object.keys(trackwayIsClear);
@@ -104,8 +114,7 @@ export abstract class Enemy extends Renderable {
   };
 
   private onDie = () => {
-    console.log('die is called'); // eslint-disable-line
-    // cashManager.add(this.cash);
+    this.event().emit(EventNames.scoreAdd, this.cash);
   };
 
   private drawLive = (ctx: CanvasRenderingContext2D, map: GameMap): void => {

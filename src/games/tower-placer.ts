@@ -1,4 +1,5 @@
 import { towerManager } from 'games/managers/tower-manager';
+import { GameStats } from 'games/game-stats';
 import { Renderable } from 'games/interfaces/renderable';
 import { EventBus, EventNames } from 'games/event-bus';
 import { Tower } from 'games/towers/tower';
@@ -22,14 +23,17 @@ export class TowerPlacer extends Renderable {
 
   private gridPosition: GridPosition = { x: 0, y: 0 };
 
+  private gameStats: GameStats;
+
   protected event: () => EventBus;
 
-  constructor(cursor: Cursor, map: GameMap) {
+  constructor(cursor: Cursor, map: GameMap, gameStats: GameStats) {
     super();
     const event = new EventBus();
 
     this.cursor = cursor;
     this.map = map;
+    this.gameStats = gameStats;
 
     this.event = () => event;
 
@@ -45,9 +49,12 @@ export class TowerPlacer extends Renderable {
         this.isPlacing &&
         this.canBePlaced()
       ) {
-        this.map.addElement(this.gridPosition);
-        const tileSize = this.map.getTileSize();
-        towerManager.add(new this.TowerClass(this.gridPosition, tileSize));
+        if (gameStats.canWithdraw(this.tower.price)) {
+          this.gameStats.withdraw(this.tower.price);
+          this.map.addElement(this.gridPosition);
+          const tileSize = this.map.getTileSize();
+          towerManager.add(new this.TowerClass(this.gridPosition, tileSize));
+        }
       }
     });
   }

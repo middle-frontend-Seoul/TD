@@ -1,15 +1,58 @@
+import { EventBus, EventNames } from 'games/event-bus';
 import { enemyManager } from 'games/managers/enemy-manager';
 import { towerManager } from 'games/managers/tower-manager';
 import { munitionManager } from 'games/managers/munition-manager';
+import { GameStats } from 'games/game-stats';
 import { Canvas } from 'games/canvas';
 import { GameMap } from 'games/game-map';
 import { Cursor } from 'games/cursor';
-import { GridType } from 'games/typing';
+import { GridType, GameUIAction, GameUIState } from 'games/typing';
 import { TowerPlacer } from 'games/tower-placer';
 import { SimpleEnemy } from 'games/enemies';
 
+export const initialUIState: GameUIState = {
+  isGameEnded: false,
+  score: 100,
+  wave: 1,
+  lives: 5,
+};
+
+export function uiReducer(state: GameUIState, action: GameUIAction) {
+  switch (action.type) {
+    case 'gameOver':
+      return {
+        ...state,
+        isGameEnded: true,
+      };
+
+    case 'setScore':
+      return {
+        ...state,
+        score: action.payload,
+      };
+
+    case 'setWave':
+      return {
+        ...state,
+        wave: action.payload,
+      };
+
+    case 'setLives':
+      return {
+        ...state,
+        lives: action.payload,
+      };
+
+    default:
+      throw new Error('uiReducer - no such action type');
+  }
+}
+
 export class Game {
+  protected event: () => EventBus;
+
   private ticker: number;
+
   private lastTime: number;
 
   private map: GameMap;
@@ -20,34 +63,56 @@ export class Game {
 
   private cursor: Cursor;
 
-  private onGameEnded: () => void;
+  private gameStats: GameStats;
+
+  private setUIState: React.Dispatch<GameUIAction>;
 
   constructor(
     canvas: HTMLCanvasElement,
     grid: GridType,
-    onGameEnded: () => void,
+    setUIState: React.Dispatch<GameUIAction>,
     tileSize: number
   ) {
+    const event = new EventBus();
+    this.event = () => event;
+    this.event().clearAll();
+
+    const clonedGrid = grid.map((row) => [...row]);
+
     this.ticker = -1;
     this.lastTime = 0;
-    this.onGameEnded = onGameEnded;
+    this.setUIState = setUIState;
 
-    const boundGameOver = this.gameOver.bind(this);
-    this.map = new GameMap(grid, boundGameOver, tileSize);
+    this.gameStats = new GameStats(initialUIState, setUIState);
+    this.map = new GameMap(clonedGrid, tileSize);
     this.canvas = new Canvas(canvas);
     this.cursor = new Cursor(this.canvas);
-    this.towerPlacer = new TowerPlacer(this.cursor, this.map);
+    this.towerPlacer = new TowerPlacer(this.cursor, this.map, this.gameStats);
+
+    this.init();
+
+    this.event().on(EventNames.gameOver, () => {
+      this.gameOver();
+    });
   }
 
   public init(): void {
     this.map.init();
+    munitionManager.init();
+    enemyManager.init();
+    towerManager.init();
+
     setTimeout(this.addEnemy, 2000); // времмено дабавляем врагов для демонстрации работы
     setTimeout(this.addEnemy, 4000); // времмено дабавляем врагов для демонстрации работы
     setTimeout(this.addEnemy, 6000); // времмено дабавляем врагов для демонстрации работы
+    setTimeout(this.addEnemy, 8000); // времмено дабавляем врагов для демонстрации работы
+    setTimeout(this.addEnemy, 10000); // времмено дабавляем врагов для демонстрации работы
   }
 
   public start(): boolean {
     this.ticker = requestAnimationFrame(this.animation.bind(this));
+    // TODO - добавить waveManager для создания волн врагов
+    // waveManager.start();
     return true;
   }
 
@@ -60,7 +125,7 @@ export class Game {
   public gameOver(): void {
     cancelAnimationFrame(this.ticker);
     this.ticker = -1;
-    this.onGameEnded();
+    this.setUIState({ type: 'gameOver' });
   }
 
   public animation(): void {
@@ -89,7 +154,6 @@ export class Game {
   };
 
   private update = (): void => {
-    this.map.update();
     munitionManager.update(this.map);
     enemyManager.update(this.map);
     towerManager.update(this.map);

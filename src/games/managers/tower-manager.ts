@@ -4,7 +4,6 @@ import { GameMap } from 'games/game-map';
 
 export class TowerManager extends EntityRenderer<Tower> {
   update(map: GameMap) {
-    // console.log(JSON.stringify(this.entities[0]?.position));
     this.entities.forEach((tower) => {
       tower.update(map);
     });
