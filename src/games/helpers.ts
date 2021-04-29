@@ -8,7 +8,19 @@ type GridPosition = {
 
 const GRID_FIRST_ROW = 0;
 
-export const getStartPosition = (grid: GridType, size: number): Position => {
+export const getDistanceSquared = (
+  position1: Position,
+  position2: Position
+) => {
+  const deltaX = position1.x - position2.x;
+  const deltaY = position1.y - position2.y;
+  return deltaX * deltaX + deltaY * deltaY;
+};
+
+export const getStartPosition = (
+  grid: GridType,
+  tileSize: number
+): Position => {
   const { row, cell } = grid.reduce(
     (prev, curr, i) => {
       // eslint-disable-next-line no-param-reassign
@@ -18,32 +30,32 @@ export const getStartPosition = (grid: GridType, size: number): Position => {
     { row: 0, cell: 0 }
   );
 
-  const x = cell * size - size;
-  const y = row * size;
+  const x = cell * tileSize - tileSize;
+  const y = row * tileSize;
   return { x, y };
 };
 
-export const getEndPosition = (grid: GridType, size: number): Position => {
+export const getEndPosition = (grid: GridType, tileSize: number): Position => {
   const { row, cell } = grid.reduce(
     (prev, curr, i) => {
       // eslint-disable-next-line no-param-reassign
       prev.row = curr[prev.cell] ? i : prev.row;
       return prev;
     },
-    { row: 0, cell: size - 1 }
+    { row: 0, cell: tileSize - 1 }
   );
 
-  const x = cell * size + size;
-  const y = row * size;
+  const x = cell * tileSize + tileSize;
+  const y = row * tileSize;
   return { x, y };
 };
 
 export const getGridPosition = (
-  size: number,
+  tileSize: number,
   procent: number
 ): GridPosition => {
-  const width = (size * procent) / 100;
-  const offset = Math.floor((size - width) / 2);
+  const width = (tileSize * procent) / 100;
+  const offset = Math.floor((tileSize - width) / 2);
 
   return {
     width,

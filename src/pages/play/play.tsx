@@ -16,7 +16,8 @@ import { Block } from 'components-ui/block';
 import { Modal } from 'components-ui/modal';
 import { Button } from 'components-ui/button';
 
-import { Game, Towers } from 'games';
+import { Game } from 'games/game';
+import { Towers } from 'games/towers/towers';
 
 import sell from 'images/tools/sell.png';
 import openFS from 'images/tools/open-fullscreen.png';
@@ -73,13 +74,13 @@ const PagePlay: FC = () => {
   // -- Renders --
   // -------------
   const renderTowers = useMemo(() => {
-    const builder = gameManager?.getTowersBuilder();
+    const builder = gameManager?.getTowerPlacer();
 
     return Towers.map((Tower) => {
       const tower = new Tower();
 
       const onDragTower = () => {
-        if (builder) builder.onDrag(Tower);
+        if (builder) builder.place(Tower);
       };
 
       return (
@@ -152,13 +153,17 @@ const PagePlay: FC = () => {
         <Space>
           <Button radius>Продолжить</Button>
           <Button radius>Начать сначала</Button>
-          <Button radius>Завершить игру</Button>
+          <Button radius onClick={returnToMain}>
+            Завершить игру
+          </Button>
         </Space>
       </Modal>
-      <Modal isOpen={isGameEnded} onClose={returnToMain}>
+      <Modal isOpen={isGameEnded} onClose={() => undefined}>
         <Space>
           <div className="end-game-title">Игра завершена</div>
-          <Button radius>Завершить игру</Button>
+          <Button radius onClick={returnToMain}>
+            Завершить игру
+          </Button>
         </Space>
       </Modal>
     </Block>

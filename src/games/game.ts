@@ -1,12 +1,12 @@
-import { MoveCursor } from './move-cursor';
-import { MoveMap } from './move-map';
-import { Canvas } from './canvas';
-import { GameMap } from './maps/game-map';
-import { Cursor } from './cursor';
-import { GridType } from './typing';
-import { TowersMap } from './towers-map';
-import { TowersBuilder } from './towers-builder';
-import { Enemy, SimpleEnemy } from './enemies';
+import { enemyManager } from 'games/managers/enemy-manager';
+import { towerManager } from 'games/managers/tower-manager';
+import { munitionManager } from 'games/managers/munition-manager';
+import { Canvas } from 'games/canvas';
+import { GameMap } from 'games/game-map';
+import { Cursor } from 'games/cursor';
+import { GridType } from 'games/typing';
+import { TowerPlacer } from 'games/tower-placer';
+import { SimpleEnemy } from 'games/enemies';
 
 export class Game {
   private ticker: number;
@@ -14,47 +14,36 @@ export class Game {
 
   private map: GameMap;
 
-  private towersMap: TowersMap;
-
-  private towersBuilder: TowersBuilder;
-
-  private moveCursor: MoveCursor;
-
-  private moveMap: MoveMap<Enemy>;
+  private towerPlacer: TowerPlacer;
 
   private canvas: Canvas;
 
   private cursor: Cursor;
 
-  private hp: number;
   private onGameEnded: () => void;
 
   constructor(
     canvas: HTMLCanvasElement,
     grid: GridType,
     onGameEnded: () => void,
-    size = 30
+    tileSize = 30
   ) {
     this.ticker = -1;
     this.lastTime = 0;
-
-    this.map = new GameMap(grid, size);
-    this.canvas = new Canvas(canvas);
-    this.cursor = new Cursor(this.canvas, size);
-
-    this.moveMap = new MoveMap(grid, size);
-    this.moveCursor = new MoveCursor();
-
-    this.towersMap = new TowersMap(grid, size);
-    this.towersBuilder = new TowersBuilder(this.towersMap, this.moveCursor);
-
-    this.hp = 5;
     this.onGameEnded = onGameEnded;
+
+    const boundGameOver = this.gameOver.bind(this);
+    this.map = new GameMap(grid, boundGameOver, tileSize);
+    this.canvas = new Canvas(canvas);
+    this.cursor = new Cursor(this.canvas);
+    this.towerPlacer = new TowerPlacer(this.cursor, this.map);
   }
 
   public init(): void {
     this.map.init();
-    setInterval(this.addEnemy, 1000); // времмено дабавляем врагов для демонстрации работы
+    setTimeout(this.addEnemy, 2000); // времмено дабавляем врагов для демонстрации работы
+    setTimeout(this.addEnemy, 4000); // времмено дабавляем врагов для демонстрации работы
+    setTimeout(this.addEnemy, 6000); // времмено дабавляем врагов для демонстрации работы
   }
 
   public start(): boolean {
@@ -64,67 +53,61 @@ export class Game {
 
   public pause(): boolean {
     cancelAnimationFrame(this.ticker);
+    this.ticker = -1;
     return true;
   }
 
   public gameOver(): void {
-    setTimeout(() => {
-      cancelAnimationFrame(this.ticker);
-    }, 100);
+    cancelAnimationFrame(this.ticker);
+    this.ticker = -1;
+    this.onGameEnded();
   }
 
   public animation(): void {
     this.fps();
     this.update();
     this.draw();
-    this.ticker = requestAnimationFrame(this.animation.bind(this));
+    if (this.ticker !== -1) {
+      this.ticker = requestAnimationFrame(this.animation.bind(this));
+    }
   }
 
   private addEnemy = (): void => {
     const position = { ...this.map.getStartPosition() };
     const enemy = new SimpleEnemy(position);
-    this.moveMap.push(enemy);
+    enemyManager.add(enemy);
   };
 
   private fps = (): void => {
     if (!this.lastTime) {
       this.lastTime = performance.now();
     } else {
-      const fps = 1000 / (performance.now() - this.lastTime);
-      console.log(fps);
+      // const fps = 1000 / (performance.now() - this.lastTime);
+      // console.log(fps);
       this.lastTime = 0;
     }
   };
 
   private update = (): void => {
-    this.moveMap.update();
-    this.towersMap.update(this.moveMap.getEntities());
-    this.moveMap.getEntities().forEach((enemy, index) => {
-      if (enemy.getPositions().x > this.map.getEndPosition().x) {
-        this.hp -= enemy.getDamage();
-        this.moveMap.remove(index);
-        if (this.hp <= 0) {
-          this.gameOver();
-          this.onGameEnded();
-        }
-      }
-    });
+    this.map.update();
+    munitionManager.update(this.map);
+    enemyManager.update(this.map);
+    towerManager.update(this.map);
+    this.towerPlacer.update();
   };
 
   private draw = (): void => {
     const ctx = this.canvas.getCtx();
     this.canvas.clear();
+
     this.map.drawGrid(ctx);
-    this.towersMap.draw(ctx);
-    this.moveMap.draw(ctx);
-    this.moveCursor.draw(ctx);
+    munitionManager.draw(ctx, this.map);
+    enemyManager.draw(ctx, this.map);
+    towerManager.draw(ctx, this.map);
+    this.towerPlacer.draw(ctx);
   };
 
-  public getCursor(): Cursor {
-    return this.cursor;
-  }
-
-  public getTowersBuilder(): TowersBuilder {
-    return this.towersBuilder;
+  public getTowerPlacer(): TowerPlacer {
+    return this.towerPlacer;
   }
 }

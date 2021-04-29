@@ -1,81 +1,77 @@
-import { Position } from '../typing';
-import { InterfaceMoveCursor } from '../interfaces/move-cursor';
+import { enemyManager } from 'games/managers/enemy-manager';
+import { GameMap } from 'games/game-map';
+import { Renderable } from 'games/interfaces/renderable';
+import { Enemy } from 'games/enemies';
+import { getDistanceSquared } from 'games/helpers';
+import { Position } from 'games/typing';
 
-export type TowerProps = {
-  size?: number;
-  name: string;
-  price: number;
-  color: string;
-  radius: number;
-  damage?: number;
-  reloadTime?: number;
-};
-
-export abstract class Tower extends InterfaceMoveCursor {
+export abstract class Tower extends Renderable {
   abstract pathImage: string;
 
-  protected active: boolean;
+  abstract name: string;
 
-  protected size: number;
+  abstract price: number;
 
-  protected name: string;
+  abstract color: string;
 
-  protected price: number;
+  abstract radius: number;
 
-  protected color: string;
+  abstract damage: number;
 
-  protected radius: number;
+  abstract reloadTime: number;
 
-  protected damage: number;
+  protected target: Enemy | undefined;
 
-  protected reloadTime: number;
+  protected lastShoot = 0;
 
-  constructor(props: TowerProps) {
-    super();
-    const {
-      size = 30,
-      name,
-      price,
-      color,
-      radius,
-      damage = 10,
-      reloadTime = 1500,
-    } = props;
+  protected canShoot = true;
 
-    this.size = size;
-    this.name = name;
-    this.price = price;
-    this.color = color;
-    this.radius = radius;
-    this.damage = damage;
-    this.active = true;
-    this.reloadTime = reloadTime;
+  // TODO extends GridRenderable и поддержку isHovered, center и тд
+
+  public update(map: GameMap) {
+    if (this.lastShoot + this.reloadTime < performance.now()) {
+      this.canShoot = true;
+      this.lastShoot = performance.now();
+    }
+
+    const tileSize = map.getTileSize();
+    const aimRadius = this.radius * tileSize;
+    const center: Position = {
+      x: this.position.x + tileSize / 2,
+      y: this.position.y + tileSize / 2,
+    };
+
+    if (this.target && !this.target.isAlive) {
+      this.target = undefined;
+    } else if (
+      this.target &&
+      getDistanceSquared(center, this.target.position) < aimRadius * aimRadius
+    ) {
+      if (this.canShoot) {
+        this.canShoot = false;
+        this.shoot();
+      }
+    } else {
+      this.target = enemyManager.getClosestPointInRadius(center, aimRadius);
+    }
   }
 
-  abstract draw(ctx: CanvasRenderingContext2D, position: Position): void;
-
-  public drawRadius = (
-    ctx: CanvasRenderingContext2D,
-    { x, y }: Position
-  ): void => {
-    const cordinatX = x + this.size / 2;
-    const cordinatY = y + this.size / 2;
+  public drawRadius(ctx: CanvasRenderingContext2D, map: GameMap) {
+    const tileSize = map.getTileSize();
+    const aimRadius = this.radius * tileSize;
+    const { x, y } = this.position;
+    const cordinatX = x + tileSize / 2;
+    const cordinatY = y + tileSize / 2;
 
     ctx.beginPath();
     ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
     ctx.fillStyle = this.color;
-    ctx.arc(cordinatX, cordinatY, this.radius * this.size, 0, 2 * Math.PI);
+    ctx.arc(cordinatX, cordinatY, aimRadius, 0, 2 * Math.PI);
     ctx.fill();
     ctx.stroke();
-  };
-
-  setActive(val: boolean): void {
-    this.active = val;
   }
 
-  getActive(): boolean {
-    return this.active;
-  }
+  protected abstract shoot(): void;
 
   getName(): string {
     return this.name;
@@ -85,15 +81,7 @@ export abstract class Tower extends InterfaceMoveCursor {
     return this.price;
   }
 
-  getRaduis(): number {
-    return this.radius;
-  }
-
   getDamage(): number {
     return this.damage;
-  }
-
-  getReloadTime(): number {
-    return this.reloadTime;
   }
 }
