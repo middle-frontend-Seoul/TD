@@ -47,11 +47,7 @@ export class TowerPlacer extends Renderable {
       ) {
         this.map.addElement(this.gridPosition);
         const tileSize = this.map.getTileSize();
-        const newPosition = {
-          x: this.gridPosition.x * tileSize,
-          y: this.gridPosition.y * tileSize,
-        };
-        towerManager.add(new this.TowerClass(newPosition));
+        towerManager.add(new this.TowerClass(this.gridPosition, tileSize));
       }
     });
   }
@@ -67,11 +63,7 @@ export class TowerPlacer extends Renderable {
       };
 
       if (this.isMouseOverGrid()) {
-        const newPosition = {
-          x: this.gridPosition.x * tileSize,
-          y: this.gridPosition.y * tileSize,
-        };
-        this.tower.setPosition(newPosition);
+        this.tower.setCoordinates(this.gridPosition);
         this.shouldBeDrawn = true;
       }
     }
@@ -107,7 +99,7 @@ export class TowerPlacer extends Renderable {
 
   place(TowerClass: GameTowers) {
     this.TowerClass = TowerClass;
-    this.tower = new TowerClass();
+    this.tower = new TowerClass({ x: 0, y: 0 }, this.map.getTileSize());
     this.shouldBeDrawn = false;
     this.isPlacing = true;
   }

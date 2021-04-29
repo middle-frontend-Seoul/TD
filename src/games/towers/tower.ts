@@ -1,11 +1,10 @@
 import { enemyManager } from 'games/managers/enemy-manager';
 import { GameMap } from 'games/game-map';
-import { Renderable } from 'games/interfaces/renderable';
+import { GridRenderable } from 'games/interfaces/grid-renderable';
 import { Enemy } from 'games/enemies';
 import { getDistanceSquared } from 'games/helpers';
-import { Position } from 'games/typing';
 
-export abstract class Tower extends Renderable {
+export abstract class Tower extends GridRenderable {
   abstract pathImage: string;
 
   abstract name: string;
@@ -36,37 +35,35 @@ export abstract class Tower extends Renderable {
 
     const tileSize = map.getTileSize();
     const aimRadius = this.radius * tileSize;
-    const center: Position = {
-      x: this.position.x + tileSize / 2,
-      y: this.position.y + tileSize / 2,
-    };
 
     if (this.target && !this.target.isAlive) {
       this.target = undefined;
     } else if (
       this.target &&
-      getDistanceSquared(center, this.target.position) < aimRadius * aimRadius
+      getDistanceSquared(this.center, this.target.position) <
+        aimRadius * aimRadius
     ) {
       if (this.canShoot) {
         this.canShoot = false;
         this.shoot();
       }
     } else {
-      this.target = enemyManager.getClosestPointInRadius(center, aimRadius);
+      this.target = enemyManager.getClosestPointInRadius(
+        this.center,
+        aimRadius
+      );
     }
   }
 
   public drawRadius(ctx: CanvasRenderingContext2D, map: GameMap) {
     const tileSize = map.getTileSize();
     const aimRadius = this.radius * tileSize;
-    const { x, y } = this.position;
-    const cordinatX = x + tileSize / 2;
-    const cordinatY = y + tileSize / 2;
+    const { x, y } = this.center;
 
     ctx.beginPath();
     ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
     ctx.fillStyle = this.color;
-    ctx.arc(cordinatX, cordinatY, aimRadius, 0, 2 * Math.PI);
+    ctx.arc(x, y, aimRadius, 0, 2 * Math.PI);
     ctx.fill();
     ctx.stroke();
   }

@@ -25,6 +25,8 @@ import closeFS from 'images/tools/exit-fullscreen.png';
 import { gridPlayOne } from '../../games/maps/grid_1';
 import './style.scss';
 
+const TILE_SIZE = 30;
+
 const PagePlay: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [gameManager, setGameManager] = useState<Game>();
@@ -45,7 +47,7 @@ const PagePlay: FC = () => {
     let game: Game;
     if (canvasRef.current) {
       try {
-        game = new Game(canvasRef.current, gridPlayOne, onGameEnded);
+        game = new Game(canvasRef.current, gridPlayOne, onGameEnded, TILE_SIZE);
         game.init();
         game.start();
 
@@ -77,7 +79,7 @@ const PagePlay: FC = () => {
     const builder = gameManager?.getTowerPlacer();
 
     return Towers.map((Tower) => {
-      const tower = new Tower();
+      const tower = new Tower({ x: 0, y: 0 }, TILE_SIZE);
 
       const onDragTower = () => {
         if (builder) builder.place(Tower);

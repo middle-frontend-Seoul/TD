@@ -1,8 +1,9 @@
+import { GameMap } from 'games/game-map';
 import { Munition } from './munition';
 
 export class GunMunition extends Munition {
   speed = 6;
-  protected radius = 5;
+  protected radius = 3;
   protected angle = 0;
 
   draw(ctx: CanvasRenderingContext2D) {
@@ -20,10 +21,12 @@ export class GunMunition extends Munition {
     ctx.fill();
   }
 
-  update() {
+  update(map: GameMap) {
     if (this.target.isAlive) {
+      const tileSize = map.getTileSize();
       const { x, y } = this.position;
-      const { x: targetX, y: targetY } = this.target.position;
+      const targetX = this.target.position.x + tileSize / 2;
+      const targetY = this.target.position.y + tileSize / 2;
 
       this.angle = Math.atan2(targetY - y, targetX - x);
       const nearEqualX = x >= targetX - this.speed && x <= targetX + this.speed;

@@ -26,7 +26,7 @@ export class Game {
     canvas: HTMLCanvasElement,
     grid: GridType,
     onGameEnded: () => void,
-    tileSize = 30
+    tileSize: number
   ) {
     this.ticker = -1;
     this.lastTime = 0;
