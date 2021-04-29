@@ -129,6 +129,7 @@ const PagePlay: FC = () => {
             Пауза
           </Button>
           <Stats
+            fps={uiState.fps}
             score={uiState.score}
             wave={uiState.wave}
             lives={uiState.lives}

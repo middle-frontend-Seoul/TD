@@ -9,9 +9,11 @@ import { Cursor } from 'games/cursor';
 import { GridType, GameUIAction, GameUIState } from 'games/typing';
 import { TowerPlacer } from 'games/tower-placer';
 import { SimpleEnemy } from 'games/enemies';
+import { simpleThrottle } from 'utils/helpers';
 
 export const initialUIState: GameUIState = {
   isGameEnded: false,
+  fps: 0,
   score: 100,
   wave: 1,
   lives: 5,
@@ -23,6 +25,12 @@ export function uiReducer(state: GameUIState, action: GameUIAction) {
       return {
         ...state,
         isGameEnded: true,
+      };
+
+    case 'setFps':
+      return {
+        ...state,
+        fps: Math.floor(action.payload),
       };
 
     case 'setScore':
@@ -67,6 +75,8 @@ export class Game {
 
   private setUIState: React.Dispatch<GameUIAction>;
 
+  private throttledFpsUpdate: (fps: number) => void;
+
   constructor(
     canvas: HTMLCanvasElement,
     grid: GridType,
@@ -94,6 +104,10 @@ export class Game {
     this.event().on(EventNames.gameOver, () => {
       this.gameOver();
     });
+
+    this.throttledFpsUpdate = simpleThrottle((fps: number) => {
+      this.event().emit(EventNames.fpsUpdated, fps);
+    }, 1000);
   }
 
   public init(): void {
@@ -147,9 +161,9 @@ export class Game {
     if (!this.lastTime) {
       this.lastTime = performance.now();
     } else {
-      // const fps = 1000 / (performance.now() - this.lastTime);
-      // console.log(fps);
+      const fps = 1000 / (performance.now() - this.lastTime);
       this.lastTime = 0;
+      this.throttledFpsUpdate(fps);
     }
   };
 

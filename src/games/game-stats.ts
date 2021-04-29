@@ -4,6 +4,8 @@ import { GameUIAction, GameUIState } from 'games/typing';
 export class GameStats {
   protected event: () => EventBus;
 
+  private fps: number;
+
   private balance: number;
 
   private hp: number;
@@ -17,10 +19,12 @@ export class GameStats {
     const event = new EventBus();
     this.event = () => event;
 
+    this.fps = initialUIState.fps;
     this.balance = initialUIState.score;
     this.hp = initialUIState.lives;
 
     this.setUIState = setUIState;
+    this.setUIState({ type: 'setFps', payload: this.fps });
     this.setUIState({ type: 'setScore', payload: this.balance });
     this.setUIState({ type: 'setLives', payload: this.hp });
 
@@ -29,6 +33,9 @@ export class GameStats {
     });
     this.event().on(EventNames.enemyPassed, (damage: number) => {
       this.enemyPassed(damage);
+    });
+    this.event().on(EventNames.fpsUpdated, (fps: number) => {
+      this.updateFps(fps);
     });
   }
 
@@ -54,5 +61,9 @@ export class GameStats {
     if (this.hp <= 0) {
       this.event().emit(EventNames.gameOver);
     }
+  }
+
+  updateFps(fps: number) {
+    this.setUIState({ type: 'setFps', payload: fps });
   }
 }

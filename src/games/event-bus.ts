@@ -11,6 +11,7 @@ export enum EventNames {
   scoreAdd = 'score:add',
   gameOver = 'game:over',
   enemyPassed = 'game:enemypassed',
+  fpsUpdated = 'game:fpsupdated',
 }
 
 export class EventBus {

@@ -19,6 +19,7 @@ export type GridPosition = {
 
 export type GameUIState = {
   isGameEnded: boolean;
+  fps: number;
   score: number;
   wave: number;
   lives: number;
@@ -26,6 +27,7 @@ export type GameUIState = {
 
 export type GameUIAction =
   | { type: 'gameOver' }
+  | { type: 'setFps'; payload: number }
   | { type: 'setScore'; payload: number }
   | { type: 'setWave'; payload: number }
   | { type: 'setLives'; payload: number };
