@@ -5,7 +5,13 @@ import path from 'path';
 const PORT: string | number = process.env.PORT || 4000;
 
 const scriptSources = ["'self'", "'unsafe-inline'", "'unsafe-eval'"];
-const styleSources = ["'self'", "'unsafe-inline'"];
+const styleSources = [
+  "'self'",
+  "'unsafe-inline'",
+  'https://fonts.googleapis.com'
+];
+const fontSources = ["'self'", 'https://fonts.gstatic.com'];
+const imageSources = ["'self'", 'data:'];
 const connectSources = ["'self'", 'https://ya-praktikum.tech'];
 
 const app = express();
@@ -18,6 +24,9 @@ app.use(
       scriptSrc: scriptSources,
       scriptSrcElem: scriptSources,
       styleSrc: styleSources,
+      styleSrcElem: styleSources,
+      fontSrc: fontSources,
+      imgSrc: imageSources,
       connectSrc: connectSources,
     },
   })
