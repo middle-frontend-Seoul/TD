@@ -15,8 +15,9 @@
     "skipLibCheck": true,
     "declaration": false,
     "sourceMap": true,
+    "outDir": "./dist/",
     "baseUrl": "src"
   },
-  "include": ["src/**/*", "server/**/*"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "**/*.js"]
 }
