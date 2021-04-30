@@ -2,17 +2,18 @@
   "name": "td",
   "version": "1.0.0",
   "scripts": {
-    "start": "ts-node server/server.ts",
     "heroku-postbuild": "npm install --only=dev && npm install && npm run build",
     "build": "webpack --mode production",
-    "dev": "webpack serve --mode development --hot",
     "format": "prettier --write src/**/*.{js,jsx,ts,tsx}",
     "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx ./",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "test": "jest",
     "test:watch": "jest --watch",
-    "tsc": "tsc --project ./tsconfig.json --noEmit"
+    "tsc": "tsc --project ./tsconfig.json --noEmit",
+    "start:webpack": "webpack --mode=development --watch",
+    "start:server": "nodemon index.js --watch dist/server.js",
+    "start": "NODE_ENV=development npm-run-all --print-label --parallel start:*"
   },
   "engines": {
     "node": "13.x"
@@ -64,6 +65,7 @@
     "jest": "26.6.3",
     "mini-css-extract-plugin": "1.3.9",
     "moment-locales-webpack-plugin": "1.2.0",
+    "nodemon": "2.0.7",
     "path": "0.12.7",
     "prettier": "2.2.1",
     "react-test-renderer": "17.0.2",
@@ -78,6 +80,7 @@
     "webpack": "5.26.3",
     "webpack-cli": "4.5.0",
     "webpack-dev-server": "3.11.2",
+    "webpack-node-externals": "3.0.0",
     "webpackbar": "5.0.0-3"
   },
   "dependencies": {
@@ -87,11 +90,14 @@
     "@types/node": "14.14.37",
     "axios": "0.21.1",
     "classnames": "2.2.6",
+    "connected-react-router": "6.9.1",
     "express": "4.17.1",
     "formik": "2.2.6",
     "helmet": "4.4.1",
     "history": "5.0.0",
     "moment": "2.29.1",
+    "npm-run-all": "4.1.5",
+    "null-loader": "4.0.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-final-form": "6.5.3",

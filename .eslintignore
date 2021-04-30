@@ -3,6 +3,7 @@ __stories__
 __test__
 test
 dist
+webpack
 
 .*rc.js
 webpack.*.js
