@@ -33,7 +33,6 @@ function getHtml(reactHtml: string, reduxState = {}) {
 }
 
 export default (req: Request, res: Response) => {
-  console.log('url', req.url);
   const location = req.url;
   const context: StaticRouterContext = {};
   const { store } = createStore(getInitialState(location), location);
@@ -48,7 +47,6 @@ export default (req: Request, res: Response) => {
   const reactHtml = renderToString(jsx);
   const reduxState = store.getState();
 
-  console.log(context);
   if (context.url) {
     res.redirect(context.url);
     return;

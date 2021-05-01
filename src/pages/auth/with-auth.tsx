@@ -4,13 +4,6 @@ import { useLocation, Redirect } from 'react-router-dom';
 import * as URL from 'core/url';
 import { useAppSelector } from 'rdx/hooks';
 
-interface LocationState {
-  from: {
-    pathname: string;
-    search: string;
-  };
-}
-
 export function withAuth<P>(WrappedComponent: FC<P>): FC<P> {
   return (props: P) => {
     const location = useLocation<LocationState>();

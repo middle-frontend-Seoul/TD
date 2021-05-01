@@ -7,12 +7,6 @@ import { createStore } from 'rdx/store';
 
 const { store, history } = createStore(window.__INITIAL_STATE__); // eslint-disable-line
 
-declare global {
-  interface Window {
-    __INITIAL_STATE__: RootState;
-  }
-}
-
 ReactDOM.hydrate(
   <ReduxProvider store={store}>
     <ConnectedRouter history={history}>
