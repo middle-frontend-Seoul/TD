@@ -1,4 +1,4 @@
-const clientConfig = require('./client.config');
-const serverConfig = require('./server.config');
+const clientConfig = require('./webpack/client.config');
+const serverConfig = require('./webpack/server.config');
 
 module.exports = [clientConfig, serverConfig];

@@ -1,26 +1,29 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+// const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const WebpackBar = require('webpackbar');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const Dotenv = require('dotenv-webpack');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 
+const webpackEnvs = require('./env');
+
 module.exports = {
   mode: 'development',
   entry: {
-    main: './src/client.tsx',
-    sw: './sw.ts',
+    main: path.resolve(webpackEnvs.SRC_DIR, 'client.tsx'),
+    sw: path.resolve(webpackEnvs.SRC_DIR, '../sw.ts'),
   },
   devtool: 'source-map',
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(webpackEnvs.DIST_DIR),
     publicPath: '/',
     filename: '[name].js',
   },
   resolve: {
-    modules: [path.resolve(__dirname, 'src'), 'node_modules'],
+    modules: [webpackEnvs.SRC_DIR, 'node_modules'],
     extensions: ['.tsx', '.ts', '.js'],
+    // plugins: [new TsconfigPathsPlugin({ configFile: './tsconfig.json' })],
   },
   module: {
     rules: [
@@ -30,7 +33,7 @@ module.exports = {
           {
             loader: 'ts-loader',
             options: {
-              configFile: path.resolve(__dirname, 'tsconfig.json'),
+              configFile: path.resolve(webpackEnvs.SRC_DIR, '../tsconfig.json'),
             },
           },
         ],
@@ -49,7 +52,7 @@ module.exports = {
           {
             loader: 'style-resources-loader',
             options: {
-              patterns: [path.resolve(__dirname, 'src/vars.scss')],
+              patterns: [path.resolve(webpackEnvs.SRC_DIR, 'vars.scss')],
             },
           },
         ],
@@ -71,7 +74,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/index.html',
+      template: path.resolve(webpackEnvs.SRC_DIR, 'index.html'),
     }),
     new Dotenv(),
     // new CleanWebpackPlugin(),

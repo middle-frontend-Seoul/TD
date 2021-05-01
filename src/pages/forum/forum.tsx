@@ -13,8 +13,8 @@ import { HOME, FORUM_SECTION } from 'core/url';
 
 import { useUrlParams } from 'hooks/use-url-params';
 import { useUrlNextPage } from 'hooks/use-url-next-page';
-import { useAppSelector, useBoundAction } from 'redux/hooks';
-import { getThemes, create, setOpen } from 'redux/slices/forum-slice';
+import { useAppSelector, useBoundAction } from 'rdx/hooks';
+import { getThemes, create, setOpen } from 'rdx/slices/forum-slice';
 
 import './style.scss';
 

@@ -1,13 +1,13 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { Request, Response } from 'express';
-// import { App } from 'core/app';
+import { App } from 'core/app';
 // import { StaticRouter } from 'react-router-dom';
 // import { StaticRouterContext } from 'react-router';
 // import { Provider } from 'react-redux';
 // import { configureStore } from '@reduxjs/toolkit';
 
-// import rootReducer from 'redux/root-reducer';
+// import rootReducer from 'rdx/root-reducer';
 
 function getHtml(reactHtml: string, reduxState = {}) {
   return `
@@ -41,9 +41,7 @@ export default (req: Request, res: Response) => {
   //   reducer: rootReducer,
   //   middleware: (cdm) => cdm({ serializableCheck: false }), // иначе ругается на AxiosError, которая под капотом class
   // });
-  const jsx = (
-    <div>SERVER!!!</div>
-  );
+  const jsx = <App />;
 
   const reactHtml = renderToString(jsx);
   // const reduxState = store.getState();

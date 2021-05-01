@@ -1,6 +1,6 @@
 import { Action, ThunkAction } from '@reduxjs/toolkit';
-import rootReducer from 'redux/root-reducer';
-import { store } from 'redux/store';
+import rootReducer from 'rdx/root-reducer';
+import { store } from 'rdx/store';
 
 declare global {
   type RootState = ReturnType<typeof rootReducer>;

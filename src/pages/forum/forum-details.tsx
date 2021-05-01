@@ -11,8 +11,8 @@ import { MessageForm } from 'components/forum/message-form';
 import { ForumMassage } from 'components-ui/forum-massage';
 import { FORUM_SECTION } from 'core/url';
 
-import { useAppSelector, useBoundAction } from 'redux/hooks';
-import { getMessages, create, setOpen } from 'redux/slices/forum-slice';
+import { useAppSelector, useBoundAction } from 'rdx/hooks';
+import { getMessages, create, setOpen } from 'rdx/slices/forum-slice';
 
 import './forum-details.scss';
 

@@ -1,11 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'connected-react-router';
 import { App } from 'core/app/app';
 import { configureStore } from '@reduxjs/toolkit';
-import { createBrowserHistory, createMemoryHistory } from 'history';
-import rootReducer from './redux/root-reducer';
+// import { createBrowserHistory, createMemoryHistory } from 'history';
+import rootReducer from 'rdx/root-reducer';
 
 const store = configureStore({
   reducer: rootReducer,
@@ -18,16 +17,13 @@ export const isServer = !(
   window.document.createElement
 );
 
-const history = isServer
-  ? createMemoryHistory({ initialEntries: ['/'] })
-  : createBrowserHistory();
+// const history = isServer
+//   ? createMemoryHistory({ initialEntries: ['/'] })
+//   : createBrowserHistory();
 
 ReactDOM.hydrate(
   <Provider store={store}>
-    <ConnectedRouter history={history}>
-      {/* 1:32:36 */}
-      <App />
-    </ConnectedRouter>
+    <App />
   </Provider>,
   document.getElementById('root')
 );

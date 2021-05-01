@@ -1,7 +1,7 @@
 const { app } = require('./dist/server.js');
 
-const port = process.env.PORT || 9001;
+const PORT = process.env.PORT || 4000;
 
-app.listen(port, () => {
-    console.log('Application is started on localhost:', port);
+app.listen(PORT, () => {
+    console.log(`Server is up and running on port ${PORT}`);
 });
