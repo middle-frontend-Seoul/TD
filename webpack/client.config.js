@@ -1,6 +1,5 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const WebpackBar = require('webpackbar');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const Dotenv = require('dotenv-webpack');
@@ -23,7 +22,7 @@ module.exports = {
   resolve: {
     modules: [webpackEnvs.SRC_DIR, 'node_modules'],
     extensions: ['.tsx', '.ts', '.js'],
-    // plugins: [new TsconfigPathsPlugin({ configFile: './tsconfig.json' })],
+    plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(webpackEnvs.SRC_DIR, '../tsconfig.json') })],
   },
   module: {
     rules: [
@@ -73,9 +72,6 @@ module.exports = {
     ],
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: path.resolve(webpackEnvs.SRC_DIR, 'index.html'),
-    }),
     new Dotenv(),
     // new CleanWebpackPlugin(),
     new WebpackBar(),
