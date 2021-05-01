@@ -8,7 +8,7 @@ const scriptSources = ["'self'", "'unsafe-inline'", "'unsafe-eval'"];
 const styleSources = [
   "'self'",
   "'unsafe-inline'",
-  'https://fonts.googleapis.com'
+  'https://fonts.googleapis.com',
 ];
 const fontSources = ["'self'", 'https://fonts.gstatic.com'];
 const imageSources = ["'self'", 'data:'];
