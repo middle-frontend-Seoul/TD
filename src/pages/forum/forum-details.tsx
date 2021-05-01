@@ -53,7 +53,7 @@ const PageForumDetails: FC = () => {
       case 'failure':
         return 'Возникла ошибка';
       case 'success':
-        return messages.map((msg) => (
+        return messages.map((msg: ThemeMessageInfo) => (
           <ForumMassage
             date={msg.date}
             userName={msg.userName}

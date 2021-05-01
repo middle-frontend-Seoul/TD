@@ -1,30 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
+import { ConnectedRouter } from 'connected-react-router';
+import { Provider as ReduxProvider } from 'react-redux';
 import { App } from 'core/app/app';
-import { configureStore } from '@reduxjs/toolkit';
-// import { createBrowserHistory, createMemoryHistory } from 'history';
-import rootReducer from 'rdx/root-reducer';
+import { createStore } from 'rdx/store';
 
-const store = configureStore({
-  reducer: rootReducer,
-  middleware: (cdm) => cdm({ serializableCheck: false }), // иначе ругается на AxiosError, которая под капотом class
-});
+const { store, history } = createStore(window.__INITIAL_STATE__); // eslint-disable-line
 
-export const isServer = !(
-  typeof window !== 'undefined' &&
-  window.document &&
-  window.document.createElement
-);
-
-// const history = isServer
-//   ? createMemoryHistory({ initialEntries: ['/'] })
-//   : createBrowserHistory();
+declare global {
+  interface Window {
+    __INITIAL_STATE__: RootState;
+  }
+}
 
 ReactDOM.hydrate(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <ReduxProvider store={store}>
+    <ConnectedRouter history={history}>
+      <App />
+    </ConnectedRouter>
+  </ReduxProvider>,
   document.getElementById('root')
 );
 

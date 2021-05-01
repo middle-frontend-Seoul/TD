@@ -4,10 +4,10 @@ import { Request, Response } from 'express';
 import { App } from 'core/app';
 import { StaticRouter } from 'react-router-dom';
 import { StaticRouterContext } from 'react-router';
-// import { Provider } from 'react-redux';
-// import { configureStore } from '@reduxjs/toolkit';
+import { Provider as ReduxProvider } from 'react-redux';
 
-// import rootReducer from 'rdx/root-reducer';
+import { createStore } from 'rdx/store';
+import { getInitialState } from 'rdx/getInitialState';
 
 function getHtml(reactHtml: string, reduxState = {}) {
   return `
@@ -37,23 +37,22 @@ export default (req: Request, res: Response) => {
   console.log(req.url);
   const location = req.url;
   const context: StaticRouterContext = {};
-  // const store = configureStore({
-  //   reducer: rootReducer,
-  //   middleware: (cdm) => cdm({ serializableCheck: false }), // иначе ругается на AxiosError, которая под капотом class
-  // });
+  const { store } = createStore(getInitialState(location), location);
   const jsx = (
-    <StaticRouter context={context} location={location}>
-      <App />
-    </StaticRouter>
+    <ReduxProvider store={store}>
+      <StaticRouter context={context} location={location}>
+        <App />
+      </StaticRouter>
+    </ReduxProvider>
   );
 
   const reactHtml = renderToString(jsx);
-  // const reduxState = store.getState();
+  const reduxState = store.getState();
 
   if (context.url) {
     res.redirect(context.url);
     return;
   }
 
-  res.status(context.statusCode || 200).send(getHtml(reactHtml, {}));
+  res.status(context.statusCode || 200).send(getHtml(reactHtml, reduxState));
 };

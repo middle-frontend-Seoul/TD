@@ -3,14 +3,14 @@ import { createSlice, PayloadAction, SerializedError } from '@reduxjs/toolkit';
 import { authApi } from 'api/auth-api';
 import { formatError, formatHttpError } from 'utils/format';
 
-type AuthState = {
+export type AuthState = {
   currentUser?: UserInfo;
   loadingStatus: StateStatus;
   authStatus: StateStatus;
   error: AuthError;
 };
 
-const initialState: AuthState = {
+export const initialState: AuthState = {
   loadingStatus: 'idle',
   authStatus: 'idle',
   error: {},
