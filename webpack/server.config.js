@@ -50,7 +50,12 @@ module.exports = {
       },
       {
         test: /\.(png|jpg|svg|jpeg|gif|webp)$/,
-        loader: 'null-loader',
+        use: [{
+          loader: 'url-loader',
+          options: {
+            limit: 25 * 1024 // in bytes
+          },
+        }],
       },
       {
         test: /\.html$/i,

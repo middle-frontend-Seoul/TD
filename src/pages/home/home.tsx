@@ -17,6 +17,7 @@ import './home.scss';
 
 const PageHome: FC = () => {
   const actionLogout = useBoundAction(logout);
+
   return (
     <Space type="vertical">
       <Block center page="home" type="flex" className="home-block">

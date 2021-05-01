@@ -67,7 +67,7 @@ const PageForumDetails: FC = () => {
 
   return (
     <Space type="vertical">
-      <Modal isOpen={isOpenModal} onClose={handleOnClose} node={document.body}>
+      <Modal isOpen={isOpenModal} onClose={handleOnClose}>
         <MessageForm loading={isLoadingCreate} onSubmit={actionMessageCreate} />
       </Modal>
       <Block title="Форум" page="forum">
