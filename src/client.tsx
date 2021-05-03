@@ -18,7 +18,7 @@ ReactDOM.hydrate(
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker
-    .register('./sw.js')
+    .register('./../sw.js')
     .then((registration) => {
       console.log( // eslint-disable-line
         'ServiceWorker registration successful with scope: ',

@@ -1,3 +1,5 @@
+import { Configuration } from "webpack";
+
 const path = require('path');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const WebpackBar = require('webpackbar');
@@ -5,24 +7,24 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const Dotenv = require('dotenv-webpack');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 
-const webpackEnvs = require('./env');
+import { DIST_DIR, SRC_DIR } from './env';
 
-module.exports = {
+const config: Configuration = {
   mode: 'development',
   entry: {
-    main: path.resolve(webpackEnvs.SRC_DIR, 'client.tsx'),
-    sw: path.resolve(webpackEnvs.SRC_DIR, '../sw.ts'),
+    main: path.resolve(SRC_DIR, 'client.tsx'),
+    sw: path.resolve(SRC_DIR, '../sw.ts'),
   },
   devtool: 'source-map',
   output: {
-    path: path.resolve(webpackEnvs.DIST_DIR),
+    path: path.resolve(DIST_DIR),
     publicPath: '/',
     filename: '[name].js',
   },
   resolve: {
-    modules: [webpackEnvs.SRC_DIR, 'node_modules'],
+    modules: [SRC_DIR, 'node_modules'],
     extensions: ['.tsx', '.ts', '.js'],
-    plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(webpackEnvs.SRC_DIR, '../tsconfig.json') })],
+    plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(SRC_DIR, '../tsconfig.json') })],
   },
   module: {
     rules: [
@@ -32,7 +34,7 @@ module.exports = {
           {
             loader: 'ts-loader',
             options: {
-              configFile: path.resolve(webpackEnvs.SRC_DIR, '../tsconfig.json'),
+              configFile: path.resolve(SRC_DIR, '../tsconfig.json'),
             },
           },
         ],
@@ -51,7 +53,7 @@ module.exports = {
           {
             loader: 'style-resources-loader',
             options: {
-              patterns: [path.resolve(webpackEnvs.SRC_DIR, 'vars.scss')],
+              patterns: [path.resolve(SRC_DIR, 'vars.scss')],
             },
           },
         ],
@@ -80,4 +82,6 @@ module.exports = {
       localesToKeep: ['es-us', 'ru'],
     }),
   ]
-};
+}
+
+export default config;

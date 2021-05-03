@@ -47,10 +47,5 @@ export default (req: Request, res: Response) => {
   const reactHtml = renderToString(jsx);
   const reduxState = store.getState();
 
-  if (context.url) {
-    res.redirect(context.url);
-    return;
-  }
-
   res.status(context.statusCode || 200).send(getHtml(reactHtml, reduxState));
 };

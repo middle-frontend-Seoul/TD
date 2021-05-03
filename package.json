@@ -2,7 +2,7 @@
   "name": "td",
   "version": "1.0.0",
   "scripts": {
-    "start": "node index.js",
+    "start": "ts-node index.ts",
     "heroku-postbuild": "npm install --only=dev && npm install && npm run build",
     "clean": "rimraf dist",
     "build": "npm run clean && webpack --mode production",
@@ -14,7 +14,7 @@
     "test:watch": "jest --watch",
     "tsc": "tsc --project ./tsconfig.json --noEmit",
     "dev:webpack": "webpack --mode=development --watch",
-    "dev:server": "nodemon index.js --watch dist/server.js",
+    "dev:server": "nodemon index.ts --watch dist/server.js",
     "dev": "NODE_ENV=development npm-run-all --print-label --parallel dev:*"
   },
   "engines": {

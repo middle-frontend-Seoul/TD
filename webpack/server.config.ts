@@ -1,3 +1,5 @@
+import { Configuration } from "webpack";
+
 const path = require('path');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const WebpackBar = require('webpackbar');
@@ -6,25 +8,25 @@ const Dotenv = require('dotenv-webpack');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 
-const webpackEnvs = require('./env');
+import { DIST_DIR, SRC_DIR } from './env';
 
-module.exports = {
+const config: Configuration = {
   mode: 'development',
   name: 'server',
   target: 'node',
   node: { __dirname: false },
-  entry: path.resolve(webpackEnvs.SRC_DIR, 'server.ts'),
+  entry: path.resolve(SRC_DIR, 'server.ts'),
   devtool: 'source-map',
   output: {
     filename: 'server.js',
     libraryTarget: 'commonjs2',
-    path: webpackEnvs.DIST_DIR,
+    path: DIST_DIR,
     publicPath: '/',
   },
   resolve: {
-    modules: [webpackEnvs.SRC_DIR, 'node_modules'],
+    modules: [SRC_DIR, 'node_modules'],
     extensions: ['.tsx', '.ts', '.js'],
-    plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(webpackEnvs.SRC_DIR, '../tsconfig.json') })],
+    plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(SRC_DIR, '../tsconfig.json') })],
   },
   module: {
     rules: [
@@ -34,7 +36,7 @@ module.exports = {
           {
             loader: 'ts-loader',
             options: {
-              configFile: path.resolve(webpackEnvs.SRC_DIR, '../tsconfig.json'),
+              configFile: path.resolve(SRC_DIR, '../tsconfig.json'),
             },
           },
         ],
@@ -75,3 +77,5 @@ module.exports = {
     }),
   ]
 };
+
+export default config;

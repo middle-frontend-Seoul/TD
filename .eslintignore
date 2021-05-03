@@ -10,5 +10,5 @@ webpack.*.js
 jest.config.js
 *.test.ts
 *.d.ts
-index.js
+index.ts
 sw.ts
