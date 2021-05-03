@@ -1,33 +1,41 @@
 import towerPathGun from 'images/tools/gun.png';
 
-import { getGridPosition } from '../helpers';
-import { Position } from '../typing';
+import { getDrawPosition } from 'games/helpers';
+import { GameMap } from 'games/game-map';
+import { munitionManager } from 'games/managers/munition-manager';
+import { GunMunition } from 'games/munitions/gun-munition';
 import { Tower } from './tower';
 
 export class Gun extends Tower {
   pathImage = towerPathGun;
 
-  constructor() {
-    super({
-      name: 'Пулемёт',
-      price: 15,
-      radius: 3,
-      color: 'rgba(82, 82, 82, 0.5)',
-    });
-  }
+  name = 'Пулемёт';
 
-  draw = (ctx: CanvasRenderingContext2D, { x, y }: Position): void => {
-    const p60 = getGridPosition(this.size, 60);
-    const p20 = getGridPosition(this.size, 20);
+  price = 15;
+
+  color = 'rgba(82, 82, 82, 0.5)';
+
+  radius = 3;
+
+  damage = 10;
+
+  reloadTime = 1500;
+
+  draw = (ctx: CanvasRenderingContext2D, map: GameMap): void => {
+    const tileSize = map.getTileSize();
+    const { x, y } = this.position;
+
+    const p60 = getDrawPosition(tileSize, 60);
+    const p20 = getDrawPosition(tileSize, 20);
 
     ctx.beginPath();
     ctx.fillStyle = '#6B6B6B';
-    ctx.rect(x + p60.offset, y, p60.width, this.size);
+    ctx.rect(x + p60.offset, y, p60.width, tileSize);
     ctx.fill();
 
     ctx.beginPath();
     ctx.fillStyle = '#6B6B6B';
-    ctx.rect(x, y + p60.offset, this.size, p60.width);
+    ctx.rect(x, y + p60.offset, tileSize, p60.width);
     ctx.fill();
 
     ctx.beginPath();
@@ -50,4 +58,11 @@ export class Gun extends Tower {
     ctx.rect(x + p20.offset, y + p20.offset, p20.width, p20.width);
     ctx.fill();
   };
+
+  shoot() {
+    if (this.target) {
+      const munition = new GunMunition(this.target, this);
+      munitionManager.add(munition);
+    }
+  }
 }

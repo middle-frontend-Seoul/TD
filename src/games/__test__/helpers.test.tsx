@@ -1,8 +1,8 @@
-import { getGridPosition, getGridSize, isArray } from '../helpers';
+import { getDrawPosition, getGridSize, isArray } from '../helpers';
 
 describe('games helpers', () => {
-  test('getGridPosition', () => {
-    expect(getGridPosition(10, 5)).toEqual({ width: 0.5, offset: 4 });
+  test('getDrawPosition', () => {
+    expect(getDrawPosition(10, 5)).toEqual({ width: 0.5, offset: 4 });
   });
 
   test('isArray to success', () => {

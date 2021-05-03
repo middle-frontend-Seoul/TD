@@ -3,24 +3,18 @@ import { Canvas } from './canvas';
 import { Position } from './typing';
 
 export class Cursor {
-  size: number;
-
-  event: () => EventBus;
+  eventBus: EventBus;
 
   canvas: Canvas;
 
-  mouse = { x: 0, y: 0 };
-
-  position: Position = { x: -1, y: -1 };
+  boundMousePosition: Position = { x: 0, y: 0 };
 
   isMouseInCanvas = false;
 
-  constructor(canvas: Canvas, size: number) {
-    const event = new EventBus();
+  constructor(canvas: Canvas) {
+    this.eventBus = new EventBus();
 
-    this.size = size;
     this.canvas = canvas;
-    this.event = () => event;
 
     window.addEventListener('click', this.onClick);
     window.addEventListener('keydown', this.onKeyDown);
@@ -43,13 +37,16 @@ export class Cursor {
 
   private onClick = (event: MouseEvent): void => {
     if (this.isMouseInCanvas) {
-      this.event().emit(EventNames.clickInCanvas, this.getPosition(event));
+      this.eventBus.emit(
+        EventNames.ClickInCanvas,
+        this.getBoundMousePosition(event)
+      );
     }
   };
 
   private onKeyDown = ({ key }: KeyboardEvent) => {
     if (key.toLocaleLowerCase() === 'escape') {
-      this.event().emit(EventNames.escape);
+      this.eventBus.emit(EventNames.Escape);
     }
   };
 
@@ -62,21 +59,14 @@ export class Cursor {
   };
 
   private onMouseMove = (event: MouseEvent) => {
-    this.mouse = { x: event.clientX, y: event.clientY };
-    this.position = this.getPosition(event);
-
-    if (this.isMouseInCanvas) {
-      this.event().emit(EventNames.moveInCanvas, this.position);
-    } else {
-      this.event().emit(EventNames.moveOutCanvas, this.mouse);
-    }
+    this.boundMousePosition = this.getBoundMousePosition(event);
   };
 
-  private getPosition = ({ clientX, clientY }: MouseEvent) => {
+  private getBoundMousePosition = ({ clientX, clientY }: MouseEvent) => {
     const { x: canvasX, y: canvasY } = this.canvas.getRect();
     return {
-      x: Math.floor((clientX - canvasX) / this.size) * this.size,
-      y: Math.floor((clientY - canvasY) / this.size) * this.size,
+      x: clientX - canvasX,
+      y: clientY - canvasY,
     };
   };
 }
