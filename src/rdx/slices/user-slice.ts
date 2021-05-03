@@ -3,7 +3,7 @@ import { createSlice, PayloadAction, SerializedError } from '@reduxjs/toolkit';
 import { userApi } from 'api/user-api';
 import { formatError, formatHttpError } from 'utils/format';
 
-type UserState = {
+export type UserState = {
   data?: UserInfo;
   loadingStatus: StateStatus;
   mutatingUserStatus: StateStatus;
@@ -18,7 +18,7 @@ type UserError = {
   avatar?: SerializedError;
 };
 
-const initialState: UserState = {
+export const initialState: UserState = {
   loadingStatus: 'idle',
   mutatingUserStatus: 'idle',
   mutatingPasswordStatus: 'idle',

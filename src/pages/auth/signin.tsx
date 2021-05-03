@@ -8,8 +8,8 @@ import {
   isValidPassword,
   validationMessages,
 } from 'utils/validation';
-import { useAppSelector, useBoundAction } from 'redux/hooks';
-import { signIn } from 'redux/slices/auth-slice';
+import { useAppSelector, useBoundAction } from 'rdx/hooks';
+import { signIn } from 'rdx/slices/auth-slice';
 import { withAuth } from './with-auth';
 
 import './auth.scss';

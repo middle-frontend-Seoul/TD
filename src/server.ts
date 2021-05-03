@@ -1,8 +1,7 @@
 import express from 'express';
 import helmet from 'helmet';
 import path from 'path';
-
-const PORT: string | number = process.env.PORT || 4000;
+import serverRenderMiddleware from './server-render-middleware';
 
 const scriptSources = ["'self'", "'unsafe-inline'", "'unsafe-eval'"];
 const styleSources = [
@@ -34,10 +33,6 @@ app.use(
 
 app.use(express.static(path.join(__dirname, '../dist')));
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../dist/index.html'));
-});
+app.get('/*', serverRenderMiddleware);
 
-app.listen(PORT, () => {
-  console.log(`Server is up and running on port ${PORT}`); // eslint-disable-line
-});
+export { app };

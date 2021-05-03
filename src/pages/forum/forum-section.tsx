@@ -13,8 +13,8 @@ import { FORUM, FORUM_DETAILS } from 'core/url';
 
 import { useUrlParams } from 'hooks/use-url-params';
 import { useUrlNextPage } from 'hooks/use-url-next-page';
-import { useAppSelector, useBoundAction } from 'redux/hooks';
-import { getSubThemes, create, setOpen } from 'redux/slices/forum-slice';
+import { useAppSelector, useBoundAction } from 'rdx/hooks';
+import { getSubThemes, create, setOpen } from 'rdx/slices/forum-slice';
 
 import './style.scss';
 
@@ -117,7 +117,7 @@ const PageForumSection: FC = () => {
 
   return (
     <Space type="vertical">
-      <Modal isOpen={isOpenModal} onClose={handleOnClose} node={document.body}>
+      <Modal isOpen={isOpenModal} onClose={handleOnClose}>
         <ThemeForm loading={isLoadingCreate} onSubmit={actionThemeCreate} />
       </Modal>
       <Block title="Форум" page="forum">

@@ -3,13 +3,13 @@ import { createSlice, PayloadAction, SerializedError } from '@reduxjs/toolkit';
 import { leaderboardApi } from 'api/leaderboard-api';
 import { formatError, formatHttpError } from 'utils/format';
 
-type LeaderboardState = {
+export type LeaderboardState = {
   data?: LeaderboardInfo[];
   loadingStatus: StateStatus;
   error?: SerializedError;
 };
 
-const initialState: LeaderboardState = {
+export const initialState: LeaderboardState = {
   loadingStatus: 'idle',
 };
 

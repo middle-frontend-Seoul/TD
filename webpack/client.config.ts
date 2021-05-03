@@ -1,26 +1,30 @@
+import { Configuration } from "webpack";
+
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const WebpackBar = require('webpackbar');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const Dotenv = require('dotenv-webpack');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 
-module.exports = {
+import { DIST_DIR, SRC_DIR } from './env';
+
+const config: Configuration = {
   mode: 'development',
   entry: {
-    main: './src/index.tsx',
-    sw: './sw.ts',
+    main: path.resolve(SRC_DIR, 'client.tsx'),
+    sw: path.resolve(SRC_DIR, '../sw.ts'),
   },
   devtool: 'source-map',
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(DIST_DIR),
     publicPath: '/',
     filename: '[name].js',
   },
   resolve: {
-    modules: [path.resolve(__dirname, 'src'), 'node_modules'],
+    modules: [SRC_DIR, 'node_modules'],
     extensions: ['.tsx', '.ts', '.js'],
+    plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(SRC_DIR, '../tsconfig.json') })],
   },
   module: {
     rules: [
@@ -30,7 +34,7 @@ module.exports = {
           {
             loader: 'ts-loader',
             options: {
-              configFile: path.resolve(__dirname, 'tsconfig.json'),
+              configFile: path.resolve(SRC_DIR, '../tsconfig.json'),
             },
           },
         ],
@@ -49,7 +53,7 @@ module.exports = {
           {
             loader: 'style-resources-loader',
             options: {
-              patterns: [path.resolve(__dirname, 'src/vars.scss')],
+              patterns: [path.resolve(SRC_DIR, 'vars.scss')],
             },
           },
         ],
@@ -59,7 +63,7 @@ module.exports = {
         use: [{
           loader: 'url-loader',
           options: {
-              limit: 25 * 1024 // in bytes
+            limit: 25 * 1024 // in bytes
           },
         }],
       },
@@ -70,19 +74,14 @@ module.exports = {
     ],
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: './src/index.html',
-    }),
     new Dotenv(),
-    new CleanWebpackPlugin(),
+    // new CleanWebpackPlugin(),
     new WebpackBar(),
     new MiniCssExtractPlugin(),
     new MomentLocalesPlugin({
       localesToKeep: ['es-us', 'ru'],
     }),
-  ],
-  devServer: {
-    historyApiFallback: true,
-    port: 8000,
-  },
-};
+  ]
+}
+
+export default config;

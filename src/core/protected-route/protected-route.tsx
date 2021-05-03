@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Redirect, Route, RouteProps } from 'react-router-dom';
 
 import * as URL from 'core/url';
-import { useAppSelector } from 'redux/hooks';
+import { useAppSelector } from 'rdx/hooks';
 
 const ProtectedRoute: FC<RouteProps> = (routeProps) => {
   const currentUser = useAppSelector((state) => state.auth.currentUser);

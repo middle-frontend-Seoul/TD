@@ -2,11 +2,11 @@ import React, { FC } from 'react';
 import { useLocation, Redirect } from 'react-router-dom';
 
 import * as URL from 'core/url';
-import { useAppSelector } from 'redux/hooks';
+import { useAppSelector } from 'rdx/hooks';
 
 export function withAuth<P>(WrappedComponent: FC<P>): FC<P> {
   return (props: P) => {
-    const location = useLocation();
+    const location = useLocation<LocationState>();
     const currentUser = useAppSelector((state) => state.auth.currentUser);
 
     const fromUrl = location.state?.from

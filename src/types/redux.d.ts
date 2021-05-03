@@ -1,9 +1,20 @@
 import { Action, ThunkAction } from '@reduxjs/toolkit';
-import rootReducer from 'redux/root-reducer';
-import { store } from 'redux/store';
+import { RouterState } from 'connected-react-router';
+
+import { AuthState } from 'rdx/slices/auth-slice';
+import { LeaderboardState } from 'rdx/slices/leaderboard-slice';
+import { UserState } from 'rdx/slices/user-slice';
+import { ForumState } from 'rdx/slices/forum-slice';
+import { store } from 'rdx/store';
 
 declare global {
-  type RootState = ReturnType<typeof rootReducer>;
+  type RootState = {
+    auth: AuthState,
+    leaderboard: LeaderboardState,
+    user: UserState,
+    forum: ForumState,
+    router: RouterState,
+  };
   type AppDispatch = typeof store.dispatch;
   type UseBoundAction = {
     <I extends any[], R extends Action>(actionCreator: (...args: I) => R): (...args: I) => R;
