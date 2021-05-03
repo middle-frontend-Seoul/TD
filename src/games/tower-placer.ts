@@ -9,6 +9,8 @@ import { Cursor } from 'games/cursor';
 import { GameMap } from 'games/game-map';
 
 export class TowerPlacer extends Renderable {
+  protected eventBus: EventBus;
+
   private cursor: Cursor;
 
   private map: GameMap;
@@ -25,24 +27,20 @@ export class TowerPlacer extends Renderable {
 
   private gameStats: GameStats;
 
-  protected event: () => EventBus;
-
   constructor(cursor: Cursor, map: GameMap, gameStats: GameStats) {
     super();
-    const event = new EventBus();
+    this.eventBus = new EventBus();
 
     this.cursor = cursor;
     this.map = map;
     this.gameStats = gameStats;
 
-    this.event = () => event;
-
-    this.event().on(EventNames.Escape, () => {
+    this.eventBus.on(EventNames.Escape, () => {
       if (this.isPlacing) {
         this.isPlacing = false;
       }
     });
-    this.event().on(EventNames.ClickInCanvas, () => {
+    this.eventBus.on(EventNames.ClickInCanvas, () => {
       if (
         this.tower &&
         this.TowerClass &&

@@ -57,7 +57,7 @@ export function uiReducer(state: GameUIState, action: GameUIAction) {
 }
 
 export class Game {
-  protected event: () => EventBus;
+  protected eventBus: EventBus;
 
   private ticker: number;
 
@@ -83,9 +83,8 @@ export class Game {
     setUIState: React.Dispatch<GameUIAction>,
     tileSize: number
   ) {
-    const event = new EventBus();
-    this.event = () => event;
-    this.event().clearAll();
+    this.eventBus = new EventBus();
+    this.eventBus.clearAll();
 
     const clonedGrid = grid.map((row) => [...row]);
 
@@ -101,12 +100,12 @@ export class Game {
 
     this.init();
 
-    this.event().on(EventNames.GameOver, () => {
+    this.eventBus.on(EventNames.GameOver, () => {
       this.gameOver();
     });
 
     this.throttledFpsUpdate = simpleThrottle((fps: number) => {
-      this.event().emit(EventNames.FpsUpdated, fps);
+      this.eventBus.emit(EventNames.FpsUpdated, fps);
     }, 1000);
   }
 

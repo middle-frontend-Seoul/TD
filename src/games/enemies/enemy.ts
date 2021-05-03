@@ -6,7 +6,7 @@ import { GameMap } from 'games/game-map';
 export type Direction = 'top' | 'left' | 'right' | 'bottom';
 
 export abstract class Enemy extends Renderable {
-  protected event: () => EventBus;
+  protected eventBus: EventBus;
 
   protected abstract name: string;
 
@@ -26,8 +26,7 @@ export abstract class Enemy extends Renderable {
 
   constructor(position: Position = { x: 0, y: 0 }) {
     super(position);
-    const event = new EventBus();
-    this.event = () => event;
+    this.eventBus = new EventBus();
   }
 
   update(map: GameMap) {
@@ -114,7 +113,7 @@ export abstract class Enemy extends Renderable {
   };
 
   private onDie = () => {
-    this.event().emit(EventNames.ScoreAdd, this.cash);
+    this.eventBus.emit(EventNames.ScoreAdd, this.cash);
   };
 
   private drawLive = (ctx: CanvasRenderingContext2D, map: GameMap): void => {

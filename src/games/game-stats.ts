@@ -2,7 +2,7 @@ import { EventBus, EventNames } from 'games/event-bus';
 import { GameUIAction, GameUIState } from 'games/typing';
 
 export class GameStats {
-  protected event: () => EventBus;
+  protected eventBus: EventBus;
 
   private fps: number;
 
@@ -16,8 +16,7 @@ export class GameStats {
     initialUIState: GameUIState,
     setUIState: React.Dispatch<GameUIAction>
   ) {
-    const event = new EventBus();
-    this.event = () => event;
+    this.eventBus = new EventBus();
 
     this.fps = initialUIState.fps;
     this.balance = initialUIState.score;
@@ -28,13 +27,13 @@ export class GameStats {
     this.setUIState({ type: 'setScore', payload: this.balance });
     this.setUIState({ type: 'setLives', payload: this.hp });
 
-    this.event().on(EventNames.ScoreAdd, (amount: number) => {
+    this.eventBus.on(EventNames.ScoreAdd, (amount: number) => {
       this.add(amount);
     });
-    this.event().on(EventNames.EnemyPassed, (damage: number) => {
+    this.eventBus.on(EventNames.EnemyPassed, (damage: number) => {
       this.enemyPassed(damage);
     });
-    this.event().on(EventNames.FpsUpdated, (fps: number) => {
+    this.eventBus.on(EventNames.FpsUpdated, (fps: number) => {
       this.updateFps(fps);
     });
   }
@@ -59,7 +58,7 @@ export class GameStats {
     this.hp -= damage;
     this.setUIState({ type: 'setLives', payload: this.hp });
     if (this.hp <= 0) {
-      this.event().emit(EventNames.GameOver);
+      this.eventBus.emit(EventNames.GameOver);
     }
   }
 

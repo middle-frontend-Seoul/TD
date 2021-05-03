@@ -7,7 +7,7 @@ import { getGridSize, getStartPosition, getEndPosition } from 'games/helpers';
 import { GameError } from 'games/game-error';
 
 export class GameMap {
-  protected event: () => EventBus;
+  protected eventBus: EventBus;
 
   private tileSize: number;
 
@@ -29,8 +29,7 @@ export class GameMap {
   protected endPosition: Position;
 
   constructor(grid: GridType, tileSize = 30) {
-    const event = new EventBus();
-    this.event = () => event;
+    this.eventBus = new EventBus();
 
     const { width, height } = getGridSize(grid);
 
@@ -78,7 +77,7 @@ export class GameMap {
   }
 
   public handleDamage(damage: number) {
-    this.event().emit(EventNames.EnemyPassed, damage);
+    this.eventBus.emit(EventNames.EnemyPassed, damage);
   }
 
   public getStartPosition(): Position {

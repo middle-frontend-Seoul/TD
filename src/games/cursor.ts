@@ -3,7 +3,7 @@ import { Canvas } from './canvas';
 import { Position } from './typing';
 
 export class Cursor {
-  event: () => EventBus;
+  eventBus: EventBus;
 
   canvas: Canvas;
 
@@ -12,10 +12,9 @@ export class Cursor {
   isMouseInCanvas = false;
 
   constructor(canvas: Canvas) {
-    const event = new EventBus();
+    this.eventBus = new EventBus();
 
     this.canvas = canvas;
-    this.event = () => event;
 
     window.addEventListener('click', this.onClick);
     window.addEventListener('keydown', this.onKeyDown);
@@ -38,7 +37,7 @@ export class Cursor {
 
   private onClick = (event: MouseEvent): void => {
     if (this.isMouseInCanvas) {
-      this.event().emit(
+      this.eventBus.emit(
         EventNames.ClickInCanvas,
         this.getBoundMousePosition(event)
       );
@@ -47,7 +46,7 @@ export class Cursor {
 
   private onKeyDown = ({ key }: KeyboardEvent) => {
     if (key.toLocaleLowerCase() === 'escape') {
-      this.event().emit(EventNames.Escape);
+      this.eventBus.emit(EventNames.Escape);
     }
   };
 
