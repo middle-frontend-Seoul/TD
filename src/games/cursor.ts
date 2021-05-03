@@ -39,7 +39,7 @@ export class Cursor {
   private onClick = (event: MouseEvent): void => {
     if (this.isMouseInCanvas) {
       this.event().emit(
-        EventNames.clickInCanvas,
+        EventNames.ClickInCanvas,
         this.getBoundMousePosition(event)
       );
     }
@@ -47,7 +47,7 @@ export class Cursor {
 
   private onKeyDown = ({ key }: KeyboardEvent) => {
     if (key.toLocaleLowerCase() === 'escape') {
-      this.event().emit(EventNames.escape);
+      this.event().emit(EventNames.Escape);
     }
   };
 

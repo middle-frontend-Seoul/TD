@@ -1,10 +1,5 @@
 import { GameError } from './game-error';
-import { GridType, Position } from './typing';
-
-type GridPosition = {
-  width: number;
-  offset: number;
-};
+import { GridType, Position, DrawPosition } from './typing';
 
 const GRID_FIRST_ROW = 0;
 
@@ -21,39 +16,27 @@ export const getStartPosition = (
   grid: GridType,
   tileSize: number
 ): Position => {
-  const { row, cell } = grid.reduce(
-    (prev, curr, i) => {
-      // eslint-disable-next-line no-param-reassign
-      prev.row = curr[prev.cell] ? i : prev.row;
-      return prev;
-    },
-    { row: 0, cell: 0 }
-  );
+  const gridX = 0;
+  const gridY = grid.findIndex((row) => row[gridX] === 1);
 
-  const x = cell * tileSize - tileSize;
-  const y = row * tileSize;
+  const x = gridX * tileSize - tileSize;
+  const y = gridY * tileSize;
   return { x, y };
 };
 
 export const getEndPosition = (grid: GridType, tileSize: number): Position => {
-  const { row, cell } = grid.reduce(
-    (prev, curr, i) => {
-      // eslint-disable-next-line no-param-reassign
-      prev.row = curr[prev.cell] ? i : prev.row;
-      return prev;
-    },
-    { row: 0, cell: tileSize - 1 }
-  );
+  const gridX = grid[GRID_FIRST_ROW].length - 1;
+  const gridY = grid.findIndex((row) => row[gridX] === 1);
 
-  const x = cell * tileSize + tileSize;
-  const y = row * tileSize;
+  const x = gridX * tileSize + tileSize;
+  const y = gridY * tileSize;
   return { x, y };
 };
 
-export const getGridPosition = (
+export const getDrawPosition = (
   tileSize: number,
   procent: number
-): GridPosition => {
+): DrawPosition => {
   const width = (tileSize * procent) / 100;
   const offset = Math.floor((tileSize - width) / 2);
 

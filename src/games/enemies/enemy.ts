@@ -114,7 +114,7 @@ export abstract class Enemy extends Renderable {
   };
 
   private onDie = () => {
-    this.event().emit(EventNames.scoreAdd, this.cash);
+    this.event().emit(EventNames.ScoreAdd, this.cash);
   };
 
   private drawLive = (ctx: CanvasRenderingContext2D, map: GameMap): void => {

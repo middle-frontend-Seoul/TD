@@ -17,6 +17,11 @@ export type GridPosition = {
   y: number;
 };
 
+export type DrawPosition = {
+  width: number;
+  offset: number;
+};
+
 export type GameUIState = {
   isGameEnded: boolean;
   fps: number;

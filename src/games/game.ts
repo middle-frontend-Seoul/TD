@@ -101,12 +101,12 @@ export class Game {
 
     this.init();
 
-    this.event().on(EventNames.gameOver, () => {
+    this.event().on(EventNames.GameOver, () => {
       this.gameOver();
     });
 
     this.throttledFpsUpdate = simpleThrottle((fps: number) => {
-      this.event().emit(EventNames.fpsUpdated, fps);
+      this.event().emit(EventNames.FpsUpdated, fps);
     }, 1000);
   }
 

@@ -78,7 +78,7 @@ export class GameMap {
   }
 
   public handleDamage(damage: number) {
-    this.event().emit(EventNames.enemyPassed, damage);
+    this.event().emit(EventNames.EnemyPassed, damage);
   }
 
   public getStartPosition(): Position {

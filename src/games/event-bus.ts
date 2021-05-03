@@ -2,16 +2,12 @@
 type EventCallback = (...args: any[]) => any;
 
 export enum EventNames {
-  drag = 'drag',
-  drop = 'drop',
-  escape = 'escape',
-  moveInCanvas = 'mousemove:incanvas',
-  moveOutCanvas = 'mousemove:outcanvas',
-  clickInCanvas = 'click:incanvas',
-  scoreAdd = 'score:add',
-  gameOver = 'game:over',
-  enemyPassed = 'game:enemypassed',
-  fpsUpdated = 'game:fpsupdated',
+  Escape = 'cursor:escape',
+  ClickInCanvas = 'cursor:incanvas',
+  ScoreAdd = 'enemy:scoreadd',
+  EnemyPassed = 'gamemap:enemypassed',
+  GameOver = 'gamestats:over',
+  FpsUpdated = 'gamestats:fpsupdated',
 }
 
 export class EventBus {

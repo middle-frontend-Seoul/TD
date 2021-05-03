@@ -37,12 +37,12 @@ export class TowerPlacer extends Renderable {
 
     this.event = () => event;
 
-    this.event().on(EventNames.escape, () => {
+    this.event().on(EventNames.Escape, () => {
       if (this.isPlacing) {
         this.isPlacing = false;
       }
     });
-    this.event().on(EventNames.clickInCanvas, () => {
+    this.event().on(EventNames.ClickInCanvas, () => {
       if (
         this.tower &&
         this.TowerClass &&

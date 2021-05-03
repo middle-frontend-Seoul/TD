@@ -28,13 +28,13 @@ export class GameStats {
     this.setUIState({ type: 'setScore', payload: this.balance });
     this.setUIState({ type: 'setLives', payload: this.hp });
 
-    this.event().on(EventNames.scoreAdd, (amount: number) => {
+    this.event().on(EventNames.ScoreAdd, (amount: number) => {
       this.add(amount);
     });
-    this.event().on(EventNames.enemyPassed, (damage: number) => {
+    this.event().on(EventNames.EnemyPassed, (damage: number) => {
       this.enemyPassed(damage);
     });
-    this.event().on(EventNames.fpsUpdated, (fps: number) => {
+    this.event().on(EventNames.FpsUpdated, (fps: number) => {
       this.updateFps(fps);
     });
   }
@@ -59,7 +59,7 @@ export class GameStats {
     this.hp -= damage;
     this.setUIState({ type: 'setLives', payload: this.hp });
     if (this.hp <= 0) {
-      this.event().emit(EventNames.gameOver);
+      this.event().emit(EventNames.GameOver);
     }
   }
 

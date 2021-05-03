@@ -1,6 +1,6 @@
 import towerPathGun from 'images/tools/gun.png';
 
-import { getGridPosition } from 'games/helpers';
+import { getDrawPosition } from 'games/helpers';
 import { GameMap } from 'games/game-map';
 import { munitionManager } from 'games/managers/munition-manager';
 import { GunMunition } from 'games/munitions/gun-munition';
@@ -25,8 +25,8 @@ export class Gun extends Tower {
     const tileSize = map.getTileSize();
     const { x, y } = this.position;
 
-    const p60 = getGridPosition(tileSize, 60);
-    const p20 = getGridPosition(tileSize, 20);
+    const p60 = getDrawPosition(tileSize, 60);
+    const p20 = getDrawPosition(tileSize, 20);
 
     ctx.beginPath();
     ctx.fillStyle = '#6B6B6B';

@@ -22,13 +22,8 @@ export class EnemyManager extends EntityRenderer<Enemy> {
   }
 
   update(map: GameMap) {
-    this.entities.forEach((enemy, idx) => {
-      if (enemy.isAlive) {
-        enemy.update(map);
-      } else {
-        this.entities.splice(idx, 1);
-      }
-    });
+    this.entities = this.entities.filter((enemy) => enemy.isAlive);
+    this.entities.forEach((enemy) => enemy.update(map));
   }
 }
 

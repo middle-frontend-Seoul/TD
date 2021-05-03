@@ -4,13 +4,8 @@ import { GameMap } from 'games/game-map';
 
 export class MunitionManager extends EntityRenderer<Munition> {
   update(map: GameMap) {
-    this.entities.forEach((munition, idx) => {
-      if (munition.isAlive) {
-        munition.update(map);
-      } else {
-        this.entities.splice(idx, 1);
-      }
-    });
+    this.entities = this.entities.filter((munition) => munition.isAlive);
+    this.entities.forEach((munition) => munition.update(map));
   }
 }
 
