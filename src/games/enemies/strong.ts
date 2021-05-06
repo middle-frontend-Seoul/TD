@@ -1,24 +1,24 @@
+import { GameMap } from 'games/game-map';
 import { Enemy } from './enemy';
-import { Position } from '../typing';
 
 export class StrongEnemy extends Enemy {
-  constructor(position: Position) {
-    super({
-      name: 'strong',
-      size: 30,
-      live: 180,
-      livesLeft: 180,
-      speed: 10,
-      position,
-    });
-  }
+  protected name = 'strong';
 
-  draw = (ctx: CanvasRenderingContext2D): void => {
-    if (this.livesLeft !== this.live) {
-      this.drawLive(ctx);
-    }
+  protected speed = 0.8;
 
-    const fifty = this.size / 2;
+  protected live = 180;
+
+  protected damage = 2;
+
+  protected cash = 50;
+
+  protected sizeBox = 4;
+
+  draw = (ctx: CanvasRenderingContext2D, map: GameMap): void => {
+    super.draw(ctx, map);
+    const tileSize = map.getTileSize();
+
+    const fifty = tileSize / 2;
 
     const x = this.position.x + fifty;
     const y = this.position.y + fifty;

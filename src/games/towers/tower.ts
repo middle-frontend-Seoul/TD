@@ -1,54 +1,74 @@
-import { Position } from '../typing';
-import { InterfaceMoveCursor } from '../interfaces/move-cursor';
+import { enemyManager } from 'games/managers/enemy-manager';
+import { GameMap } from 'games/game-map';
+import { GridRenderable } from 'games/interfaces/grid-renderable';
+import { Enemy } from 'games/enemies';
+import { getDistanceSquared } from 'games/helpers';
 
-export type TowerProps = {
-  size?: number;
-  name: string;
-  price: number;
-  color: string;
-  radius: number;
-};
-
-export abstract class Tower extends InterfaceMoveCursor {
+export abstract class Tower extends GridRenderable {
   abstract pathImage: string;
 
-  protected size: number;
+  abstract name: string;
 
-  protected name: string;
+  abstract price: number;
 
-  protected price: number;
+  abstract color: string;
 
-  protected color: string;
+  abstract radius: number;
 
-  protected radius: number;
+  abstract damage: number;
 
-  constructor(props: TowerProps) {
-    super();
-    const { size = 30, name, price, color, radius } = props;
+  abstract reloadTime: number;
 
-    this.size = size;
-    this.name = name;
-    this.price = price;
-    this.color = color;
-    this.radius = radius;
+  protected target: Enemy | undefined;
+
+  protected lastShoot = 0;
+
+  protected canShoot = true;
+
+  // TODO extends GridRenderable и поддержку isHovered, center и тд
+
+  public update(map: GameMap) {
+    if (this.lastShoot + this.reloadTime < performance.now()) {
+      this.canShoot = true;
+      this.lastShoot = performance.now();
+    }
+
+    const tileSize = map.getTileSize();
+    const aimRadius = this.radius * tileSize;
+
+    if (this.target && !this.target.isAlive) {
+      this.target = undefined;
+    } else if (
+      this.target &&
+      getDistanceSquared(this.center, this.target.position) <
+        aimRadius * aimRadius
+    ) {
+      if (this.canShoot) {
+        this.canShoot = false;
+        this.shoot();
+      }
+    } else {
+      this.target = enemyManager.getClosestPointInRadius(
+        this.center,
+        aimRadius
+      );
+    }
   }
 
-  abstract draw(ctx: CanvasRenderingContext2D, position: Position): void;
-
-  public drawRadius = (
-    ctx: CanvasRenderingContext2D,
-    { x, y }: Position
-  ): void => {
-    const cordinatX = x + this.size / 2;
-    const cordinatY = y + this.size / 2;
+  public drawRadius(ctx: CanvasRenderingContext2D, map: GameMap) {
+    const tileSize = map.getTileSize();
+    const aimRadius = this.radius * tileSize;
+    const { x, y } = this.center;
 
     ctx.beginPath();
     ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
     ctx.fillStyle = this.color;
-    ctx.arc(cordinatX, cordinatY, this.radius * this.size, 0, 2 * Math.PI);
+    ctx.arc(x, y, aimRadius, 0, 2 * Math.PI);
     ctx.fill();
     ctx.stroke();
-  };
+  }
+
+  protected abstract shoot(): void;
 
   getName(): string {
     return this.name;
@@ -56,5 +76,9 @@ export abstract class Tower extends InterfaceMoveCursor {
 
   getPrice(): number {
     return this.price;
+  }
+
+  getDamage(): number {
+    return this.damage;
   }
 }

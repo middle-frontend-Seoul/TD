@@ -1,24 +1,22 @@
-import React, { FC, useCallback, useEffect } from 'react';
+import React, { FC, useCallback } from 'react';
 
 import { Space } from 'components-ui/space';
 import { Form } from 'components-ui/form/form';
-import { useHistory } from 'react-router';
 import { Block } from 'components-ui/block';
 import {
   isValidLogin,
   isValidPassword,
   validationMessages,
 } from 'utils/validation';
-import { useAppSelector, useBoundAction } from 'redux/hooks';
-import { signIn } from 'redux/slices/auth-slice';
+import { useAppSelector, useBoundAction } from 'rdx/hooks';
+import { signIn } from 'rdx/slices/auth-slice';
+import { withAuth } from './with-auth';
 
 import './auth.scss';
 
-const PageSignIn: FC = () => {
-  const history = useHistory();
+const PageSignIn: FC = withAuth(() => {
   const actionSignIn = useBoundAction(signIn);
-  const authError = useAppSelector((state) => state.auth.error);
-  const authStatus = useAppSelector((state) => state.auth.authStatus);
+  const authError = useAppSelector((state) => state.auth.error.auth);
 
   const signInFields = [
     {
@@ -34,14 +32,6 @@ const PageSignIn: FC = () => {
       defaultValue: '',
     },
   ];
-
-  useEffect(() => {
-    if (authStatus === 'success') {
-      history.push({
-        pathname: '/',
-      });
-    }
-  }, [actionSignIn, authStatus, history]);
 
   const onSubmit = useCallback(
     async (info: SignInRequestInfo) => {
@@ -79,7 +69,7 @@ const PageSignIn: FC = () => {
       </Block>
     </Space>
   );
-};
+});
 
 export { PageSignIn };
 export default PageSignIn;

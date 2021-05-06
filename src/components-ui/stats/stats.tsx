@@ -3,19 +3,31 @@ import React, { FC } from 'react';
 import './stats.scss';
 
 export interface IStatsProps {
-  names: string[];
-  values: (string | number)[];
+  fps: number;
+  score: number;
+  wave: number;
+  lives: number;
 }
 
-export const Stats: FC<IStatsProps> = ({ names, values }) => {
+export const Stats: FC<IStatsProps> = ({ fps, score, wave, lives }) => {
   return (
     <ul className="stats">
-      {names.map((name, i) => (
-        <li key={name} className="stats-item">
-          <span>{name}:</span>
-          {values[i] || ''}
-        </li>
-      ))}
+      <li className="stats-item">
+        <span>FPS:</span>
+        {fps}
+      </li>
+      <li className="stats-item">
+        <span>Волна:</span>
+        {wave}
+      </li>
+      <li className="stats-item">
+        <span>Жизни:</span>
+        {lives}
+      </li>
+      <li className="stats-item">
+        <span>Ресурсы:</span>
+        {score}
+      </li>
     </ul>
   );
 };

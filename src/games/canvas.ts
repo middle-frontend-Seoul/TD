@@ -13,7 +13,15 @@ export class Canvas {
     if (this.ctx === null) {
       throw new Error('Не удалось получить контекст');
     }
+
+    window.addEventListener('resize', this.updateRect);
+    window.addEventListener('scroll', this.updateRect);
   }
+
+  removeEvent = (): void => {
+    window.removeEventListener('resize', this.updateRect);
+    window.removeEventListener('scroll', this.updateRect);
+  };
 
   getCanvas(): HTMLCanvasElement {
     return this.canvas;
@@ -31,4 +39,8 @@ export class Canvas {
     this.ctx.fillStyle = '#2ea44f';
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
   }
+
+  protected updateRect = (): void => {
+    this.rect = this.canvas.getBoundingClientRect();
+  };
 }

@@ -1,8 +1,7 @@
-import React, { FC, useEffect, useCallback } from 'react';
+import React, { FC, useCallback } from 'react';
 
 import { Space } from 'components-ui/space';
 import { Form } from 'components-ui/form/form';
-import { useHistory } from 'react-router';
 import { Block } from 'components-ui/block';
 import {
   isPasswordEqual,
@@ -11,16 +10,15 @@ import {
   isValidPassword,
   validationMessages,
 } from 'utils/validation';
-import { useAppSelector, useBoundAction } from 'redux/hooks';
-import { signUp } from 'redux/slices/auth-slice';
+import { useAppSelector, useBoundAction } from 'rdx/hooks';
+import { signUp } from 'rdx/slices/auth-slice';
+import { withAuth } from './with-auth';
 
 import './auth.scss';
 
-const PageSignUp: FC = () => {
-  const history = useHistory();
+const PageSignUp: FC = withAuth(() => {
   const actionSignUp = useBoundAction(signUp);
-  const authError = useAppSelector((state) => state.auth.error);
-  const authStatus = useAppSelector((state) => state.auth.authStatus);
+  const authError = useAppSelector((state) => state.auth.error.auth);
 
   const signUpFields = [
     {
@@ -48,14 +46,6 @@ const PageSignUp: FC = () => {
       defaultValue: '',
     },
   ];
-
-  useEffect(() => {
-    if (authStatus === 'success') {
-      history.push({
-        pathname: '/',
-      });
-    }
-  }, [actionSignUp, authStatus, history]);
 
   const onSubmit = useCallback(
     async (info: SignUpRequestInfo) => {
@@ -103,7 +93,7 @@ const PageSignUp: FC = () => {
       </Block>
     </Space>
   );
-};
+});
 
 export { PageSignUp };
 export default PageSignUp;

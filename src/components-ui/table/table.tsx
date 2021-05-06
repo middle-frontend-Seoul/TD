@@ -7,6 +7,7 @@ type TableSize = 'small' | 'medium';
 
 export type TablePagination = {
   page: number;
+  pages?: number;
   handlePrev: () => void;
   handleNext: () => void;
 };
@@ -40,6 +41,22 @@ export function Table<T extends Record<string, any>>({
   size = 'medium',
   pagination,
 }: ITableProps<T>): JSX.Element {
+  const { page, pages, handleNext, handlePrev } = pagination || {};
+
+  const handleOnNextPage = () => {
+    if (!pages && handleNext) {
+      handleNext();
+    } else if (Number(page) < Number(pages) && handleNext) {
+      handleNext();
+    }
+  };
+
+  const handleOnPrevPage = () => {
+    if (Number(page) > 1 && handlePrev) {
+      handlePrev();
+    }
+  };
+
   return (
     <div className={className}>
       <table className="table">
@@ -107,8 +124,8 @@ export function Table<T extends Record<string, any>>({
           <div className={`pagination pagination_size-${size}`}>
             <span
               className={`pagination__arrow pagination__arrow_size-${size}`}
-              onClick={pagination.handlePrev}
-              onKeyDown={pagination.handlePrev}
+              onClick={handleOnPrevPage}
+              onKeyDown={handleOnPrevPage}
               role="button"
               tabIndex={0}
             >
@@ -119,8 +136,8 @@ export function Table<T extends Record<string, any>>({
             </span>
             <span
               className={`pagination__arrow pagination__arrow_size-${size}`}
-              onClick={pagination.handleNext}
-              onKeyDown={pagination.handleNext}
+              onClick={handleOnNextPage}
+              onKeyDown={handleOnNextPage}
               role="button"
               tabIndex={0}
             >

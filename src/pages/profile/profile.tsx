@@ -9,9 +9,9 @@ import { ProfileForm } from 'components/profile/profile-form';
 import { HOME } from 'core/url';
 import { isValuesChange } from 'utils/formHelpers';
 import { useMountEffect } from 'utils/hooks';
-import { useAppSelector, useBoundAction } from 'redux/hooks';
-import { getCurrentUser } from 'redux/slices/auth-slice';
-import { updateUser, updatePassword } from 'redux/slices/user-slice';
+import { useAppSelector, useBoundAction } from 'rdx/hooks';
+import { getCurrentUser } from 'rdx/slices/auth-slice';
+import { updateUser, updatePassword } from 'rdx/slices/user-slice';
 
 import defaultAvatar from './images/default-avatar.png';
 import './profile.scss';

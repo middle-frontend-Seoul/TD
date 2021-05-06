@@ -5,7 +5,10 @@ import React, {
   useState,
   useEffect,
   useCallback,
+  useReducer,
 } from 'react';
+
+import { useHistory } from 'react-router';
 
 import { Card } from 'components-ui/card';
 import { Space } from 'components-ui/space';
@@ -14,13 +17,16 @@ import { Block } from 'components-ui/block';
 import { Modal } from 'components-ui/modal';
 import { Button } from 'components-ui/button';
 
-import { Game, Towers } from 'games';
+import { Game, uiReducer, initialUIState } from 'games/game';
+import { Towers } from 'games/towers/towers';
 
 import sell from 'images/tools/sell.png';
 import openFS from 'images/tools/open-fullscreen.png';
 import closeFS from 'images/tools/exit-fullscreen.png';
-import { gridPlayOne } from './grid';
+import { gridPlayOne } from '../../games/maps/grid_1';
 import './style.scss';
+
+const TILE_SIZE = 30;
 
 const PagePlay: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -30,33 +36,49 @@ const PagePlay: FC = () => {
   // TODO: информация об ошибке в стайте является временныь решением
   const [error, setError] = useState('');
   const [isMenuVisible, setMenuVisible] = useState(false);
+  const [uiState, setUIState] = useReducer(uiReducer, initialUIState);
+
+  const history = useHistory();
 
   useEffect(() => {
-    if (!canvasRef.current) return;
+    let game: Game;
+    if (canvasRef.current) {
+      try {
+        game = new Game(canvasRef.current, gridPlayOne, setUIState, TILE_SIZE);
+        game.start();
 
-    try {
-      const game = new Game(canvasRef.current, gridPlayOne);
-      game.start();
-
-      setGameManager(game);
-    } catch (err) {
-      setError(err.message);
+        setGameManager(game);
+      } catch (err) {
+        setError(err.message);
+      }
     }
+    return () => {
+      game?.gameOver();
+    };
   }, [canvasRef]);
 
-  const onClickPause = useCallback(() => setMenuVisible(true), []);
-  const onClickCloseMenu = useCallback(() => setMenuVisible(false), []);
+  const onClickPause = useCallback(() => {
+    if (gameManager?.pause()) {
+      setMenuVisible(true);
+    }
+  }, [gameManager]);
+
+  const onClickCloseMenu = useCallback(() => {
+    if (gameManager?.start()) {
+      setMenuVisible(false);
+    }
+  }, [gameManager]);
 
   // -- Renders --
   // -------------
   const renderTowers = useMemo(() => {
-    const builder = gameManager?.getTowersBuilder();
+    const builder = gameManager?.getTowerPlacer();
 
     return Towers.map((Tower) => {
-      const tower = new Tower();
+      const tower = new Tower({ x: 0, y: 0 }, TILE_SIZE);
 
       const onDragTower = () => {
-        if (builder) builder.onDrag(Tower);
+        if (builder) builder.place(Tower);
       };
 
       return (
@@ -83,6 +105,12 @@ const PagePlay: FC = () => {
     }
   };
 
+  const returnToMain = () => {
+    history.push({
+      pathname: '/',
+    });
+  };
+
   return (
     <Block relative page="play">
       {error && <div>{error}</div>}
@@ -101,8 +129,10 @@ const PagePlay: FC = () => {
             Пауза
           </Button>
           <Stats
-            names={['Очки', 'Волна', 'Жизни', 'Ресурсы']}
-            values={[200010, '#1', 3, '30 B']}
+            fps={uiState.fps}
+            score={uiState.score}
+            wave={uiState.wave}
+            lives={uiState.lives}
           />
         </div>
         <div
@@ -123,7 +153,17 @@ const PagePlay: FC = () => {
         <Space>
           <Button radius>Продолжить</Button>
           <Button radius>Начать сначала</Button>
-          <Button radius>Завершить игру</Button>
+          <Button radius onClick={returnToMain}>
+            Завершить игру
+          </Button>
+        </Space>
+      </Modal>
+      <Modal isOpen={uiState.isGameEnded} onClose={() => undefined}>
+        <Space>
+          <div className="end-game-title">Игра завершена</div>
+          <Button radius onClick={returnToMain}>
+            Завершить игру
+          </Button>
         </Space>
       </Modal>
     </Block>

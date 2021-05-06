@@ -2,12 +2,12 @@
 type EventCallback = (...args: any[]) => any;
 
 export enum EventNames {
-  drag = 'drag',
-  drop = 'drop',
-  escape = 'escape',
-  moveInCanvas = 'mousemove:incanvas',
-  moveOutCanvas = 'mousemove:outcanvas',
-  clickInCanvas = 'click:incanvas',
+  Escape = 'cursor:escape',
+  ClickInCanvas = 'cursor:incanvas',
+  ScoreAdd = 'enemy:scoreadd',
+  EnemyPassed = 'gamemap:enemypassed',
+  GameOver = 'gamestats:over',
+  FpsUpdated = 'gamestats:fpsupdated',
 }
 
 export class EventBus {
@@ -21,6 +21,12 @@ export class EventBus {
     }
 
     EventBus.instance = this;
+  }
+
+  clearAll(): void {
+    Object.keys(this.callbacks).forEach((event) => {
+      this.callbacks[event] = [];
+    });
   }
 
   on(event: string, callback: EventCallback): void {

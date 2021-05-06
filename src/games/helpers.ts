@@ -1,19 +1,44 @@
 import { GameError } from './game-error';
-import { GridType } from './typing';
-
-type GridPosition = {
-  width: number;
-  offset: number;
-};
+import { GridType, Position, DrawPosition } from './typing';
 
 const GRID_FIRST_ROW = 0;
 
-export const getGridPosition = (
-  size: number,
+export const getDistanceSquared = (
+  position1: Position,
+  position2: Position
+) => {
+  const deltaX = position1.x - position2.x;
+  const deltaY = position1.y - position2.y;
+  return deltaX * deltaX + deltaY * deltaY;
+};
+
+export const getStartPosition = (
+  grid: GridType,
+  tileSize: number
+): Position => {
+  const gridX = 0;
+  const gridY = grid.findIndex((row) => row[gridX] === 1);
+
+  const x = gridX * tileSize - tileSize;
+  const y = gridY * tileSize;
+  return { x, y };
+};
+
+export const getEndPosition = (grid: GridType, tileSize: number): Position => {
+  const gridX = grid[GRID_FIRST_ROW].length - 1;
+  const gridY = grid.findIndex((row) => row[gridX] === 1);
+
+  const x = gridX * tileSize + tileSize;
+  const y = gridY * tileSize;
+  return { x, y };
+};
+
+export const getDrawPosition = (
+  tileSize: number,
   procent: number
-): GridPosition => {
-  const width = (size * procent) / 100;
-  const offset = Math.floor((size - width) / 2);
+): DrawPosition => {
+  const width = (tileSize * procent) / 100;
+  const offset = Math.floor((tileSize - width) / 2);
 
   return {
     width,
@@ -47,14 +72,3 @@ export const getGridSize = (grid: GridType): GetGridSizeReturn => {
     width,
   };
 };
-
-export const loadImage = (src: string): Promise<HTMLImageElement> => {
-  return new Promise((res, rej) => {
-    const image = new Image();
-    image.onload = () => res(image);
-    image.onerror = rej;
-    image.src = src;
-  });
-};
-
-export const cloneNode = <T extends Node>(node: T): T => <T>node.cloneNode();

@@ -1,24 +1,21 @@
+import { GameMap } from 'games/game-map';
 import { Enemy } from './enemy';
-import { Position } from '../typing';
 
 export class SimpleEnemy extends Enemy {
+  protected name = 'simple';
+
+  protected speed = 0.8;
+
+  protected live = 100;
+
+  protected damage = 1;
+
+  protected cash = 10;
+
   protected sizeBox = 4;
 
-  constructor(position: Position) {
-    super({
-      name: 'simple',
-      size: 30,
-      live: 100,
-      livesLeft: 100,
-      speed: 10,
-      position,
-    });
-  }
-
-  draw = (ctx: CanvasRenderingContext2D): void => {
-    if (this.livesLeft !== this.live) {
-      this.drawLive(ctx);
-    }
+  draw = (ctx: CanvasRenderingContext2D, map: GameMap): void => {
+    super.draw(ctx, map);
 
     this.drawBox(ctx, 3, 3, '#000000');
     this.drawBox(ctx, 3, 2, '#FFF500');
