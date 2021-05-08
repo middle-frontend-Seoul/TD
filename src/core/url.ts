@@ -1,9 +1,11 @@
-export const HOME = '/';
-export const PLAY = '/play';
-export const SIGNIN = '/auth/signin';
-export const SIGNUP = '/auth/signup';
-export const PROFILE = '/profile';
-export const STATISTICS = '/statistics';
-export const FORUM = '/forum';
-export const FORUM_SECTION = '/forum/:section';
-export const FORUM_DETAILS = '/forum/show/:id';
+export const URL: AppUrls = {
+  HOME: { path: '/', protected: true },
+  PLAY: { path: '/play', protected: true },
+  SIGNIN: { path: '/auth/signin' },
+  SIGNUP: { path: '/auth/signup' },
+  PROFILE: { path: '/profile', protected: true },
+  STATISTICS: { path: '/statistics', protected: true },
+  FORUM: { path: '/forum', protected: true },
+  FORUM_SECTION: { path: '/forum/:section', protected: true },
+  FORUM_DETAILS: { path: '/forum/show/:id', protected: true },
+};

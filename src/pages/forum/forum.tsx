@@ -9,7 +9,7 @@ import { Modal } from 'components-ui/modal';
 import { Loading } from 'components-ui/loading';
 import { Table, TableColumn } from 'components-ui/table';
 import { ThemeForm } from 'components/forum/theme-form';
-import { HOME, FORUM_SECTION } from 'core/url';
+import { URL } from 'core/url';
 
 import { useUrlParams } from 'hooks/use-url-params';
 import { useUrlNextPage } from 'hooks/use-url-next-page';
@@ -28,7 +28,7 @@ const columns: TableColumn<any>[] = [
     render: (val, row) => (
       <RouteLink
         className="forum-link"
-        to={FORUM_SECTION.replace(':section', row.id)}
+        to={URL.FORUM_SECTION.path.replace(':section', row.id)}
       >
         {val}
       </RouteLink>
@@ -135,7 +135,7 @@ const PageForum: FC = () => {
         </div>
       </Block>
       <Space type="horizontal" position="center">
-        <Link to={HOME} type="button">
+        <Link to={URL.HOME.path} type="button">
           На главный экран
         </Link>
       </Space>

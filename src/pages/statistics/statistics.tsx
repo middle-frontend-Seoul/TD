@@ -4,7 +4,7 @@ import { Link } from 'components-ui/link';
 import { Block } from 'components-ui/block';
 import { Space } from 'components-ui/space';
 import { Table, TableColumn } from 'components-ui/table';
-import { HOME } from 'core/url';
+import { URL } from 'core/url';
 import { DEFAULT_PAGE_SIZE } from 'constants/defaults';
 import { useAppSelector, useBoundAction } from 'rdx/hooks';
 import { getAllLeaderboards } from 'rdx/slices/leaderboard-slice';
@@ -85,7 +85,7 @@ const PageStatistics: FC = () => {
         </Space>
       </Block>
       <Space type="horizontal" position="center">
-        <Link type="button" to={HOME}>
+        <Link type="button" to={URL.HOME.path}>
           На главный экран
         </Link>
       </Space>

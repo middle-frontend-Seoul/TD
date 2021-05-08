@@ -9,7 +9,7 @@ import { Modal } from 'components-ui/modal';
 import { Loading } from 'components-ui/loading';
 import { MessageForm } from 'components/forum/message-form';
 import { ForumMassage } from 'components-ui/forum-massage';
-import { FORUM_SECTION } from 'core/url';
+import { URL } from 'core/url';
 
 import { useAppSelector, useBoundAction } from 'rdx/hooks';
 import { getMessages, create, setOpen } from 'rdx/slices/forum-slice';
@@ -82,7 +82,7 @@ const PageForumDetails: FC = () => {
         </div>
       </Block>
       <Space type="horizontal" position="center">
-        <Link to={FORUM_SECTION} type="button">
+        <Link to={URL.FORUM_SECTION.path} type="button">
           Назад
         </Link>
       </Space>

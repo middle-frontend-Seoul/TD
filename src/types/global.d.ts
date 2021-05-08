@@ -3,6 +3,8 @@ declare module '*.png' {
   export default value;
 }
 
+// declare module 'http-proxy-middleware';
+
 type Nullable<T> = T | null;
 
 interface Window {
@@ -15,3 +17,7 @@ interface LocationState {
     search: string;
   };
 }
+
+type AppUrls = {
+  [name: string]: { path: string; protected?: boolean };
+};

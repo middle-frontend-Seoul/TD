@@ -6,7 +6,7 @@ import { Space } from 'components-ui/space';
 import { Button } from 'components-ui/button';
 import { Avatar } from 'components-ui/avatar';
 import { ProfileForm } from 'components/profile/profile-form';
-import { HOME } from 'core/url';
+import { URL } from 'core/url';
 import { isValuesChange } from 'utils/formHelpers';
 import { useMountEffect } from 'utils/hooks';
 import { useAppSelector, useBoundAction } from 'rdx/hooks';
@@ -107,7 +107,7 @@ const PageProfile: FC = () => {
           </Block>
         </Space>
         <Space type="horizontal" position="center">
-          <Link type="button" to={HOME}>
+          <Link type="button" to={URL.HOME.path}>
             На главный экран
           </Link>
         </Space>
