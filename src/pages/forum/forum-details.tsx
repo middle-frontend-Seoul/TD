@@ -55,6 +55,7 @@ const PageForumDetails: FC = () => {
       case 'success':
         return messages.map((msg: ThemeMessageInfo) => (
           <ForumMassage
+            key={msg.id}
             date={msg.date}
             userName={msg.userName}
             message={msg.message}

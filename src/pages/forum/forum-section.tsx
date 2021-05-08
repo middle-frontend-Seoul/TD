@@ -61,13 +61,13 @@ const PageForumSection: FC = () => {
   const pages = useAppSelector((state) => state.forum.pages);
   const currentPage = useAppSelector((state) => state.forum.currentPage);
 
-  const actionGetThemes = useBoundAction(getSubThemes);
+  const actionGetSubThemes = useBoundAction(getSubThemes);
   const actionThemeCreate = useBoundAction(create);
   const actionSetOpen = useBoundAction(setOpen);
 
   useEffect(() => {
-    actionGetThemes(page);
-  }, [page, actionGetThemes]);
+    actionGetSubThemes(page);
+  }, [page, actionGetSubThemes]);
 
   const handleNextPage = useCallback(() => {
     const newPage = currentPage + 1;

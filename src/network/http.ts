@@ -1,10 +1,11 @@
 import axios, { AxiosResponse } from 'axios';
 
-import { API_BASE_URL } from 'constants/network';
+import { isServer } from 'utils/ssr';
+import { API_BASE_URL_SSR, API_BASE_URL } from 'constants/network';
 
-const axiosInstance = axios.create({
+export const axiosInstance = axios.create({
   withCredentials: true,
-  baseURL: API_BASE_URL,
+  baseURL: isServer ? API_BASE_URL_SSR : API_BASE_URL,
 });
 
 async function httpRequest<Dto>(

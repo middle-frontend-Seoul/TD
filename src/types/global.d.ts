@@ -19,5 +19,10 @@ interface LocationState {
 }
 
 type AppUrls = {
-  [name: string]: { path: string; protected?: boolean };
+  [name: string]: {
+    path: string;
+    exact?: boolean;
+    protected?: boolean;
+    fetchData?: (dispatch: any) => Promise<void>;
+  };
 };
