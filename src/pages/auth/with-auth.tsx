@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useLocation, Redirect } from 'react-router-dom';
 
-import * as URL from 'core/url';
+import { URL } from 'core/url';
 import { useAppSelector } from 'rdx/hooks';
 
 export function withAuth<P>(WrappedComponent: FC<P>): FC<P> {
@@ -14,7 +14,7 @@ export function withAuth<P>(WrappedComponent: FC<P>): FC<P> {
       : undefined;
 
     if (currentUser) {
-      return <Redirect to={fromUrl || URL.HOME} />;
+      return <Redirect to={fromUrl || URL.HOME.path} />;
     }
 
     return <WrappedComponent {...props} />; // eslint-disable-line

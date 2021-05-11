@@ -9,7 +9,7 @@ import { Modal } from 'components-ui/modal';
 import { Loading } from 'components-ui/loading';
 import { ThemeForm } from 'components/forum/theme-form';
 import { Table, TableColumn } from 'components-ui/table';
-import { FORUM, FORUM_DETAILS } from 'core/url';
+import { URL } from 'core/url';
 
 import { useUrlParams } from 'hooks/use-url-params';
 import { useUrlNextPage } from 'hooks/use-url-next-page';
@@ -28,7 +28,7 @@ const columns: TableColumn<any>[] = [
     render: (val, row) => (
       <RouteLink
         className="forum-link"
-        to={FORUM_DETAILS.replace(':id', row.id)}
+        to={URL.FORUM_DETAILS.path.replace(':id', row.id)}
       >
         {val}
       </RouteLink>
@@ -61,13 +61,13 @@ const PageForumSection: FC = () => {
   const pages = useAppSelector((state) => state.forum.pages);
   const currentPage = useAppSelector((state) => state.forum.currentPage);
 
-  const actionGetThemes = useBoundAction(getSubThemes);
+  const actionGetSubThemes = useBoundAction(getSubThemes);
   const actionThemeCreate = useBoundAction(create);
   const actionSetOpen = useBoundAction(setOpen);
 
   useEffect(() => {
-    actionGetThemes(page);
-  }, [page, actionGetThemes]);
+    actionGetSubThemes(page);
+  }, [page, actionGetSubThemes]);
 
   const handleNextPage = useCallback(() => {
     const newPage = currentPage + 1;
@@ -136,7 +136,7 @@ const PageForumSection: FC = () => {
         </div>
       </Block>
       <Space type="horizontal" position="center">
-        <Link to={FORUM} type="button">
+        <Link to={URL.FORUM.path} type="button">
           Назад
         </Link>
       </Space>
