@@ -40,7 +40,7 @@ const PageSignIn: FC = withAuth(() => {
   const postCode = async (code: string) => {
     await oAuthApi.signIn({
       code,
-      redirect_uri: 'http://localhost:5000/',
+      redirect_uri: `${process.env.REDIRECT_URL}`,
     });
   };
 
@@ -56,7 +56,7 @@ const PageSignIn: FC = withAuth(() => {
     const code = getCode();
     if (code) {
       postCode(code).then(() => {
-        document.location.href = 'http://localhost:5000/';
+        document.location.href = `${process.env.REDIRECT_URL}`;
       });
     }
   }, [getCode]);
@@ -65,7 +65,7 @@ const PageSignIn: FC = withAuth(() => {
     const { data, error } = await oAuthApi.getClientID();
     if (data) {
       const clientId = data.service_id;
-      const redirectURL = 'http://localhost:5000/';
+      const redirectURL = `${process.env.REDIRECT_URL}`;
       const urlAuth = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectURL}`;
       document.location.href = urlAuth;
     } else {
