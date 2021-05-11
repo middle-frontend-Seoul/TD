@@ -10,6 +10,9 @@ import {
 } from 'utils/validation';
 import { useAppSelector, useBoundAction } from 'rdx/hooks';
 import { signIn } from 'rdx/slices/auth-slice';
+import yaLogo from 'images/tools/ya-logo.png';
+import { useHistory } from 'react-router-dom';
+import { oAuthApi } from 'api/oauth-api';
 import { withAuth } from './with-auth';
 
 import './auth.scss';
@@ -17,6 +20,7 @@ import './auth.scss';
 const PageSignIn: FC = withAuth(() => {
   const actionSignIn = useBoundAction(signIn);
   const authError = useAppSelector((state) => state.auth.error.auth);
+  const history = useHistory();
 
   const signInFields = [
     {
@@ -32,6 +36,42 @@ const PageSignIn: FC = withAuth(() => {
       defaultValue: '',
     },
   ];
+
+  const postCode = async (code: string) => {
+    await oAuthApi.signIn({
+      code,
+      redirect_uri: 'http://localhost:5000/',
+    });
+  };
+
+  const getCode = useCallback(() => {
+    if (history?.location?.state?.from?.search) {
+      const params = new URLSearchParams(history.location.state.from.search);
+      return params.get('code');
+    }
+    return null;
+  }, [history]);
+
+  React.useEffect(() => {
+    const code = getCode();
+    if (code) {
+      postCode(code).then(() => {
+        document.location.href = 'http://localhost:5000/';
+      });
+    }
+  }, [getCode]);
+
+  const getCodeOAuth = async () => {
+    const { data, error } = await oAuthApi.getClientID();
+    if (data) {
+      const clientId = data.service_id;
+      const redirectURL = 'http://localhost:5000/';
+      const urlAuth = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectURL}`;
+      document.location.href = urlAuth;
+    } else {
+      throw error;
+    }
+  };
 
   const onSubmit = useCallback(
     async (info: SignInRequestInfo) => {
@@ -57,7 +97,10 @@ const PageSignIn: FC = withAuth(() => {
 
   return (
     <Space>
-      <Block style={{ width: '400px', height: '320px' }}>
+      <Block
+        className="signInBLock"
+        style={{ width: '400px', height: '320px', position: 'relative' }}
+      >
         <Form
           onSubmit={onSubmit}
           fields={signInFields}
@@ -66,6 +109,15 @@ const PageSignIn: FC = withAuth(() => {
           title="Tower Defence"
         />
         {authError && <div className="auth-error">{authError.message}</div>}
+        <div
+          onKeyDown={getCodeOAuth}
+          role="button"
+          tabIndex={0}
+          style={{ position: 'absolute', right: '10px', bottom: '10px' }}
+          onClick={getCodeOAuth}
+        >
+          <img alt="" src={yaLogo} width="40px" height="40px" />
+        </div>
       </Block>
     </Space>
   );

@@ -1,3 +1,10 @@
 .auth-error {
   color: $error-color;
 }
+.signInBlock {
+  position: relative;
+  .oauth-logo {
+    position: absolute;
+    right: 0;
+  }
+}
