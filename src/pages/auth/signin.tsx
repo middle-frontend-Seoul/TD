@@ -113,7 +113,7 @@ const PageSignIn: FC = withAuth(() => {
           onKeyDown={getCodeOAuth}
           role="button"
           tabIndex={0}
-          style={{ position: 'absolute', right: '10px', bottom: '10px' }}
+          className="auth-oauth"
           onClick={getCodeOAuth}
         >
           <img alt="" src={yaLogo} width="40px" height="40px" />

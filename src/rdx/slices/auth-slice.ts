@@ -102,8 +102,6 @@ export function getCurrentUser() {
     dispatch(getCurrentUserPending());
     try {
       const { data, error } = await authApi.getCurrentUser();
-      console.log('data', data);
-      console.log('error', error);
       if (!error) {
         dispatch(getCurrentUserSuccess(data));
       } else {
