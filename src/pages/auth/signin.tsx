@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useEffect } from 'react';
 
 import { Space } from 'components-ui/space';
 import { Form } from 'components-ui/form/form';
@@ -52,7 +52,7 @@ const PageSignIn: FC = withAuth(() => {
     return null;
   }, [history]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const code = getCode();
     if (code) {
       postCode(code).then(() => {
