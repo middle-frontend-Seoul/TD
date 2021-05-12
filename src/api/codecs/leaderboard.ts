@@ -17,3 +17,12 @@ export function toLeaderboardRequestDto(
     limit: info.limit,
   };
 }
+
+export function toLeaderboardItemRequestDto(
+  info: LeaderboardItemRequestInfo
+): LeaderboardItemRequestDto {
+  return {
+    data: info.data,
+    ratingFieldName: info.ratingFieldName,
+  };
+}

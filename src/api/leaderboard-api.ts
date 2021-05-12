@@ -15,4 +15,17 @@ export const leaderboardApi = {
       error,
     };
   },
+
+  addLeaderboardItem: async (
+    data: LeaderboardItemRequestInfo
+  ): Promise<ApiResponse<string>> => {
+    const { response, error } = await http.post<string>(
+      '/leaderboard',
+      Leaderboard.toLeaderboardItemRequestDto(data)
+    );
+    return {
+      data: response && response.data,
+      error,
+    };
+  },
 };
