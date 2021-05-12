@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`renders title 1`] = `
-<h1
-  className="title title_size-medium"
->
-  hello test
-</h1>
-`;

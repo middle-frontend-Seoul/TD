@@ -1,23 +1,15 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "es2017", "webworker"],
     "module": "commonjs",
-    "moduleResolution": "node",
-    "target": "es5",
-    "jsx": "react",
-    "importHelpers": true,
-    "noUnusedLocals": true,
-    "esModuleInterop": true,
-    "strict": true,
-    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "declaration": false,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
     "sourceMap": true,
-    "outDir": "./dist/",
-    "baseUrl": "src"
-  },
-  "include": ["src/**/*", "webpack.config.ts"],
-  "exclude": ["node_modules", "**/*.js"]
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true
+  }
 }
