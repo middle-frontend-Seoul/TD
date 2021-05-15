@@ -49,11 +49,19 @@ const PageProfile: FC = () => {
     const { oldPassword, newPassword, ...updateData } = values;
 
     if (isValuesChange<UserInfo>(updateData, currentUser)) {
-      await actionUpdateUser(updateData);
+      try {
+        await actionUpdateUser(updateData);
+      } catch (error) {
+        console.error('could not update user', error); // eslint-disable-line
+      }
     }
 
     if (oldPassword && newPassword) {
-      await actionUpdatePassword({ oldPassword, newPassword });
+      try {
+        await actionUpdatePassword({ oldPassword, newPassword });
+      } catch (error) {
+        console.error('could not update password', error); // eslint-disable-line
+      }
     }
 
     await actionGetCurrentUser();
@@ -79,7 +87,7 @@ const PageProfile: FC = () => {
         <Avatar
           src={
             currentUser?.avatar
-              ? IMAGE_SERVER_URL + currentUser.avatar
+              ? `${IMAGE_SERVER_URL}${currentUser.avatar}`
               : defaultAvatar
           }
           size={130}

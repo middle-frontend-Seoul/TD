@@ -38,12 +38,11 @@ export const ProfileForm: FC<IProfileFormProps> = ({
   const currentUserLoadingStatus = useAppSelector(
     (state) => state.auth.loadingStatus
   );
-  const profileUpdateStatus = useAppSelector(
-    (state) => state.user.mutatingUserStatus
-  );
-  const passwordUpdateStatus = useAppSelector(
-    (state) => state.user.mutatingPasswordStatus
-  );
+
+  const {
+    mutatingUserStatus: profileUpdateStatus,
+    mutatingPasswordStatus: passwordUpdateStatus,
+  } = useAppSelector((state) => state.user);
 
   const profileForm = useFormik({
     enableReinitialize: true,
