@@ -14,6 +14,14 @@ docker run -d -p 5000:4000 --name seoul-td seoul-td
 docker stop seoul-td
 docker rm seoul-td
 
+## локальный запуск и разработка forum api (backend)
+переходим в папку backend
+Скопировать `.env.sample` в `.dev.env` и указать нужные переменные окружения.
+
+docker-compose build
+docker-compose up
+http://localhost:7000
+
 ## Деплой на heroku:
 
 heroku login
