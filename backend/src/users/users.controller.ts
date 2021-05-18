@@ -1,26 +1,30 @@
-import {Body, Controller, Get, Post} from '@nestjs/common';
-import {ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
-import {CreateUserDto} from "./dto/create-user.dto";
-import { User } from './users.model';
-import {UsersService} from "./users.service";
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { UsersService } from './users.service';
 
-@ApiTags('Пользователи')
 @Controller('users')
 export class UsersController {
   constructor(private userService: UsersService) {
   }
 
-  @ApiOperation({summary: 'Создание пользователя'})
-  @ApiResponse({status: 200, type: User})
   @Post()
   create(@Body() userDto: CreateUserDto) {
-    return this.userService.createUser(userDto)
+    return this.userService.create(userDto)
   }
 
-  @ApiOperation({summary: 'Получение всех пользователей'})
-  @ApiResponse({status: 200, type: [User]})
+  @Put(':id')
+  update(@Param('id') id: number, @Body() userDto: UpdateUserDto) {
+    return this.userService.update(id, userDto)
+  }
+
+  @Get(':id')
+  get(@Param('id') id: number) {
+    return this.userService.get(id);
+  }
+
   @Get()
-  getAll(){
-    return this.userService.getAllUsers()
+  getAll() {
+    return this.userService.getAll()
   }
 }
