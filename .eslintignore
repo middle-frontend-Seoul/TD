@@ -4,6 +4,7 @@ __test__
 test
 dist
 webpack
+backend
 
 .*rc.js
 webpack.*.js
