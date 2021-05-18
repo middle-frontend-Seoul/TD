@@ -14,7 +14,7 @@ const styleSources = [
   'https://fonts.googleapis.com',
 ];
 const fontSources = ["'self'", 'https://fonts.gstatic.com'];
-const imageSources = ["'self'", 'data:'];
+const imageSources = ["'self'", 'data:', 'https://ya-praktikum.tech'];
 const connectSources = ["'self'", 'https://ya-praktikum.tech'];
 
 const app = express();
