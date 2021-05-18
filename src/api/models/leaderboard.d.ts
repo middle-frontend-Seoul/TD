@@ -27,3 +27,12 @@ type LeaderboardRequestInfo = {
   cursor: number;
   limit: number;
 }
+
+type LeaderboardItemRequestDto = {
+  data: Partial<{ [key in RatingFieldName]: number | string }>;
+  ratingFieldName: RatingFieldName;
+}
+type LeaderboardItemRequestInfo = {
+  data: Partial<{ [key in RatingFieldName]: number | string }>;
+  ratingFieldName: RatingFieldName;
+}
