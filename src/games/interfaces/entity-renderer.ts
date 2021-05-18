@@ -19,4 +19,8 @@ export class EntityRenderer<T extends Renderable> {
   draw(ctx: CanvasRenderingContext2D, map: GameMap) {
     this.entities.forEach((entity) => entity.draw(ctx, map));
   }
+
+  getEntities(): T[] {
+    return this.entities;
+  }
 }

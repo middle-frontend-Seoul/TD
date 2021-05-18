@@ -1,3 +1,13 @@
 .auth-error {
   color: $error-color;
 }
+.auth-link {
+  display: inline-block;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  color: white;
+  padding: 8px;
+  margin: 12px auto;
+  background-color: rgba(0, 0, 0, 0.7);
+}

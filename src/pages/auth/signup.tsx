@@ -1,6 +1,7 @@
 import React, { FC, useCallback } from 'react';
 
 import { Space } from 'components-ui/space';
+import { Link } from 'components-ui/link';
 import { Form } from 'components-ui/form/form';
 import { Block } from 'components-ui/block';
 import {
@@ -12,6 +13,7 @@ import {
 } from 'utils/validation';
 import { useAppSelector, useBoundAction } from 'rdx/hooks';
 import { signUp } from 'rdx/slices/auth-slice';
+import { SIGNIN } from 'core/url';
 import { withAuth } from './with-auth';
 
 import './auth.scss';
@@ -90,6 +92,9 @@ const PageSignUp: FC = withAuth(() => {
           title="Tower Defence"
         />
         {authError && <div className="auth-error">{authError.message}</div>}
+        <Link to={SIGNIN} className="auth-link">
+          Авторизоваться
+        </Link>
       </Block>
     </Space>
   );

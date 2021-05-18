@@ -8,7 +8,7 @@ import { GameMap } from 'games/game-map';
 import { Cursor } from 'games/cursor';
 import { GridType, GameUIAction, GameUIState } from 'games/typing';
 import { TowerPlacer } from 'games/tower-placer';
-import { SimpleEnemy } from 'games/enemies';
+import { WavesManager } from 'games/managers/waves-manager';
 import { simpleThrottle } from 'utils/helpers';
 
 export const initialUIState: GameUIState = {
@@ -67,6 +67,8 @@ export class Game {
 
   private towerPlacer: TowerPlacer;
 
+  private waveManager: WavesManager;
+
   private canvas: Canvas;
 
   private cursor: Cursor;
@@ -99,6 +101,7 @@ export class Game {
     this.towerPlacer = new TowerPlacer(this.cursor, this.map, this.gameStats);
 
     this.init();
+    this.waveManager = new WavesManager(this.map.getStartPosition());
 
     this.eventBus.on(EventNames.GameOver, () => {
       this.gameOver();
@@ -114,30 +117,26 @@ export class Game {
     munitionManager.init();
     enemyManager.init();
     towerManager.init();
-
-    setTimeout(this.addEnemy, 2000); // времмено дабавляем врагов для демонстрации работы
-    setTimeout(this.addEnemy, 4000); // времмено дабавляем врагов для демонстрации работы
-    setTimeout(this.addEnemy, 6000); // времмено дабавляем врагов для демонстрации работы
-    setTimeout(this.addEnemy, 8000); // времмено дабавляем врагов для демонстрации работы
-    setTimeout(this.addEnemy, 10000); // времмено дабавляем врагов для демонстрации работы
   }
 
   public start(): boolean {
+    this.waveManager.start();
     this.ticker = requestAnimationFrame(this.animation.bind(this));
-    // TODO - добавить waveManager для создания волн врагов
-    // waveManager.start();
+
     return true;
   }
 
   public pause(): boolean {
     cancelAnimationFrame(this.ticker);
     this.ticker = -1;
+    this.waveManager.looping = false;
     return true;
   }
 
   public gameOver(): void {
     cancelAnimationFrame(this.ticker);
     this.ticker = -1;
+    this.waveManager.looping = false;
     this.setUIState({ type: 'gameOver' });
   }
 
@@ -149,12 +148,6 @@ export class Game {
       this.ticker = requestAnimationFrame(this.animation.bind(this));
     }
   }
-
-  private addEnemy = (): void => {
-    const position = { ...this.map.getStartPosition() };
-    const enemy = new SimpleEnemy(position);
-    enemyManager.add(enemy);
-  };
 
   private fps = (): void => {
     if (!this.lastTime) {
