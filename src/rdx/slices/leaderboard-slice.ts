@@ -6,11 +6,13 @@ import { formatError, formatHttpError } from 'utils/format';
 export type LeaderboardState = {
   data?: LeaderboardInfo[];
   loadingStatus: StateStatus;
+  mutatingStatus: StateStatus;
   error?: SerializedError;
 };
 
 export const initialState: LeaderboardState = {
   loadingStatus: 'idle',
+  mutatingStatus: 'idle',
 };
 
 export const leaderboardSlice = createSlice({
@@ -34,6 +36,20 @@ export const leaderboardSlice = createSlice({
       state.loadingStatus = 'failure';
       state.error = action.payload;
     },
+
+    addLeaderboardItemPending: (state) => {
+      state.mutatingStatus = 'pending';
+    },
+    addLeaderboardItemSuccess: (state) => {
+      state.mutatingStatus = 'success';
+    },
+    addLeaderboardItemFailure: (
+      state,
+      action: PayloadAction<SerializedError>
+    ) => {
+      state.mutatingStatus = 'failure';
+      state.error = action.payload;
+    },
   },
 });
 
@@ -41,6 +57,10 @@ const {
   getAllLeaderboardsPending,
   getAllLeaderboardsSuccess,
   getAllLeaderboardsFailure,
+
+  addLeaderboardItemPending,
+  addLeaderboardItemSuccess,
+  addLeaderboardItemFailure,
 } = leaderboardSlice.actions;
 
 export function getAllLeaderboards(arg: LeaderboardRequestInfo) {
@@ -55,6 +75,22 @@ export function getAllLeaderboards(arg: LeaderboardRequestInfo) {
       }
     } catch (error) {
       dispatch(getAllLeaderboardsFailure(formatError(error)));
+    }
+  };
+}
+
+export function addLeaderboardItem(arg: LeaderboardItemRequestInfo) {
+  return async (dispatch: AppDispatch) => {
+    dispatch(addLeaderboardItemPending());
+    try {
+      const { error } = await leaderboardApi.addLeaderboardItem(arg);
+      if (!error) {
+        dispatch(addLeaderboardItemSuccess());
+      } else {
+        dispatch(addLeaderboardItemFailure(formatHttpError(error)));
+      }
+    } catch (error) {
+      dispatch(addLeaderboardItemFailure(formatError(error)));
     }
   };
 }

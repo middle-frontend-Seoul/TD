@@ -189,6 +189,7 @@ export function getMessages(id: string | number) {
   };
 }
 
+// TODO - необходим параметр section (получаем из урл, это id subTheme)
 export function getSubThemes(page: string | number) {
   return async (dispatch: AppDispatch) => {
     dispatch(forumSlice.actions.getSubThemesPending());

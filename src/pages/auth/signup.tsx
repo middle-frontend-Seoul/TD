@@ -13,7 +13,7 @@ import {
 } from 'utils/validation';
 import { useAppSelector, useBoundAction } from 'rdx/hooks';
 import { signUp } from 'rdx/slices/auth-slice';
-import { SIGNIN } from 'core/url';
+import { URL } from 'core/url';
 import { withAuth } from './with-auth';
 
 import './auth.scss';
@@ -83,7 +83,7 @@ const PageSignUp: FC = withAuth(() => {
 
   return (
     <Space>
-      <Block style={{ width: '400px', height: '420px' }}>
+      <Block style={{ width: '400px', height: '420px', position: 'relative' }}>
         <Form
           onSubmit={onSubmit}
           fields={signUpFields}
@@ -92,7 +92,7 @@ const PageSignUp: FC = withAuth(() => {
           title="Tower Defence"
         />
         {authError && <div className="auth-error">{authError.message}</div>}
-        <Link to={SIGNIN} className="auth-link">
+        <Link to={URL.SIGNIN.path} className="auth-link">
           Авторизоваться
         </Link>
       </Block>
