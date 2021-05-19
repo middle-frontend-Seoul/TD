@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { Enemy, SimpleEnemy, StrongEnemy } from 'games/enemies';
 import { enemyManager } from 'games/managers/enemy-manager';
+import { EventBus, EventNames } from 'games/event-bus';
 import { Position } from 'games/typing';
 import { sleep } from 'games/helpers';
 
@@ -14,36 +15,54 @@ export interface WaveGroup {
 export type Wave = WaveGroup[];
 
 export class WavesManager {
+  private delayBetweenWaves = 12;
   private startPosition: Position;
 
   public waveCounter = 1;
-  public looping = false;
+  public looping = true;
+  public eventBus: () => EventBus;
 
   constructor(startPosition: Position) {
+    const eventBus = new EventBus();
+
     this.startPosition = startPosition;
+    this.eventBus = () => eventBus;
   }
 
   async start() {
-    const wave = this.generateWave();
+    while (this.looping) {
+      const wave = this.generateWave();
 
-    for (let i = 0; i < wave.length; i += 1) {
-      const { EnemyClass, quantity, delay, life } = wave[i];
+      if (!this.looping) break;
 
-      for (let j = 0; j < quantity; j += 1) {
-        // eslint-disable-next-line no-await-in-loop
-        await sleep(delay);
+      for (let i = 0; i < wave.length; i += 1) {
+        if (!this.looping) break;
 
-        const entity = new EnemyClass({ ...this.startPosition });
-        entity.setLife(life);
-        entity.setSpeed(this.getSpeed(entity));
-        enemyManager.add(entity);
+        const { EnemyClass, quantity, delay, life } = wave[i];
+        this.eventBus().emit(EventNames.NewWave, this.waveCounter);
+
+        for (let j = 0; j < quantity; j += 1) {
+          // eslint-disable-next-line no-await-in-loop
+          await sleep(delay);
+
+          const entity = new EnemyClass({ ...this.startPosition });
+
+          entity.setLife(life);
+          entity.setSpeed(this.getSpeed(entity));
+          enemyManager.add(entity);
+        }
       }
+
+      // eslint-disable-next-line no-await-in-loop
+      await sleep(this.delayBetweenWaves * 1000);
+
+      this.waveCounter += 1;
     }
   }
 
   private generateWave(): Wave {
     const wave: Wave = [];
-    const ratio = 1 + this.waveCounter / 10;
+    const ratio = Math.floor(1 + this.waveCounter / 10) * 100;
 
     if (this.waveCounter % 8 === 0) {
       // TODO: добавить босса в игру

@@ -110,6 +110,10 @@ export class Game {
     this.throttledFpsUpdate = simpleThrottle((fps: number) => {
       this.eventBus.emit(EventNames.FpsUpdated, fps);
     }, 1000);
+
+    this.eventBus.on(EventNames.NewWave, (wave: number) => {
+      this.setUIState({ type: 'setWave', payload: wave });
+    });
   }
 
   public init(): void {
