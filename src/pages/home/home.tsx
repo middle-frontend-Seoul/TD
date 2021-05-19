@@ -8,6 +8,7 @@ import { Button } from 'components-ui/button';
 import { URL } from 'core/url';
 import { useBoundAction } from 'rdx/hooks';
 import { logout } from 'rdx/slices/auth-slice';
+import { logout as forumLogout } from 'rdx/slices/auth-forum-slice';
 
 import map1 from './images/map1.png';
 import map2 from './images/map2.png';
@@ -17,6 +18,12 @@ import './home.scss';
 
 const PageHome: FC = () => {
   const actionLogout = useBoundAction(logout);
+  const actionForumLogout = useBoundAction(forumLogout);
+
+  const handleLogout = () => {
+    actionLogout();
+    actionForumLogout();
+  };
 
   return (
     <Space type="vertical">
@@ -44,7 +51,7 @@ const PageHome: FC = () => {
         <Link type="button" to={URL.FORUM.path}>
           Форум
         </Link>
-        <Button radius onClick={actionLogout}>
+        <Button radius onClick={handleLogout}>
           Выйти из игры
         </Button>
       </Space>

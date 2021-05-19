@@ -6,6 +6,7 @@ import { Theme } from './theme.model';
 interface MessageCreationAttrs {
   content: string;
   themeId: number;
+  forumId: number;
   userId: number;
 }
 

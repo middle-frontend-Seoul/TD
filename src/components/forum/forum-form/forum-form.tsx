@@ -7,21 +7,21 @@ import { Loading } from 'components-ui/loading';
 import { Button } from 'components-ui/button';
 import './style.scss';
 
-export interface IMessageFormProps {
+export interface IForumFormProps {
   loading?: boolean;
-  onSubmit: (values: Omit<MessageRequestInfo, 'forumId' | 'themeId'>) => void;
+  onSubmit: (values: ForumRequestInfo) => void;
 }
 
-export const MessageForm: FC<IMessageFormProps> = ({ onSubmit, loading }) => {
+export const ForumForm: FC<IForumFormProps> = ({ onSubmit, loading }) => {
   const Form = useFormik({
-    initialValues: { content: '' },
+    initialValues: { name: '' },
     validateOnChange: false,
     validateOnBlur: true,
     validate: (values: Record<string, string>) => {
       const errors: Record<string, string> = {};
 
-      if (!values.content) {
-        errors.content = validationMessages.isRequire;
+      if (!values.name) {
+        errors.name = validationMessages.isRequire;
       }
 
       return errors;
@@ -30,20 +30,20 @@ export const MessageForm: FC<IMessageFormProps> = ({ onSubmit, loading }) => {
   });
 
   return (
-    <form onSubmit={Form.handleSubmit} className="theme-form">
+    <form onSubmit={Form.handleSubmit} className="forum-form">
       {Boolean(loading) && (
-        <div className="theme-form_load">
-          <Loading className="theme-form_loading" />
+        <div className="forum-form_load">
+          <Loading className="forum-form_loading" />
         </div>
       )}
-      <div className="theme-form_body">
+      <div className="forum-form_body">
         <Input
-          type="message"
-          name="content"
-          placeholder="Введите сообщение"
+          type="text"
+          name="name"
+          placeholder="Введите название форума"
           onChange={Form.handleChange}
-          error={Form.errors.content}
-          value={Form.values.content}
+          error={Form.errors.name}
+          value={Form.values.name}
         />
       </div>
       <Button type="submit" size="small">

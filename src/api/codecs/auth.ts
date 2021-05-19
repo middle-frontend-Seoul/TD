@@ -15,6 +15,17 @@ export function toSignUpRequestDto(info: SignUpRequestInfo): SignUpRequestDto {
   };
 }
 
+export function toForumSignUpRequestDto(
+  info: ForumSignUpRequestInfo
+): ForumSignUpRequestDto {
+  return {
+    username: info.username,
+    email: info.email,
+    password: info.password,
+    password_confirm: info.repeatedPassword,
+  };
+}
+
 export function fromSigInDto(dto: SignInDto): SignInInfo {
   return {
     id: dto.id,
@@ -24,6 +35,15 @@ export function fromSigInDto(dto: SignInDto): SignInInfo {
 export function toSignInRequestDto(info: SignInRequestInfo): SignInRequestDto {
   return {
     login: info.login,
+    password: info.password,
+  };
+}
+
+export function toForumSignInRequestDto(
+  info: ForumSignInRequestInfo
+): ForumSignInRequestDto {
+  return {
+    username: info.username,
     password: info.password,
   };
 }
