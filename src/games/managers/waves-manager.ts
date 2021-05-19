@@ -3,7 +3,7 @@ import { Enemy, SimpleEnemy, StrongEnemy } from 'games/enemies';
 import { enemyManager } from 'games/managers/enemy-manager';
 import { EventBus, EventNames } from 'games/event-bus';
 import { Position } from 'games/typing';
-import { sleep } from 'games/helpers';
+import { delay } from 'games/helpers';
 
 export interface WaveGroup {
   EnemyClass: new (p: Position) => Enemy;
@@ -38,12 +38,12 @@ export class WavesManager {
       for (let i = 0; i < wave.length; i += 1) {
         if (!this.looping) break;
 
-        const { EnemyClass, quantity, delay, life } = wave[i];
+        const { EnemyClass, quantity, delay: waveDelay, life } = wave[i];
         this.eventBus().emit(EventNames.NewWave, this.waveCounter);
 
         for (let j = 0; j < quantity; j += 1) {
           // eslint-disable-next-line no-await-in-loop
-          await sleep(delay);
+          await delay(waveDelay);
 
           const entity = new EnemyClass({ ...this.startPosition });
 
@@ -54,7 +54,7 @@ export class WavesManager {
       }
 
       // eslint-disable-next-line no-await-in-loop
-      await sleep(this.delayBetweenWaves * 1000);
+      await delay(this.delayBetweenWaves * 1000);
 
       this.waveCounter += 1;
     }

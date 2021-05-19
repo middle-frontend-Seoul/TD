@@ -1,5 +1,6 @@
 import React, { FC, useCallback } from 'react';
 
+import { getLanguage } from 'languages';
 import { Space } from 'components-ui/space';
 import { Link } from 'components-ui/link';
 import { Form } from 'components-ui/form/form';
@@ -93,7 +94,7 @@ const PageSignUp: FC = withAuth(() => {
         />
         {authError && <div className="auth-error">{authError.message}</div>}
         <Link to={URL.SIGNIN.path} className="auth-link">
-          Авторизоваться
+          {getLanguage('SIGNIN', 'Авторизоваться')}
         </Link>
       </Block>
     </Space>

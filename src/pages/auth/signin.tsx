@@ -1,5 +1,6 @@
 import React, { FC, useCallback, useEffect } from 'react';
 
+import { getLanguage } from 'languages';
 import { Space } from 'components-ui/space';
 import { Link } from 'components-ui/link';
 import { Form } from 'components-ui/form/form';
@@ -112,7 +113,7 @@ const PageSignIn: FC = withAuth(() => {
         />
         {authError && <div className="auth-error">{authError.message}</div>}
         <Link to={URL.SIGNUP.path} className="auth-link">
-          Зарегистрироваться
+          {getLanguage('SIGNUP', 'Зарегистрироваться')}
         </Link>
         <div
           onKeyDown={getCodeOAuth}
