@@ -1,4 +1,5 @@
 import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
+import { Message } from './message.model';
 import { Theme } from './theme.model';
 
 interface ForumCreationAttrs {
@@ -15,4 +16,7 @@ export class Forum extends Model<Forum, ForumCreationAttrs> {
 
   @HasMany(() => Theme)
   themes: Theme[];
+
+  @HasMany(() => Message)
+  messages: Message[];
 }

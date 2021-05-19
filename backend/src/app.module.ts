@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { UsersModule } from './users/users.module';
+import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
-import { User } from './users/model/user.model';
+import { User } from './user/model/user.model';
 import { AuthModule } from './auth/auth.module';
 import { ForumModule } from './forum/forum.module';
 import { Forum } from './forum/model/forum.model';
@@ -27,7 +27,7 @@ import { Message } from './forum/model/message.model';
       autoLoadModels: true,
       // sync: { force: true }, // TODO - настроить миграции. эта опция удаляет и пересоздает все таблицы из моделей.
     }),
-    UsersModule,
+    UserModule,
     AuthModule,
     ForumModule,
   ],

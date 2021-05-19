@@ -4,7 +4,8 @@ import { Message } from './message.model';
 
 interface ThemeCreationAttrs {
   name: string;
-  view_count: number;
+  viewCount?: number;
+  forumId: number;
 }
 
 @Table({tableName: 'themes'})

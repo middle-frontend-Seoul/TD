@@ -1,10 +1,12 @@
 import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
-import { User } from 'src/users/model/user.model';
+import { User } from 'src/user/model/user.model';
+import { Forum } from './forum.model';
 import { Theme } from './theme.model';
 
 interface MessageCreationAttrs {
-  name: string;
-  view_count: number;
+  content: string;
+  themeId: number;
+  userId: number;
 }
 
 @Table({tableName: 'messages'})
@@ -15,6 +17,11 @@ export class Message extends Model<Message, MessageCreationAttrs> {
   @Column({ type: DataType.STRING, allowNull: false })
   content: string;
 
+  // TODO - это избыточно, кол-во сообщений в форуме можно получать через themes, но пока сделано для упрощения
+  @ForeignKey(() => Forum)
+  @Column({type: DataType.INTEGER, field: 'forum_id' })
+  forumId: number;
+
   @ForeignKey(() => Theme)
   @Column({type: DataType.INTEGER, field: 'theme_id' })
   themeId: number;
@@ -22,6 +29,9 @@ export class Message extends Model<Message, MessageCreationAttrs> {
   @ForeignKey(() => User)
   @Column({type: DataType.INTEGER, field: 'user_id' })
   userId: number;
+
+  @BelongsTo(() => Forum)
+  forum: Forum;
 
   @BelongsTo(() => Theme)
   theme: Theme;
