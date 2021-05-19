@@ -1,54 +1,76 @@
+type ForumDto = {
+  id: number;
+  name: string;
+  themes: ThemeDto[];
+  messages: MessageDto[];
+};
+type ForumInfo = {
+  id: number;
+  name: string;
+  themes: ThemeInfo[];
+  messages: MessageInfo[];
+};
+
 type ThemeDto = {
   id: number;
-  code: string;
   name: string;
-  theme_сount: number;
-  message_count: number;
-};
-
-type ThemeInfo = {
-  id: number | string;
-  name: string;
-  code: string;
-  themeCount: number;
-  messageCount: number;
-};
-
-type ThemesDto = PagesDto<ThemeDto>;
-
-type SubThemeDto = {
-  id: number;
-  code: string;
-  name: string;
-  view_сount: number;
-  message_count: number;
-};
-
-type SubThemeInfo = {
-  id: number | string;
-  name: string;
-  code: string;
   viewCount: number;
-  messageCount: number;
+  messages: MessageDto[];
+  forumId: number;
 };
-
-type SubThemesDto = PagesDto<SubThemeDto>;
-
-type MessagesDto = {
+type ThemeInfo = {
   id: number;
-  code: string;
   name: string;
-  messages: {
-    id: number;
-    date: Date;
-    user_name: string;
-    message: string;
-  }[];
+  viewCount: number;
+  messages: MessageInfo[];
+  forumId: number;
 };
 
-type ThemeMessageInfo = {
-  id: number | string;
-  userName: string;
-  message: string;
-  date: Date;
+type MessageDto = {
+  id: number;
+  content: string;
+  createdAt: string;
+  user: ForumUserDto;
 };
+type MessageInfo = {
+  id: number;
+  content: string;
+  createdAt: Date;
+  user: ForumUserInfo;
+};
+
+type ForumRequestDto = {
+  name: string;
+}
+type ForumRequestInfo = {
+  name: string;
+}
+
+type ThemeRequestDto = {
+  name: string;
+  viewCount?: number;
+  forumId: number;
+}
+type ThemeRequestInfo = {
+  name: string;
+  viewCount?: number;
+  forumId: number;
+}
+
+type ThemeUpdateViewCountDto = {
+  viewCount: number;
+}
+type ThemeUpdateViewCountInfo = {
+  viewCount: number;
+}
+
+type MessageRequestDto = {
+  content: string;
+  themeId: number;
+  forumId: number;
+}
+type MessageRequestInfo = {
+  content: string;
+  themeId: number;
+  forumId: number;
+}

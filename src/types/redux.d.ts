@@ -10,9 +10,10 @@ import { store } from 'rdx/store';
 declare global {
   type RootState = {
     auth: AuthState,
+    authForum: AuthForumState,
+    forum: ForumState,
     leaderboard: LeaderboardState,
     user: UserState,
-    forum: ForumState,
     router: RouterState,
   };
   type AppDispatch = typeof store.dispatch;

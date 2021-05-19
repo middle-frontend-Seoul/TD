@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './model/user.model';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UserCreateDto } from './dto/user-create.dto';
+import { UserUpdateDto } from './dto/user-update.dto';
 import { FindOptions } from 'sequelize/types';
 
 @Injectable()
@@ -11,12 +11,12 @@ export class UserService {
     @InjectModel(User) private userRepository: typeof User,
   ) {}
 
-  async createUser(dto: CreateUserDto) {
+  async createUser(dto: UserCreateDto) {
     const user = await this.userRepository.create(dto);
     return user;
   }
 
-  async updateUser(id: number, dto: UpdateUserDto) {
+  async updateUser(id: number, dto: UserUpdateDto) {
     await this.userRepository.update(dto, { where: { id } });
     return this.userRepository.findOne({
       where: { id },
@@ -35,8 +35,9 @@ export class UserService {
     return this.userRepository.findOne(options);
   }
 
-  async getAllUsers() {
+  async getAllUsers(options?: FindOptions) {
     const users = await this.userRepository.findAll({
+      ...options,
       attributes: { exclude: ['password'] },
     });
     return users;

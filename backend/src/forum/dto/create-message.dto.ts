@@ -4,6 +4,4 @@ export class CreateMessageDto {
   readonly forumId: number;
 
   readonly themeId: number;
-
-  readonly userId: number;
 }

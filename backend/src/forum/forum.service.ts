@@ -50,8 +50,11 @@ export class ForumService {
     return this.themeRepository.findOne(options);
   }
 
-  async getAllThemes() {
-    const themes = await this.themeRepository.findAll({ include: { all: true } });
+  async getAllThemes(options?: FindOptions) {
+    const themes = await this.themeRepository.findAll({
+      ...options,
+      include: { all: true },
+    });
     return themes;
   }
 
@@ -59,8 +62,11 @@ export class ForumService {
     return await this.forumRepository.destroy({ where: { id } })
   }
 
-  async createMessage(dto: CreateMessageDto) {
-    const message = await this.messageRepository.create(dto);
+  async createMessage(userId: number, dto: CreateMessageDto) {
+    const message = await this.messageRepository.create({
+      ...dto,
+      userId,
+    });
     return message;
   }
 
@@ -73,8 +79,11 @@ export class ForumService {
     return this.messageRepository.findOne(options);
   }
 
-  async getAllMessages() {
-    const messages = await this.messageRepository.findAll({ include: { all: true } });
+  async getAllMessages(options?: FindOptions) {
+    const messages = await this.messageRepository.findAll({
+      ...options,
+      include: { all: true },
+    });
     return messages;
   }
 

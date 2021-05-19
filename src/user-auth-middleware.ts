@@ -4,7 +4,8 @@ import { URL } from 'core/url';
 import { axiosInstance } from 'network/http';
 
 export default async (req: Request, res: Response, next: NextFunction) => {
-  if (!req.headers.cookie) {
+  const mainAuthCookie = req.cookies.jwt;
+  if (!mainAuthCookie) {
     delete axiosInstance.defaults.headers.common.cookie;
   } else {
     axiosInstance.defaults.headers.common = {
@@ -14,7 +15,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
   }
 
   if (
-    !req.headers.cookie &&
+    !mainAuthCookie &&
     Object.values(URL).find((url) => url.protected && url.path === req.url)
   ) {
     res.redirect(URL.SIGNIN.path);

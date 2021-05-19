@@ -7,6 +7,15 @@ export function fromUserDto(dto: UserDto): UserInfo {
   };
 }
 
+export function fromForumUserDto(dto: ForumUserDto): ForumUserInfo {
+  return {
+    id: dto.id,
+    username: dto.username,
+    avatar: dto.avatar,
+    email: dto.email,
+  };
+}
+
 export function toUserRequestDto(info: UserRequestInfo): UserRequestDto {
   return {
     first_name: info.login,
