@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { AuthGuard } from 'src/auth/auth.guard';
 import { CreateForumDto } from './dto/create-forum.dto';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { CreateThemeDto } from './dto/create-theme.dto';
@@ -6,6 +7,7 @@ import { UpdateMessageDto } from './dto/update-message.dto';
 import { UpdateThemeDto } from './dto/update-theme.dto';
 import { ForumService } from './forum.service';
 
+@UseGuards(AuthGuard)
 @Controller('forums')
 export class ForumController {
   constructor(private forumService: ForumService) {}
@@ -24,7 +26,7 @@ export class ForumController {
 
   @Get('themes/:id')
   getTheme(@Param('id') id: number) {
-    return this.forumService.getTheme(id);
+    return this.forumService.getTheme({ where: { id }, include: { all: true }});
   }
 
   @Get('themes')
@@ -51,7 +53,7 @@ export class ForumController {
 
   @Get('messages/:id')
   getMessage(@Param('id') id: number) {
-    return this.forumService.getMessage(id);
+    return this.forumService.getMessage({ where: { id }, include: { all: true }});
   }
 
   @Get('messages')
@@ -73,7 +75,7 @@ export class ForumController {
 
   @Get(':id')
   getForum(@Param('id') id: number) {
-    return this.forumService.getForum(id);
+    return this.forumService.getForum({ where: { id }, include: { all: true }});
   }
 
   @Get()
