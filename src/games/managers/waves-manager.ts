@@ -20,13 +20,11 @@ export class WavesManager {
 
   public waveCounter = 1;
   public looping = true;
-  public eventBus: () => EventBus;
+  public eventBus: EventBus;
 
   constructor(startPosition: Position) {
-    const eventBus = new EventBus();
-
     this.startPosition = startPosition;
-    this.eventBus = () => eventBus;
+    this.eventBus = new EventBus();
   }
 
   async start() {
@@ -39,7 +37,7 @@ export class WavesManager {
         if (!this.looping) break;
 
         const { EnemyClass, quantity, delay: waveDelay, life } = wave[i];
-        this.eventBus().emit(EventNames.NewWave, this.waveCounter);
+        this.eventBus.emit(EventNames.NewWave, this.waveCounter);
 
         for (let j = 0; j < quantity; j += 1) {
           // eslint-disable-next-line no-await-in-loop
