@@ -1,5 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
+import { Request } from 'express';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthService } from 'src/auth/auth.service';
 import { CreateForumDto } from './dto/create-forum.dto';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { CreateThemeDto } from './dto/create-theme.dto';
@@ -10,7 +12,10 @@ import { ForumService } from './forum.service';
 @UseGuards(AuthGuard)
 @Controller('forums')
 export class ForumController {
-  constructor(private forumService: ForumService) {}
+  constructor(
+    private forumService: ForumService,
+    private authService: AuthService,
+  ) {}
 
   /* THEME */
 
@@ -30,8 +35,8 @@ export class ForumController {
   }
 
   @Get('themes')
-  getAllThemes() {
-    return this.forumService.getAllThemes()
+  getAllThemes(@Query('forumId') forumId: number) {
+    return this.forumService.getAllThemes({ where: { forumId } })
   }
 
   @Delete('themes/:id')
@@ -42,13 +47,18 @@ export class ForumController {
   /* MESSAGE */
 
   @Post('messages')
-  createMessage(@Body() themeDto: CreateMessageDto) {
-    return this.forumService.createMessage(themeDto)
+  async createMessage(
+    @Body() messageDto: CreateMessageDto,
+    @Req() request: Request
+  ) {
+    const cookie = request.cookies['forum-token'];
+    const userId = await this.authService.userId(cookie);
+    return this.forumService.createMessage(userId, messageDto)
   }
 
   @Put('messages/:id')
-  updateMessage(@Param('id') id: number, @Body() themeDto: UpdateMessageDto) {
-    return this.forumService.updateMessage(id, themeDto)
+  updateMessage(@Param('id') id: number, @Body() messageDto: UpdateMessageDto) {
+    return this.forumService.updateMessage(id, messageDto)
   }
 
   @Get('messages/:id')
@@ -57,8 +67,8 @@ export class ForumController {
   }
 
   @Get('messages')
-  getAllMessages() {
-    return this.forumService.getAllMessages()
+  getAllMessages(@Query('themeId') themeId: number) {
+    return this.forumService.getAllMessages({ where: { themeId } })
   }
 
   @Delete('messages/:id')

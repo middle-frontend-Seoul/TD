@@ -44,6 +44,16 @@ app.use(
     },
   })
 );
+app.use(
+  '/api-forum',
+  createProxyMiddleware({
+    target: 'http://localhost:7000',
+    secure: false,
+    cookieDomainRewrite: {
+      '*': '',
+    },
+  })
+);
 
 app.use(express.static(path.join(__dirname, '../dist')));
 

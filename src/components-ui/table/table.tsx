@@ -19,7 +19,7 @@ export type TableColumn<T> = {
   align?: 'left' | 'center' | 'right';
   width?: string;
   minWidth?: string;
-  render?: (value: any, row: T) => JSX.Element;
+  render?: (value: any, row: T) => JSX.Element | number | string;
 };
 
 // TODO - типизировать

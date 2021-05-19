@@ -44,6 +44,12 @@ export class AuthService {
     return user;
   }
 
+  async userId(cookie: string): Promise<number> {
+    const data = await this.jwtService.verifyAsync(cookie);
+
+    return data.id;
+  }
+
   async generateToken(user: User) {
     const payload = { id: user.id }
     return this.jwtService.signAsync(payload);

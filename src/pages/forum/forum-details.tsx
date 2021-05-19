@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useCallback } from 'react';
+import React, { FC, useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Link } from 'components-ui/link';
@@ -12,53 +12,72 @@ import { ForumMassage } from 'components-ui/forum-massage';
 import { URL } from 'core/url';
 
 import { useAppSelector, useBoundAction } from 'rdx/hooks';
-import { getMessages, create, setOpen } from 'rdx/slices/forum-slice';
+import {
+  getTheme,
+  createMessage,
+  getAllMessages,
+} from 'rdx/slices/forum-slice';
 
 import './forum-details.scss';
 
 const PageForumDetails: FC = () => {
-  const params = useParams<{ id: string }>();
+  const { themeId } = useParams<{ themeId: string }>();
 
-  const isOpenModal = useAppSelector((state) => state.forum.isOpen);
-  const status = useAppSelector((state) => state.forum.messagesStatus);
-  const isLoadingCreate = useAppSelector((state) => state.forum.createRequest);
+  const [isModalOpen, setModalOpen] = useState(false);
 
-  const messages = useAppSelector((state) => state.forum.messages);
-  const title = useAppSelector((state) => state.forum.title);
-  const actionGetMessages = useBoundAction(getMessages);
-  const actionMessageCreate = useBoundAction(create);
-  const actionSetOpen = useBoundAction(setOpen);
+  const loadingStatus = useAppSelector((state) => state.forum.loadingStatus);
+  const mutatingStatus = useAppSelector((state) => state.forum.mutatingStatus);
 
-  const handleOnOpen = useCallback(() => {
-    actionSetOpen(true);
-  }, [actionSetOpen]);
+  const theme = useAppSelector((state) => state.forum.theme);
+  const messages = useAppSelector((state) => state.forum.allMessages);
 
-  const handleOnClose = useCallback(() => {
-    actionSetOpen(false);
-  }, [actionSetOpen]);
+  const actionGetTheme = useBoundAction(getTheme);
+  const actionGetAllMessages = useBoundAction(getAllMessages);
+  const actionMessageCreate = useBoundAction(createMessage);
 
   useEffect(() => {
-    if (params.id) {
-      actionGetMessages(params.id);
+    if (themeId) {
+      actionGetTheme(Number(themeId));
+      actionGetAllMessages(Number(themeId));
     }
-  }, [params.id, actionGetMessages]);
+  }, [themeId, actionGetTheme, actionGetAllMessages]);
+
+  const handleCreateMessage = useCallback(
+    async (values: Omit<MessageRequestInfo, 'forumId' | 'themeId'>) => {
+      if (!theme) {
+        return;
+      }
+      try {
+        await actionMessageCreate({
+          ...values,
+          forumId: theme.forumId,
+          themeId: theme.id,
+        });
+        setModalOpen(false);
+        actionGetTheme(theme.id);
+      } catch (error) {
+        console.error('could not create message', error); // eslint-disable-line
+      }
+    },
+    [actionMessageCreate, actionGetTheme, theme]
+  );
 
   // Render
   // ---------------
 
   const renderBody = () => {
-    switch (status) {
+    switch (loadingStatus) {
       case 'pending':
         return <Loading className="forum-loading" />;
       case 'failure':
         return 'Возникла ошибка';
       case 'success':
-        return messages.map((msg: ThemeMessageInfo) => (
+        return (messages || []).map((msg: MessageInfo) => (
           <ForumMassage
             key={msg.id}
-            date={msg.date}
-            userName={msg.userName}
-            message={msg.message}
+            date={msg.createdAt}
+            userName={msg.user.username}
+            message={msg.content}
           />
         ));
       default:
@@ -68,22 +87,39 @@ const PageForumDetails: FC = () => {
 
   return (
     <Space type="vertical">
-      <Modal isOpen={isOpenModal} onClose={handleOnClose}>
-        <MessageForm loading={isLoadingCreate} onSubmit={actionMessageCreate} />
+      <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
+        <MessageForm
+          loading={mutatingStatus === 'pending'}
+          onSubmit={handleCreateMessage}
+        />
       </Modal>
       <Block title="Форум" page="forum">
         <div className="forum-detail">
-          <div className="forum-detail__title">Тема: {title}</div>
+          <div className="forum-detail__title">Тема: {theme?.name || '-'}</div>
           <div className="forum-detail__message">{renderBody()}</div>
           <div className="forum-detail__button">
-            <Button use="primary" size="small" onClick={handleOnOpen}>
+            <Button
+              use="primary"
+              size="small"
+              onClick={() => setModalOpen(true)}
+            >
               Добавить сообщение
             </Button>
           </div>
         </div>
       </Block>
       <Space type="horizontal" position="center">
-        <Link to={URL.FORUM_SECTION.path} type="button">
+        <Link
+          to={
+            theme
+              ? URL.FORUM_SECTION.path.replace(
+                  ':forumId',
+                  String(theme.forumId)
+                )
+              : URL.FORUM.path
+          }
+          type="button"
+        >
           Назад
         </Link>
       </Space>
