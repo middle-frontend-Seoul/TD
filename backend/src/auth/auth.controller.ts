@@ -1,21 +1,54 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-import { CreateUserDto } from '../user/dto/create-user.dto';
+import { Body, Controller, Post, Res, UseGuards } from '@nestjs/common';
+import { Response } from 'express';
+import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
+import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
 
-@ApiTags('Авторизация')
 @Controller('auth')
 export class AuthController {
 
   constructor(private authService: AuthService) {}
 
-  @Post('/login')
-  login(@Body() userDto: CreateUserDto) {
-    return this.authService.login(userDto)
+  @Post('login')
+  async login(
+    @Body() loginDto: LoginDto,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    const user = await this.authService.login(loginDto)
+    const token = await this.authService.generateToken(user);
+
+    response.cookie('forum-token', token, {
+      httpOnly: true,
+      // secure: true,
+      // sameSite: 'none',
+    });
+    return user;
   }
 
-  @Post('/registration')
-  registration(@Body() userDto: CreateUserDto) {
-    return this.authService.registration(userDto)
+  @Post('registration')
+  async registration(
+    @Body() registerDto: RegisterDto,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    const user = await this.authService.registration(registerDto);
+    const token = await this.authService.generateToken(user);
+
+    response.cookie('forum-token', token, {
+      httpOnly: true,
+      // secure: true,
+      // sameSite: 'none',
+    });
+    return user;
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('logout')
+  async logout(@Res({ passthrough: true }) response: Response) {
+    response.clearCookie('forum-token');
+
+    return {
+      message: 'Success',
+    };
   }
 }

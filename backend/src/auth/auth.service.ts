@@ -1,31 +1,51 @@
-import { Body, HttpException, HttpStatus, Injectable, Post } from '@nestjs/common';
-import { CreateUserDto } from "../user/dto/create-user.dto";
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import * as bcrypt from 'bcryptjs';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../user/model/user.model';
+import { RegisterDto } from './dto/register.dto';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
 
-  constructor(private userService: UserService,
-              private jwtService: JwtService) {}
+  constructor(
+    private userService: UserService,
+    private jwtService: JwtService,
+  ) {}
 
-  async login(userDto: CreateUserDto) {
+  async login(loginDto: LoginDto) {
+    const user = await this.userService.getUserWithPassword({ where: { username: loginDto.username } });
+
+    if (!user) {
+      throw new NotFoundException('user not found');
+    }
+
+    if (!(await bcrypt.compare(loginDto.password, user.password))) {
+      throw new BadRequestException('invalid credentials');
+    }
+
+    user.setDataValue('password', undefined);
+    return user;
   }
 
-  async registration(userDto: CreateUserDto) {
-    // const candidate = await this.userService.getUserByYaId(userDto.ya_id);
-    // if (candidate) {
-    //   throw new HttpException('Пользователь уже зарегистрирован', HttpStatus.BAD_REQUEST);
-    // }
-    // const user = await this.userService.createUser({...userDto});
-    // return this.generateToken(user);
+  async registration(registerDto: RegisterDto) {
+    if (registerDto.password !== registerDto.password_confirm) {
+      throw new BadRequestException('Passwords do not match');
+    }
+    const hashed = await bcrypt.hash(registerDto.password, 12);
+
+    const user = await this.userService.createUser({
+      ...registerDto,
+      password: hashed,
+    });
+
+    user.setDataValue('password', undefined);
+    return user;
   }
 
   async generateToken(user: User) {
-    // const payload = {ya_id: user.ya_id, id: user.id, roles: user.roles}
-    // return {
-    //   token: this.jwtService.sign(payload)
-    // }
+    const payload = { id: user.id }
+    return this.jwtService.signAsync(payload);
   }
 }

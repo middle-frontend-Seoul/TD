@@ -1,8 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { AuthGuard } from 'src/auth/auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 
+@UseGuards(AuthGuard)
 @Controller('users')
 export class UserController {
   constructor(private userService: UserService) {}
@@ -19,7 +21,7 @@ export class UserController {
 
   @Get(':id')
   get(@Param('id') id: number) {
-    return this.userService.getUser(id);
+    return this.userService.getUser({ where: { id } });
   }
 
   @Get()
