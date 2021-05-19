@@ -27,8 +27,8 @@ import { Message } from './forum/model/message.model';
       autoLoadModels: true,
       // sync: { force: true }, // TODO - настроить миграции. эта опция удаляет и пересоздает все таблицы из моделей.
     }),
-    UserModule,
     AuthModule,
+    UserModule,
     ForumModule,
   ],
 })

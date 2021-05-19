@@ -1,11 +1,13 @@
 import { NestFactory } from '@nestjs/core';
-import {AppModule} from "./app.module";
+import { AppModule } from './app.module';
+import * as cookieParser from 'cookie-parser';
 // import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
 
 async function start() {
   const PORT = process.env.PORT || 3000;
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api-forum');
+  app.use(cookieParser());
 
   // const config = new DocumentBuilder()
   //   .setTitle('TD forum backend')

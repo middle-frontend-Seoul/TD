@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { FindOptions } from 'sequelize/types';
 import { CreateForumDto } from './dto/create-forum.dto';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { CreateThemeDto } from './dto/create-theme.dto';
@@ -22,8 +23,8 @@ export class ForumService {
     return forum;
   }
 
-  async getForum(id: number) {
-    return this.forumRepository.findOne({ where: { id }, include: { all: true }});
+  async getForum(options: FindOptions) {
+    return this.forumRepository.findOne(options);
   }
 
   async getAllForums() {
@@ -45,8 +46,8 @@ export class ForumService {
     return this.themeRepository.findOne({ where: { id } });
   }
 
-  async getTheme(id: number) {
-    return this.themeRepository.findOne({ where: { id }, include: { all: true }});
+  async getTheme(options: FindOptions) {
+    return this.themeRepository.findOne(options);
   }
 
   async getAllThemes() {
@@ -68,8 +69,8 @@ export class ForumService {
     return this.messageRepository.findOne({ where: { id } });
   }
 
-  async getMessage(id: number) {
-    return this.messageRepository.findOne({ where: { id }, include: { all: true }});
+  async getMessage(options: FindOptions) {
+    return this.messageRepository.findOne(options);
   }
 
   async getAllMessages() {
