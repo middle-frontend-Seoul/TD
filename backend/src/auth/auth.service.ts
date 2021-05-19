@@ -1,13 +1,13 @@
-import {Body, HttpException, HttpStatus, Injectable, Post} from '@nestjs/common';
-import {CreateUserDto} from "../users/dto/create-user.dto";
-import { UsersService } from '../users/users.service';
+import { Body, HttpException, HttpStatus, Injectable, Post } from '@nestjs/common';
+import { CreateUserDto } from "../user/dto/create-user.dto";
+import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '../users/model/user.model';
+import { User } from '../user/model/user.model';
 
 @Injectable()
 export class AuthService {
 
-  constructor(private userService: UsersService,
+  constructor(private userService: UserService,
               private jwtService: JwtService) {}
 
   async login(userDto: CreateUserDto) {
