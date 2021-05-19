@@ -1,6 +1,8 @@
 import React, { FC, useCallback, useEffect } from 'react';
 
+import { getLanguage } from 'languages';
 import { Space } from 'components-ui/space';
+import { Link } from 'components-ui/link';
 import { Form } from 'components-ui/form/form';
 import { Block } from 'components-ui/block';
 import {
@@ -10,6 +12,7 @@ import {
 } from 'utils/validation';
 import { useAppSelector, useBoundAction } from 'rdx/hooks';
 import { signIn } from 'rdx/slices/auth-slice';
+import { URL } from 'core/url';
 import yaLogo from 'images/tools/ya-logo.png';
 import { useHistory } from 'react-router-dom';
 import { oAuthApi } from 'api/oauth-api';
@@ -109,6 +112,9 @@ const PageSignIn: FC = withAuth(() => {
           title="Tower Defence"
         />
         {authError && <div className="auth-error">{authError.message}</div>}
+        <Link to={URL.SIGNUP.path} className="auth-link">
+          {getLanguage('SIGNUP', 'Зарегистрироваться')}
+        </Link>
         <div
           onKeyDown={getCodeOAuth}
           role="button"

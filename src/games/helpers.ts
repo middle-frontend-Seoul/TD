@@ -72,3 +72,6 @@ export const getGridSize = (grid: GridType): GetGridSizeReturn => {
     width,
   };
 };
+
+export const delay = (time: number): Promise<void> =>
+  new Promise((res) => setTimeout(res, time));
