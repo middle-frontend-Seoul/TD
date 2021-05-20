@@ -27,6 +27,25 @@ export class ForumService {
     return this.forumRepository.findOne(options);
   }
 
+  async getForums(page = 1, pageSize = 10) {
+    const { rows: data, count } = await this.forumRepository.findAndCountAll({
+      limit: pageSize,
+      offset: (page - 1) * pageSize,
+      include: { all: true },
+      distinct: true,
+    });
+
+    return {
+      data,
+      meta: {
+        total: count,
+        page,
+        pageSize,
+        lastPage: Math.ceil(count / pageSize),
+      },
+    };
+  }
+
   async getAllForums() {
     const forums = await this.forumRepository.findAll({ include: { all: true } });
     return forums;
@@ -48,6 +67,26 @@ export class ForumService {
 
   async getTheme(options: FindOptions) {
     return this.themeRepository.findOne(options);
+  }
+
+  async getThemes(page = 1, pageSize = 10, options) {
+    const { rows: data, count } = await this.themeRepository.findAndCountAll({
+      ...options,
+      limit: pageSize,
+      offset: (page - 1) * pageSize,
+      include: { all: true },
+      distinct: true,
+    });
+
+    return {
+      data,
+      meta: {
+        total: count,
+        page,
+        pageSize,
+        lastPage: Math.ceil(count / pageSize),
+      },
+    };
   }
 
   async getAllThemes(options?: FindOptions) {
@@ -85,6 +124,26 @@ export class ForumService {
       include: { all: true },
     });
     return messages;
+  }
+
+  async getMessages(page = 1, pageSize = 10, options) {
+    const { rows: data, count } = await this.messageRepository.findAndCountAll({
+      ...options,
+      limit: pageSize,
+      offset: (page - 1) * pageSize,
+      include: { all: true },
+      distinct: true,
+    });
+
+    return {
+      data,
+      meta: {
+        total: count,
+        page,
+        pageSize,
+        lastPage: Math.ceil(count / pageSize),
+      },
+    };
   }
 
   async deleteMessage(id: number) {

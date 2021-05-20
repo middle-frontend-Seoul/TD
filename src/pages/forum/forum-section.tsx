@@ -14,7 +14,7 @@ import { URL } from 'core/url';
 import { useUrlParams } from 'hooks/use-url-params';
 import { useUrlNextPage } from 'hooks/use-url-next-page';
 import { useAppSelector, useBoundAction } from 'rdx/hooks';
-import { getAllThemes, createTheme } from 'rdx/slices/forum-slice';
+import { getThemes, createTheme } from 'rdx/slices/forum-slice';
 
 import './style.scss';
 
@@ -60,27 +60,32 @@ const PageForumSection: FC = () => {
   const loadingStatus = useAppSelector((state) => state.forum.loadingStatus);
   const mutatingStatus = useAppSelector((state) => state.forum.mutatingStatus);
 
-  const data = useAppSelector((state) => state.forum.allThemes || []);
-  const page = searchParams.get('page') || '1';
-  const pages = useAppSelector((state) => state.forum.pages);
-  const currentPage = useAppSelector((state) => state.forum.currentPage);
+  const data = useAppSelector((state) => state.forum.themes?.data || []);
+  const pages = useAppSelector(
+    (state) => state.forum.themes?.meta.lastPage || 0
+  );
+  const page = Number(searchParams.get('page') || '1');
 
-  const actionGetAllThemes = useBoundAction(getAllThemes);
+  const actionGetThemes = useBoundAction(getThemes);
   const actionThemeCreate = useBoundAction(createTheme);
 
   useEffect(() => {
-    actionGetAllThemes(Number(forumId));
-  }, [page, actionGetAllThemes, forumId]);
+    actionGetThemes(Number(forumId), page);
+  }, [page, actionGetThemes, forumId]);
 
   const handleNextPage = useCallback(() => {
-    const newPage = currentPage + 1;
-    nextPage(newPage);
-  }, [nextPage, currentPage]);
+    if (page < pages) {
+      const newPage = page + 1;
+      nextPage(newPage);
+    }
+  }, [nextPage, page, pages]);
 
   const handlePrevPage = useCallback(() => {
-    const newPage = currentPage - 1;
-    nextPage(newPage);
-  }, [nextPage, currentPage]);
+    if (page > 1) {
+      const newPage = page - 1;
+      nextPage(newPage);
+    }
+  }, [nextPage, page]);
 
   const handleCreateTheme = useCallback(
     async (values: Omit<ThemeRequestInfo, 'forumId'>) => {
@@ -90,12 +95,12 @@ const PageForumSection: FC = () => {
           forumId: Number(forumId),
         });
         setModalOpen(false);
-        actionGetAllThemes(Number(forumId));
+        actionGetThemes(Number(forumId), page);
       } catch (error) {
         console.error('could not create theme', error); // eslint-disable-line
       }
     },
-    [actionThemeCreate, actionGetAllThemes, forumId]
+    [actionThemeCreate, actionGetThemes, forumId, page]
   );
 
   // Render
@@ -114,7 +119,7 @@ const PageForumSection: FC = () => {
             columns={columns}
             dataSource={data}
             pagination={{
-              page: currentPage,
+              page,
               pages,
               handlePrev: handlePrevPage,
               handleNext: handleNextPage,
