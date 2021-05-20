@@ -14,7 +14,7 @@ import { URL } from 'core/url';
 import { useUrlParams } from 'hooks/use-url-params';
 import { useUrlNextPage } from 'hooks/use-url-next-page';
 import { useAppSelector, useBoundAction } from 'rdx/hooks';
-import { getAllForums, createForum } from 'rdx/slices/forum-slice';
+import { getForums, createForum } from 'rdx/slices/forum-slice';
 
 import './style.scss';
 
@@ -50,7 +50,7 @@ const columns: TableColumn<ForumInfo>[] = [
 ];
 
 const PageForum: FC = () => {
-  const params = useUrlParams();
+  const searchParams = useUrlParams();
   const nextPage = useUrlNextPage();
 
   const [isModalOpen, setModalOpen] = useState(false);
@@ -58,38 +58,43 @@ const PageForum: FC = () => {
   const loadingStatus = useAppSelector((state) => state.forum.loadingStatus);
   const mutatingStatus = useAppSelector((state) => state.forum.mutatingStatus);
 
-  const data = useAppSelector((state) => state.forum.allForums || []);
-  const page = params.get('page') || '1';
-  const pages = useAppSelector((state) => state.forum.pages);
-  const currentPage = useAppSelector((state) => state.forum.currentPage);
+  const data = useAppSelector((state) => state.forum.forums?.data || []);
+  const pages = useAppSelector(
+    (state) => state.forum.forums?.meta.lastPage || 0
+  );
+  const page = Number(searchParams.get('page') || '1');
 
-  const actionGetAllForums = useBoundAction(getAllForums);
+  const actionGetForums = useBoundAction(getForums);
   const actionForumCreate = useBoundAction(createForum);
   useEffect(() => {
-    actionGetAllForums();
-  }, [page, actionGetAllForums]);
+    actionGetForums(page);
+  }, [page, actionGetForums]);
 
   const handleNextPage = useCallback(() => {
-    const newPage = currentPage + 1;
-    nextPage(newPage);
-  }, [nextPage, currentPage]);
+    if (page < pages) {
+      const newPage = page + 1;
+      nextPage(newPage);
+    }
+  }, [nextPage, page, pages]);
 
   const handlePrevPage = useCallback(() => {
-    const newPage = currentPage - 1;
-    nextPage(newPage);
-  }, [nextPage, currentPage]);
+    if (page > 1) {
+      const newPage = page - 1;
+      nextPage(newPage);
+    }
+  }, [nextPage, page]);
 
   const handleCreateForum = useCallback(
     async (values: ForumRequestInfo) => {
       try {
         await actionForumCreate(values);
         setModalOpen(false);
-        actionGetAllForums();
+        actionGetForums(page);
       } catch (error) {
         console.error('could not create forum', error); // eslint-disable-line
       }
     },
-    [actionForumCreate, actionGetAllForums]
+    [actionForumCreate, actionGetForums, page]
   );
 
   // Render
@@ -108,7 +113,7 @@ const PageForum: FC = () => {
             columns={columns}
             dataSource={data}
             pagination={{
-              page: currentPage,
+              page,
               pages,
               handlePrev: handlePrevPage,
               handleNext: handleNextPage,
