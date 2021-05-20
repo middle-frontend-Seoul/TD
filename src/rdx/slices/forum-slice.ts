@@ -1,12 +1,11 @@
 import { createSlice, PayloadAction, SerializedError } from '@reduxjs/toolkit';
 import { formatError, formatHttpError } from 'utils/format';
 import { forumApi } from 'api/forum-api';
+import { DEFAULT_PAGE_SIZE } from 'constants/defaults';
 
 export type ForumState = {
-  currentPage: number;
-  title: string;
-  pages: number;
-
+  forums?: PaginatedData<ForumInfo>;
+  themes?: PaginatedData<ThemeInfo>;
   allForums?: ForumInfo[];
   allThemes?: ThemeInfo[];
   theme?: ThemeInfo;
@@ -20,25 +19,25 @@ export type ForumState = {
 export const initialState: ForumState = {
   loadingStatus: 'idle',
   mutatingStatus: 'idle',
-  title: '',
-  currentPage: 1,
-  pages: 1,
 };
 
 export const forumSlice = createSlice({
   name: 'forum',
   initialState,
   reducers: {
-    setPage: (
-      state,
-      { payload }: PayloadAction<Pick<ForumState, 'currentPage' | 'pages'>>
-    ) => {
-      state.currentPage = payload.currentPage || 1;
-      state.pages = payload.pages || 1;
+    getForumsPending: (state) => {
+      state.loadingStatus = 'pending';
     },
-
-    setTitle: (state, { payload }: PayloadAction<string>) => {
-      state.title = payload;
+    getForumsSuccess: (
+      state,
+      { payload }: PayloadAction<PaginatedData<ForumInfo> | undefined>
+    ) => {
+      state.loadingStatus = 'success';
+      state.forums = payload;
+    },
+    getForumsFailure: (state, { payload }: PayloadAction<SerializedError>) => {
+      state.loadingStatus = 'failure';
+      state.error = payload;
     },
 
     getAllForumsPending: (state) => {
@@ -68,6 +67,21 @@ export const forumSlice = createSlice({
     createForumFailure: (state, action: PayloadAction<SerializedError>) => {
       state.mutatingStatus = 'failure';
       state.error = action.payload;
+    },
+
+    getThemesPending: (state) => {
+      state.loadingStatus = 'pending';
+    },
+    getThemesSuccess: (
+      state,
+      { payload }: PayloadAction<PaginatedData<ThemeInfo> | undefined>
+    ) => {
+      state.loadingStatus = 'success';
+      state.themes = payload;
+    },
+    getThemesFailure: (state, { payload }: PayloadAction<SerializedError>) => {
+      state.loadingStatus = 'failure';
+      state.error = payload;
     },
 
     getAllThemesPending: (state) => {
@@ -157,6 +171,22 @@ export const forumSlice = createSlice({
   },
 });
 
+export function getForums(page: number, pageSize = DEFAULT_PAGE_SIZE) {
+  return async (dispatch: AppDispatch) => {
+    dispatch(forumSlice.actions.getForumsPending());
+    try {
+      const { data, error } = await forumApi.getForums(page, pageSize);
+      if (!error) {
+        dispatch(forumSlice.actions.getForumsSuccess(data));
+      } else {
+        dispatch(forumSlice.actions.getForumsFailure(formatHttpError(error)));
+      }
+    } catch (error) {
+      dispatch(forumSlice.actions.getForumsFailure(formatError(error)));
+    }
+  };
+}
+
 export function getAllForums() {
   return async (dispatch: AppDispatch) => {
     dispatch(forumSlice.actions.getAllForumsPending());
@@ -187,6 +217,26 @@ export function createForum(arg: ForumRequestInfo) {
       }
     } catch (error) {
       dispatch(forumSlice.actions.createForumFailure(formatError(error)));
+    }
+  };
+}
+
+export function getThemes(
+  forumId: number,
+  page = 1,
+  pageSize = DEFAULT_PAGE_SIZE
+) {
+  return async (dispatch: AppDispatch) => {
+    dispatch(forumSlice.actions.getThemesPending());
+    try {
+      const { data, error } = await forumApi.getThemes(forumId, page, pageSize);
+      if (!error) {
+        dispatch(forumSlice.actions.getThemesSuccess(data));
+      } else {
+        dispatch(forumSlice.actions.getThemesFailure(formatHttpError(error)));
+      }
+    } catch (error) {
+      dispatch(forumSlice.actions.getThemesFailure(formatError(error)));
     }
   };
 }

@@ -54,12 +54,12 @@ const PageForumDetails: FC = () => {
           themeId: theme.id,
         });
         setModalOpen(false);
-        actionGetTheme(theme.id);
+        actionGetAllMessages(theme.id);
       } catch (error) {
         console.error('could not create message', error); // eslint-disable-line
       }
     },
-    [actionMessageCreate, actionGetTheme, theme]
+    [actionMessageCreate, actionGetAllMessages, theme]
   );
 
   // Render

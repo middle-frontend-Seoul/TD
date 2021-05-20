@@ -19,6 +19,20 @@ export class ForumController {
 
   /* THEME */
 
+  @Get('themes/paginated')
+  getThemes(
+    @Query('forumId') forumId: number,
+    @Query('page') page = 1,
+    @Query('pageSize') pageSize = 10,
+  ) {
+    return this.forumService.getThemes(Number(page), Number(pageSize), { where: { forumId } });
+  }
+
+  @Get('themes')
+  getAllThemes(@Query('forumId') forumId: number) {
+    return this.forumService.getAllThemes({ where: { forumId } })
+  }
+
   @Post('themes')
   createTheme(@Body() themeDto: CreateThemeDto) {
     return this.forumService.createTheme(themeDto)
@@ -34,17 +48,26 @@ export class ForumController {
     return this.forumService.getTheme({ where: { id }, include: { all: true }});
   }
 
-  @Get('themes')
-  getAllThemes(@Query('forumId') forumId: number) {
-    return this.forumService.getAllThemes({ where: { forumId } })
-  }
-
   @Delete('themes/:id')
   deleteTheme(@Param('id') id: number) {
     return this.forumService.deleteTheme(id);
   }
 
   /* MESSAGE */
+
+  @Get('messages/paginated')
+  getMessages(
+    @Query('themeId') themeId: number,
+    @Query('page') page = 1,
+    @Query('pageSize') pageSize = 10,
+  ) {
+    return this.forumService.getMessages(Number(page), Number(pageSize), { where: { themeId } });
+  }
+
+  @Get('messages')
+  getAllMessages(@Query('themeId') themeId: number) {
+    return this.forumService.getAllMessages({ where: { themeId } })
+  }
 
   @Post('messages')
   async createMessage(
@@ -66,17 +89,25 @@ export class ForumController {
     return this.forumService.getMessage({ where: { id }, include: { all: true }});
   }
 
-  @Get('messages')
-  getAllMessages(@Query('themeId') themeId: number) {
-    return this.forumService.getAllMessages({ where: { themeId } })
-  }
-
   @Delete('messages/:id')
   deleteMessage(@Param('id') id: number) {
     return this.forumService.deleteMessage(id);
   }
 
   /* FORUM */
+
+  @Get('paginated')
+  getForums(
+    @Query('page') page = 1,
+    @Query('pageSize') pageSize = 10,
+  ) {
+    return this.forumService.getForums(Number(page), Number(pageSize));
+  }
+
+  @Get()
+  getAllForums() {
+    return this.forumService.getAllForums()
+  }
 
   @Post()
   createForum(@Body() forumDto: CreateForumDto) {
@@ -86,11 +117,6 @@ export class ForumController {
   @Get(':id')
   getForum(@Param('id') id: number) {
     return this.forumService.getForum({ where: { id }, include: { all: true }});
-  }
-
-  @Get()
-  getAllForums() {
-    return this.forumService.getAllForums()
   }
 
   @Delete(':id')
