@@ -106,7 +106,7 @@ const PageSignIn: FC = withAuth(() => {
           fields={signInFields}
           validation={validation}
           buttonText="Войти"
-          title="Tower Defence"
+          title="Tower Defense"
         />
         {authError && <div className="auth-error">{authError.message}</div>}
         <div

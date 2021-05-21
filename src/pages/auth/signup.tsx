@@ -87,7 +87,7 @@ const PageSignUp: FC = withAuth(() => {
           fields={signUpFields}
           validation={validation}
           buttonText="Создать аккаунт"
-          title="Tower Defence"
+          title="Tower Defense"
         />
         {authError && <div className="auth-error">{authError.message}</div>}
       </Block>
