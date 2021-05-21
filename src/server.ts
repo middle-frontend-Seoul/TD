@@ -47,7 +47,7 @@ app.use(
 app.use(
   '/api-forum',
   createProxyMiddleware({
-    target: 'https://seoul-test-td.herokuapp.com/api-forum',
+    target: 'https://seoul-test-td.herokuapp.com',
     secure: false,
     cookieDomainRewrite: {
       '*': '',
