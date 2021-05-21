@@ -15,7 +15,11 @@ const styleSources = [
 ];
 const fontSources = ["'self'", 'https://fonts.gstatic.com'];
 const imageSources = ["'self'", 'data:', 'https://ya-praktikum.tech'];
-const connectSources = ["'self'", 'https://ya-praktikum.tech'];
+const connectSources = [
+  "'self'",
+  'https://ya-praktikum.tech',
+  'https://seoul-test-td.herokuapp.com',
+];
 
 const app = express();
 app.use(helmet());
@@ -49,9 +53,7 @@ app.use(
   createProxyMiddleware({
     target: 'https://seoul-test-td.herokuapp.com',
     secure: false,
-    cookieDomainRewrite: {
-      '*': '',
-    },
+    changeOrigin: true,
   })
 );
 
