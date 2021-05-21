@@ -15,7 +15,9 @@ services:
 
   backend:
     container_name: backend
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     env_file:
       - .dev.env
     restart: unless-stopped

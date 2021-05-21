@@ -9,8 +9,6 @@ const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 
 import { DIST_DIR, SRC_DIR } from './env';
 
-console.log(process.env.PROD_REDIRECT_URI);
-
 const config: Configuration = {
   mode: 'development',
   entry: {
