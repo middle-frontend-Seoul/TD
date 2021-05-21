@@ -87,7 +87,7 @@ const PageForumSignUp: FC = withAuth(() => {
           fields={signUpFields}
           validation={validation}
           buttonText="Создать аккаунт"
-          title="FORUM Tower Defence"
+          title="FORUM Tower Defense"
         />
         {authError && <div className="auth-error">{authError.message}</div>}
       </Block>
