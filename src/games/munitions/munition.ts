@@ -3,8 +3,12 @@ import { Enemy } from 'games/enemies';
 import { Tower } from 'games/towers/tower';
 
 export abstract class Munition extends Renderable {
+  abstract color: string;
+
   public target: Enemy;
+
   public isAlive = true;
+
   protected emitter: Tower;
 
   constructor(target: Enemy, emitter: Tower) {
