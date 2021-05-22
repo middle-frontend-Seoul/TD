@@ -27,7 +27,7 @@ import { YaSession } from './auth/model/ya-session.model';
       models: [YaSession, User, Forum, Theme, Message],
       autoLoadModels: true,
       ssl: true,
-      // sync: { force: true }, // TODO - настроить миграции. эта опция удаляет и пересоздает все таблицы из моделей.
+      sync: { force: process.env.DB_FORCE_SYNC === 'true' }, // TODO - настроить миграции. эта опция удаляет и пересоздает все таблицы из моделей.
     }),
     AuthModule,
     UserModule,
