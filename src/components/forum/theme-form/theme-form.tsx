@@ -9,19 +9,19 @@ import './style.scss';
 
 export interface IThemeFormProps {
   loading?: boolean;
-  onSubmit: (values: Record<string, string>) => void;
+  onSubmit: (values: Omit<ThemeRequestInfo, 'forumId'>) => void;
 }
 
 export const ThemeForm: FC<IThemeFormProps> = ({ onSubmit, loading }) => {
   const Form = useFormik({
-    initialValues: { text: '' },
+    initialValues: { name: '' },
     validateOnChange: false,
     validateOnBlur: true,
     validate: (values: Record<string, string>) => {
       const errors: Record<string, string> = {};
 
-      if (!values.text) {
-        errors.text = validationMessages.isRequire;
+      if (!values.name) {
+        errors.name = validationMessages.isRequire;
       }
 
       return errors;
@@ -39,11 +39,11 @@ export const ThemeForm: FC<IThemeFormProps> = ({ onSubmit, loading }) => {
       <div className="theme-form_body">
         <Input
           type="text"
-          name="text"
+          name="name"
           placeholder="Введите название темы"
           onChange={Form.handleChange}
-          error={Form.errors.text}
-          value={Form.values.text}
+          error={Form.errors.name}
+          value={Form.values.name}
         />
       </div>
       <Button type="submit" size="small">

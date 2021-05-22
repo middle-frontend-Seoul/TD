@@ -1,54 +1,130 @@
-import { mockRequest } from 'api/__mock__/request'; // временно
-import {
-  fromThemesDto,
-  fromMessagesDto,
-  fromSubThemesDto,
-  ThemesType,
-  MessagesType,
-  SubThemesType,
-} from 'api/codecs/forum';
-
-export type GetThemes = ApiResponse<ThemesType>;
-
-export type GetMessages = ApiResponse<MessagesType>;
-
-export type GetSubThemes = ApiResponse<SubThemesType>;
-
-export type CreateTheme = ApiResponse<boolean>;
+import { httpForum } from 'network/http-forum';
+import { Forum } from 'api/codecs';
 
 export const forumApi = {
-  createTheme: async (values: Record<string, string>): Promise<CreateTheme> => {
-    // tmp - эмитация добавления темы
-    await new Promise((res) => setTimeout(() => res(values), 1000));
+  getForums: async (
+    page: number,
+    pageSize: number
+  ): Promise<ApiResponse<PaginatedData<ForumInfo>>> => {
+    const { response, error } = await httpForum.get<PaginatedData<ForumDto>>(
+      `/forums/paginated?page=${page}&pageSize=${pageSize}`
+    );
     return {
-      data: true,
-      error: undefined,
+      data: response && {
+        data: (response.data.data || []).map(Forum.fromForumDto),
+        meta: response.data.meta,
+      },
+      error,
     };
   },
 
-  getThemes: async (page: string | number = 1): Promise<GetThemes> => {
-    const res = await mockRequest<ThemesDto>('themes', page);
+  getAllForums: async (): Promise<ApiResponse<ForumInfo[]>> => {
+    const { response, error } = await httpForum.get<ForumDto[]>('/forums');
     return {
-      data: res && fromThemesDto(res),
-      error: undefined,
+      data: response && (response.data || []).map(Forum.fromForumDto),
+      error,
     };
   },
 
-  getMessages: async (id: string | number): Promise<GetMessages> => {
-    // eslint-disable-next-line no-console
-    console.log(id);
-    const res = await mockRequest<MessagesDto>('messages');
+  createForum: async (
+    data: ForumRequestInfo
+  ): Promise<ApiResponse<ForumInfo>> => {
+    const { response, error } = await httpForum.post<ForumDto>(
+      '/forums',
+      Forum.toForumRequestDto(data)
+    );
     return {
-      data: res && fromMessagesDto(res),
-      error: undefined,
+      data: response && Forum.fromForumDto(response.data || {}),
+      error,
     };
   },
 
-  getSubThemes: async (page: string | number = 1): Promise<GetSubThemes> => {
-    const res = await mockRequest<SubThemesDto>('subthemes', page);
+  getThemes: async (
+    forumId: number,
+    page: number,
+    pageSize: number
+  ): Promise<ApiResponse<PaginatedData<ThemeInfo>>> => {
+    const { response, error } = await httpForum.get<PaginatedData<ThemeDto>>(
+      `/forums/themes/paginated?page=${page}&pageSize=${pageSize}&forumId=${forumId}`
+    );
     return {
-      data: res && fromSubThemesDto(res),
-      error: undefined,
+      data: response && {
+        data: (response.data.data || []).map(Forum.fromThemeDto),
+        meta: response.data.meta,
+      },
+      error,
+    };
+  },
+
+  getAllThemes: async (forumId?: number): Promise<ApiResponse<ThemeInfo[]>> => {
+    const { response, error } = await httpForum.get<ThemeDto[]>(
+      forumId ? `forums/themes?forumId=${forumId}` : 'forums/themes'
+    );
+    return {
+      data: response && (response.data || []).map(Forum.fromThemeDto),
+      error,
+    };
+  },
+
+  createTheme: async (
+    data: ThemeRequestInfo
+  ): Promise<ApiResponse<ThemeInfo>> => {
+    const { response, error } = await httpForum.post<ThemeDto>(
+      '/forums/themes',
+      Forum.toThemeRequestDto(data)
+    );
+    return {
+      data: response && Forum.fromThemeDto(response.data || {}),
+      error,
+    };
+  },
+
+  updateThemeViewCount: async (
+    id: number,
+    data: ThemeUpdateViewCountInfo
+  ): Promise<ApiResponse<ThemeInfo>> => {
+    const { response, error } = await httpForum.put<ThemeDto>(
+      `/forums/themes/${id}`,
+      Forum.toThemeUpdateViewCountDto(data)
+    );
+    return {
+      data: response && Forum.fromThemeDto(response.data || {}),
+      error,
+    };
+  },
+
+  getTheme: async (id: number): Promise<ApiResponse<ThemeInfo>> => {
+    const { response, error } = await httpForum.get<ThemeDto>(
+      `/forums/themes/${id}`
+    );
+    return {
+      data: response && Forum.fromThemeDto(response.data || {}),
+      error,
+    };
+  },
+
+  getAllMessages: async (
+    themeId?: number
+  ): Promise<ApiResponse<MessageInfo[]>> => {
+    const { response, error } = await httpForum.get<MessageDto[]>(
+      themeId ? `forums/messages?themeId=${themeId}` : 'forums/messages'
+    );
+    return {
+      data: response && (response.data || []).map(Forum.fromMessageDto),
+      error,
+    };
+  },
+
+  createMessage: async (
+    data: MessageRequestInfo
+  ): Promise<ApiResponse<MessageInfo>> => {
+    const { response, error } = await httpForum.post<MessageDto>(
+      '/forums/messages',
+      Forum.toMessageRequestDto(data)
+    );
+    return {
+      data: response && Forum.fromMessageDto(response.data || {}),
+      error,
     };
   },
 };

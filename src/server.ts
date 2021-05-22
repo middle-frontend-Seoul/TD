@@ -16,6 +16,9 @@ const styleSources = [
 const fontSources = ["'self'", 'https://fonts.gstatic.com'];
 const imageSources = ["'self'", 'data:', 'https://ya-praktikum.tech'];
 const connectSources = ["'self'", 'https://ya-praktikum.tech'];
+if (process.env.FORUM_API_URL) {
+  connectSources.push(process.env.FORUM_API_URL);
+}
 
 const app = express();
 app.use(helmet());
@@ -42,6 +45,14 @@ app.use(
     cookieDomainRewrite: {
       '*': '',
     },
+  })
+);
+app.use(
+  '/api-forum',
+  createProxyMiddleware({
+    target: process.env.FORUM_API_URL,
+    secure: false,
+    changeOrigin: true,
   })
 );
 

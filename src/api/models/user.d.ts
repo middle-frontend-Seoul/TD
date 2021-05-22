@@ -15,6 +15,19 @@ type UserInfo = {
   email: string;
 };
 
+type ForumUserDto = {
+  id: number;
+  username: string;
+  avatar: string | null;
+  email: string;
+}
+type ForumUserInfo = {
+  id: number;
+  username: string;
+  avatar: string | null;
+  email: string;
+};
+
 type UserRequestDto = {
   first_name: string;
   second_name: string;
