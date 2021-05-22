@@ -1,4 +1,4 @@
-import { Configuration } from "webpack";
+import webpack, { Configuration } from 'webpack';
 
 const path = require('path');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
@@ -68,7 +68,8 @@ const config: Configuration = {
 
   externals: [nodeExternals({ allowlist: [/\.(?!(?:tsx?|json)$).{1,5}$/i] })],
 
-  plugins: [
+  plugins: [ // TODO - EnvironmentPlugin и Dotenv можно выбирать в зависимости от production / development
+    new webpack.EnvironmentPlugin(['REDIRECT_URI', 'FORUM_API_URL']),
     new Dotenv(),
     new WebpackBar(),
     new MiniCssExtractPlugin(),
