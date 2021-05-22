@@ -1,57 +1,83 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import * as bcrypt from 'bcryptjs';
+import { HttpService, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { Request } from 'express';
 import { UserService } from '../user/user.service';
-import { JwtService } from '@nestjs/jwt';
-import { User } from '../user/model/user.model';
-import { RegisterDto } from './dto/register.dto';
-import { LoginDto } from './dto/login.dto';
+import { YaSession } from './model/ya-session.model';
+import { InjectModel } from '@nestjs/sequelize';
 
 @Injectable()
 export class AuthService {
 
   constructor(
     private userService: UserService,
-    private jwtService: JwtService,
+    private httpService: HttpService,
+    @InjectModel(YaSession) private yaSessionRepository: typeof YaSession,
   ) {}
-
-  async login(loginDto: LoginDto) {
-    const user = await this.userService.getUserWithPassword({ where: { username: loginDto.username } });
+  async userId(request: Request): Promise<number> {
+    const yaSession = await this.getYaSession(request);
+    if (!yaSession) {
+      throw new NotFoundException();
+    }
+    const user = await this.userService.getUser({ where: { id: yaSession.ya_id } });
 
     if (!user) {
-      throw new NotFoundException('user not found');
+      throw new NotFoundException();
     }
 
-    if (!(await bcrypt.compare(loginDto.password, user.password))) {
-      throw new BadRequestException('invalid credentials');
+    return user.id;
+  }
+
+  async getYaSession(request: Request) {
+    const allCookies = request.headers.cookie;
+    const yaAuthCookie = request.cookies['authCookie'];
+
+    if (!yaAuthCookie) {
+      return;
+    }
+    const yaSession = await this.yaSessionRepository.findOne({ where: { ya_cookie: yaAuthCookie } });
+
+    if (yaSession) {
+      return yaSession;
     }
 
-    user.setDataValue('password', undefined);
-    return user;
-  }
+    if (!yaSession) {
+      try {
+        const { data } = await this.httpService
+          .get('https://ya-praktikum.tech/api/v2/auth/user', {
+            headers: {
+              cookie: allCookies,
+            },
+          })
+          .toPromise();
+        if (!data) {
+          throw new UnauthorizedException();
+        }
 
-  async registration(registerDto: RegisterDto) {
-    if (registerDto.password !== registerDto.password_confirm) {
-      throw new BadRequestException('Passwords do not match');
+        const user = await this.userService.getUser({ where: { id: data.id } });
+        if (user) {
+          await this.userService.updateUser(data.id, {
+            login: data.login,
+            email: data.email,
+            avatar: data.avatar,
+          });
+        } else {
+          await this.userService.createUser({
+            id: data.id,
+            login: data.login,
+            email: data.email,
+            avatar: data.avatar,
+          });
+        }
+
+        return this.yaSessionRepository.create({
+          ya_cookie: yaAuthCookie,
+          ya_id: data.id,
+          login: data.login,
+          email: data.email,
+          avatar: data.avatar,
+        });
+      } catch (e) {
+        await this.yaSessionRepository.destroy({ where: { ya_cookie: yaAuthCookie } });
+      }
     }
-    const hashed = await bcrypt.hash(registerDto.password, 12);
-
-    const user = await this.userService.createUser({
-      ...registerDto,
-      password: hashed,
-    });
-
-    user.setDataValue('password', undefined);
-    return user;
-  }
-
-  async userId(cookie: string): Promise<number> {
-    const data = await this.jwtService.verifyAsync(cookie);
-
-    return data.id;
-  }
-
-  async generateToken(user: User) {
-    const payload = { id: user.id }
-    return this.jwtService.signAsync(payload);
   }
 }

@@ -21,19 +21,6 @@ type SignUpRequestDto = {
   password: string,
 }
 
-type ForumSignUpRequestInfo = {
-  username: string;
-  email: string;
-  password: string;
-  repeatedPassword: string;
-}
-type ForumSignUpRequestDto = {
-  username: string,
-  email: string,
-  password: string,
-  password_confirm: string,
-}
-
 type SignInDto = {
   id?: number;
 };
@@ -49,15 +36,5 @@ type SignInRequestInfo = {
 
 type SignInRequestDto = {
   login: string,
-  password: string,
-}
-
-type ForumSignInRequestInfo = {
-  username: string;
-  password: string;
-}
-
-type ForumSignInRequestDto = {
-  username: string,
   password: string,
 }

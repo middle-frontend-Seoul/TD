@@ -4,7 +4,7 @@ import { URL } from 'core/url';
 import { axiosInstance } from 'network/http';
 
 export default async (req: Request, res: Response, next: NextFunction) => {
-  const mainAuthCookie = req.cookies.jwt;
+  const mainAuthCookie = req.cookies.authCookie;
   if (!mainAuthCookie) {
     delete axiosInstance.defaults.headers.common.cookie;
   } else {

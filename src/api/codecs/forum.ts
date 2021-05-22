@@ -7,7 +7,7 @@ export function fromMessageDto(dto: MessageDto): MessageInfo {
     id: dto.id,
     content: dto.content,
     createdAt: new Date(dto.createdAt),
-    user: dto.user ? User.fromForumUserDto(dto.user) : ({} as ForumUserInfo),
+    user: dto.user ? User.fromUserDto(dto.user) : ({} as UserInfo),
   };
 }
 

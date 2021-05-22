@@ -74,8 +74,7 @@ export class ForumController {
     @Body() messageDto: CreateMessageDto,
     @Req() request: Request
   ) {
-    const cookie = request.cookies['forum-token'];
-    const userId = await this.authService.userId(cookie);
+    const userId = await this.authService.userId(request);
     return this.forumService.createMessage(userId, messageDto)
   }
 
