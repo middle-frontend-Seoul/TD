@@ -7,7 +7,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const Dotenv = require('dotenv-webpack');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 
-import { DIST_DIR, SRC_DIR } from './env';
+import { IS_DEV, DIST_DIR, SRC_DIR } from './env';
 
 const config: Configuration = {
   mode: 'development',
@@ -73,9 +73,8 @@ const config: Configuration = {
       },
     ],
   },
-  plugins: [ // TODO - EnvironmentPlugin и Dotenv можно выбирать в зависимости от production / development
-    new webpack.EnvironmentPlugin(['REDIRECT_URI', 'FORUM_API_URL']),
-    new Dotenv(),
+  plugins: [
+    IS_DEV ? new Dotenv() : new webpack.EnvironmentPlugin(['REDIRECT_URI', 'FORUM_API_URL']),
     new WebpackBar(),
     new MiniCssExtractPlugin(),
     new MomentLocalesPlugin({
