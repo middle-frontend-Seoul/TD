@@ -1,7 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser';
+import * as sourceMapSupport from 'source-map-support';
 // import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
+
+sourceMapSupport.install();
 
 async function start() {
   const PORT = process.env.PORT || 3000;
