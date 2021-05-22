@@ -8,7 +8,7 @@ export class FlameMunition extends Munition {
   num = 0;
 
   draw(ctx: CanvasRenderingContext2D) {
-    this.num = this.num + 1;
+    this.num += 1;
     const coef = Math.floor(Math.random() * 60) - 60;
     const r = 191 + coef;
     const g = 94 + coef;

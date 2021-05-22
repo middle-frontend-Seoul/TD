@@ -33,6 +33,10 @@ export abstract class Tower extends GridRenderable {
       this.lastShoot = performance.now();
     }
 
+    this.updateHelper(map);
+  }
+
+  protected updateHelper(map: GameMap) {
     const tileSize = map.getTileSize();
     const aimRadius = this.radius * tileSize;
 
