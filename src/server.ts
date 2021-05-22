@@ -53,6 +53,9 @@ app.use(
     target: process.env.FORUM_API_URL,
     secure: false,
     changeOrigin: true,
+    cookieDomainRewrite: {
+      '*': '',
+    },
   })
 );
 
