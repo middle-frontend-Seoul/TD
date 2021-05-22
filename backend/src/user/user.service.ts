@@ -20,15 +20,11 @@ export class UserService {
     await this.userRepository.update(dto, { where: { id } });
     return this.userRepository.findOne({
       where: { id },
-      attributes: { exclude: ['password'] },
     });
   }
 
   async getUser(options: FindOptions) {
-    return this.userRepository.findOne({
-      ...options,
-      attributes: { exclude: ['password'] },
-    });
+    return this.userRepository.findOne(options);
   }
 
   async getUserWithPassword(options: FindOptions) {
@@ -36,10 +32,7 @@ export class UserService {
   }
 
   async getAllUsers(options?: FindOptions) {
-    const users = await this.userRepository.findAll({
-      ...options,
-      attributes: { exclude: ['password'] },
-    });
+    const users = await this.userRepository.findAll(options);
     return users;
   }
 

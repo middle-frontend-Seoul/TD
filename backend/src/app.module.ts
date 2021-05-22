@@ -8,6 +8,7 @@ import { ForumModule } from './forum/forum.module';
 import { Forum } from './forum/model/forum.model';
 import { Theme } from './forum/model/theme.model';
 import { Message } from './forum/model/message.model';
+import { YaSession } from './auth/model/ya-session.model';
 
 @Module({
   controllers: [],
@@ -23,7 +24,7 @@ import { Message } from './forum/model/message.model';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [User, Forum, Theme, Message],
+      models: [YaSession, User, Forum, Theme, Message],
       autoLoadModels: true,
       ssl: true,
       // sync: { force: true }, // TODO - настроить миграции. эта опция удаляет и пересоздает все таблицы из моделей.

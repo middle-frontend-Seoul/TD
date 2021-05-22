@@ -75,8 +75,9 @@ const PageForumDetails: FC = () => {
         return (messages || []).map((msg: MessageInfo) => (
           <ForumMassage
             key={msg.id}
+            src={msg.user.avatar}
             date={msg.createdAt}
-            userName={msg.user.username}
+            userName={msg.user.login}
             message={msg.content}
           />
         ));
