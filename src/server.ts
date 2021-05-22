@@ -16,6 +16,9 @@ const styleSources = [
 const fontSources = ["'self'", 'https://fonts.gstatic.com'];
 const imageSources = ["'self'", 'data:', 'https://ya-praktikum.tech'];
 const connectSources = ["'self'", 'https://ya-praktikum.tech'];
+if (process.env.FORUM_API_URL) {
+  connectSources.push(process.env.FORUM_API_URL);
+}
 
 const app = express();
 app.use(helmet());
@@ -47,15 +50,19 @@ app.use(
 app.use(
   '/api-forum',
   createProxyMiddleware({
-    target: 'http://localhost:7000',
+    target: process.env.FORUM_API_URL,
     secure: false,
-    cookieDomainRewrite: {
-      '*': '',
-    },
+    changeOrigin: true,
   })
 );
 
 app.use(express.static(path.join(__dirname, '../dist')));
+
+app.get('/api-get-envs', (_, res) => {
+  res.send({
+    redirectUri: process.env.REDIRECT_URI,
+  });
+});
 
 app.get('/*', userAuthMiddleware, serverRenderMiddleware);
 

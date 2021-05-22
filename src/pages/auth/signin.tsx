@@ -17,6 +17,8 @@ import { withAuth } from './with-auth';
 
 import './auth.scss';
 
+const redirectUri = process.env.REDIRECT_URI;
+
 const PageSignIn: FC = withAuth(() => {
   const actionSignIn = useBoundAction(signIn);
   const authError = useAppSelector((state) => state.auth.error.auth);
@@ -40,7 +42,7 @@ const PageSignIn: FC = withAuth(() => {
   const postCode = async (code: string) => {
     await oAuthApi.signIn({
       code,
-      redirect_uri: `${process.env.REDIRECT_URI}`,
+      redirect_uri: `${redirectUri}`,
     });
   };
 
@@ -56,7 +58,7 @@ const PageSignIn: FC = withAuth(() => {
     const code = getCode();
     if (code) {
       postCode(code).then(() => {
-        document.location.href = `${process.env.REDIRECT_URI}`;
+        document.location.href = `${redirectUri}`;
       });
     }
   }, [getCode]);
@@ -65,8 +67,7 @@ const PageSignIn: FC = withAuth(() => {
     const { data, error } = await oAuthApi.getClientID();
     if (data) {
       const clientId = data.service_id;
-      const redirectURL = `${process.env.REDIRECT_URI}`;
-      const urlAuth = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectURL}`;
+      const urlAuth = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
       document.location.href = urlAuth;
     } else {
       throw error;
@@ -106,7 +107,7 @@ const PageSignIn: FC = withAuth(() => {
           fields={signInFields}
           validation={validation}
           buttonText="Войти"
-          title="Tower Defence"
+          title="Tower Defense"
         />
         {authError && <div className="auth-error">{authError.message}</div>}
         <div

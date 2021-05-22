@@ -25,6 +25,7 @@ import { Message } from './forum/model/message.model';
       database: process.env.POSTGRES_DB,
       models: [User, Forum, Theme, Message],
       autoLoadModels: true,
+      ssl: true,
       // sync: { force: true }, // TODO - настроить миграции. эта опция удаляет и пересоздает все таблицы из моделей.
     }),
     AuthModule,

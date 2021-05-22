@@ -68,7 +68,7 @@ const PageForumSignIn: FC = withAuth(() => {
           fields={signInFields}
           validation={validation}
           buttonText="Войти"
-          title="FORUM Tower Defence"
+          title="FORUM Tower Defense"
         />
         {authError && <div className="auth-error">{authError.message}</div>}
         <Link to={URL.SIGNUP_FORUM.path} className="auth-link">
