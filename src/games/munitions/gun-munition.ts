@@ -2,12 +2,13 @@ import { GameMap } from 'games/game-map';
 import { Munition } from './munition';
 
 export class GunMunition extends Munition {
-  speed = 6;
+  color = 'rgba(255, 0, 0, 0.5)';
+  speed = 8;
   protected radius = 3;
   protected angle = 0;
 
   draw(ctx: CanvasRenderingContext2D) {
-    ctx.fillStyle = this.emitter.color;
+    ctx.fillStyle = this.color;
     ctx.beginPath();
     ctx.ellipse(
       this.position.x,
