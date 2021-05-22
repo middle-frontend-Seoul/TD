@@ -2,6 +2,22 @@ import { httpForum } from 'network/http-forum';
 import { Forum } from 'api/codecs';
 
 export const forumApi = {
+  getForums: async (
+    page: number,
+    pageSize: number
+  ): Promise<ApiResponse<PaginatedData<ForumInfo>>> => {
+    const { response, error } = await httpForum.get<PaginatedData<ForumDto>>(
+      `/forums/paginated?page=${page}&pageSize=${pageSize}`
+    );
+    return {
+      data: response && {
+        data: (response.data.data || []).map(Forum.fromForumDto),
+        meta: response.data.meta,
+      },
+      error,
+    };
+  },
+
   getAllForums: async (): Promise<ApiResponse<ForumInfo[]>> => {
     const { response, error } = await httpForum.get<ForumDto[]>('/forums');
     return {
@@ -19,6 +35,23 @@ export const forumApi = {
     );
     return {
       data: response && Forum.fromForumDto(response.data || {}),
+      error,
+    };
+  },
+
+  getThemes: async (
+    forumId: number,
+    page: number,
+    pageSize: number
+  ): Promise<ApiResponse<PaginatedData<ThemeInfo>>> => {
+    const { response, error } = await httpForum.get<PaginatedData<ThemeDto>>(
+      `/forums/themes/paginated?page=${page}&pageSize=${pageSize}&forumId=${forumId}`
+    );
+    return {
+      data: response && {
+        data: (response.data.data || []).map(Forum.fromThemeDto),
+        meta: response.data.meta,
+      },
       error,
     };
   },
