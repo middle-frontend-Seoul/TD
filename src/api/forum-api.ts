@@ -26,6 +26,14 @@ export const forumApi = {
     };
   },
 
+  getForum: async (id: number): Promise<ApiResponse<ForumInfo>> => {
+    const { response, error } = await httpForum.get<ForumDto>(`/forums/${id}`);
+    return {
+      data: response && Forum.fromForumDto(response.data || {}),
+      error,
+    };
+  },
+
   createForum: async (
     data: ForumRequestInfo
   ): Promise<ApiResponse<ForumInfo>> => {

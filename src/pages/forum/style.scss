@@ -3,6 +3,12 @@
   overflow: hidden;
   position: relative;
 
+  &-title {
+    font-size: $font-size-xlg;
+    height: 42px;
+    line-height: 42px;
+  }
+
   &-link {
     color: white;
   }

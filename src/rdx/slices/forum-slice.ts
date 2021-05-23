@@ -8,6 +8,7 @@ export type ForumState = {
   themes?: PaginatedData<ThemeInfo>;
   allForums?: ForumInfo[];
   allThemes?: ThemeInfo[];
+  forum?: ForumInfo;
   theme?: ThemeInfo;
   allMessages?: MessageInfo[];
   loadingStatus: StateStatus;
@@ -56,6 +57,19 @@ export const forumSlice = createSlice({
     ) => {
       state.loadingStatus = 'failure';
       state.error = payload;
+    },
+
+    getForumPending: (state) => {
+      state.loadingStatus = 'pending';
+      state.error = undefined;
+    },
+    getForumSuccess: (state, action: PayloadAction<ForumInfo | undefined>) => {
+      state.loadingStatus = 'success';
+      state.forum = action.payload;
+    },
+    getForumFailure: (state, action: PayloadAction<SerializedError>) => {
+      state.loadingStatus = 'failure';
+      state.error = action.payload;
     },
 
     createForumPending: (state) => {
@@ -201,6 +215,22 @@ export function getAllForums() {
       }
     } catch (error) {
       dispatch(forumSlice.actions.getAllForumsFailure(formatError(error)));
+    }
+  };
+}
+
+export function getForum(forumId: number) {
+  return async (dispatch: AppDispatch) => {
+    dispatch(forumSlice.actions.getForumPending());
+    try {
+      const { data, error } = await forumApi.getForum(forumId);
+      if (!error) {
+        dispatch(forumSlice.actions.getForumSuccess(data));
+      } else {
+        dispatch(forumSlice.actions.getForumFailure(formatHttpError(error)));
+      }
+    } catch (error) {
+      dispatch(forumSlice.actions.getForumFailure(formatError(error)));
     }
   };
 }
