@@ -43,6 +43,7 @@ const PageSignIn: FC = withAuth(() => {
   ];
 
   const postCode = async (code: string) => {
+    console.log('postCode', code, redirectUri);
     await oAuthApi.signIn({
       code,
       redirect_uri: `${redirectUri}`,
@@ -52,6 +53,7 @@ const PageSignIn: FC = withAuth(() => {
   const getCode = useCallback(() => {
     if (history?.location?.state?.from?.search) {
       const params = new URLSearchParams(history.location.state.from.search);
+      console.log('getCode', params);
       return params.get('code');
     }
     return null;
@@ -70,6 +72,7 @@ const PageSignIn: FC = withAuth(() => {
     const { data, error } = await oAuthApi.getClientID(`${redirectUri}`);
     if (data) {
       const clientId = data.service_id;
+      console.log(clientId);
       const urlAuth = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
       document.location.href = urlAuth;
     } else {

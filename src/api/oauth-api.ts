@@ -3,6 +3,7 @@ import { OAuth } from 'api/codecs';
 
 export const oAuthApi = {
   getClientID: async (redirectUri: string): Promise<ApiResponse<OAuthInfo>> => {
+    console.log(redirectUri);
     const { response, error } = await http.get<OAuthDto>(
       `/oauth/yandex/service-id?redirect_uri=${redirectUri}`
     );
