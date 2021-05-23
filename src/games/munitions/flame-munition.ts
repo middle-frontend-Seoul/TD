@@ -2,13 +2,14 @@ import { GameMap } from 'games/game-map';
 import { Munition } from './munition';
 
 export class FlameMunition extends Munition {
+  color = 'rgba(255, 0, 0, 0.5)';
   speed = 6;
   protected radius = 3;
   protected angle = 0;
   num = 0;
 
   draw(ctx: CanvasRenderingContext2D) {
-    this.num = this.num + 1;
+    this.num += 1;
     const coef = Math.floor(Math.random() * 60) - 60;
     const r = 191 + coef;
     const g = 94 + coef;
