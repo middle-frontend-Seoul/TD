@@ -17,6 +17,7 @@ type ThemeDto = {
   viewCount: number;
   messages: MessageDto[];
   forumId: number;
+  forum: ForumDto;
 };
 type ThemeInfo = {
   id: number;

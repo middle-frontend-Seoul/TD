@@ -14,7 +14,7 @@ import { URL } from 'core/url';
 import { useUrlParams } from 'hooks/use-url-params';
 import { useUrlNextPage } from 'hooks/use-url-next-page';
 import { useAppSelector, useBoundAction } from 'rdx/hooks';
-import { getThemes, createTheme } from 'rdx/slices/forum-slice';
+import { getForum, getThemes, createTheme } from 'rdx/slices/forum-slice';
 
 import './style.scss';
 
@@ -24,7 +24,7 @@ const columns: TableColumn<ThemeInfo>[] = [
     key: 'name',
     dataIndex: 'name',
     width: '65%',
-    title: 'Раздел: Правила игры в Кинг',
+    title: '',
     render: (val, row) => (
       <RouteLink
         className="forum-link"
@@ -60,18 +60,21 @@ const PageForumSection: FC = () => {
   const loadingStatus = useAppSelector((state) => state.forum.loadingStatus);
   const mutatingStatus = useAppSelector((state) => state.forum.mutatingStatus);
 
+  const forum = useAppSelector((state) => state.forum.forum);
   const data = useAppSelector((state) => state.forum.themes?.data || []);
   const pages = useAppSelector(
     (state) => state.forum.themes?.meta.lastPage || 0
   );
   const page = Number(searchParams.get('page') || '1');
 
+  const actionGetForum = useBoundAction(getForum);
   const actionGetThemes = useBoundAction(getThemes);
   const actionThemeCreate = useBoundAction(createTheme);
 
   useEffect(() => {
+    actionGetForum(Number(forumId));
     actionGetThemes(Number(forumId), page);
-  }, [page, actionGetThemes, forumId]);
+  }, [page, actionGetForum, actionGetThemes, forumId]);
 
   const handleNextPage = useCallback(() => {
     if (page < pages) {
@@ -114,17 +117,21 @@ const PageForumSection: FC = () => {
         return 'Возникла ошибка';
       case 'success':
         return (
-          <Table
-            className="forum-table"
-            columns={columns}
-            dataSource={data}
-            pagination={{
-              page,
-              pages,
-              handlePrev: handlePrevPage,
-              handleNext: handleNextPage,
-            }}
-          />
+          <>
+            <div className="forum-title">Раздел: {forum?.name || '-'}</div>
+            <Table
+              className="forum-table"
+              columns={columns}
+              dataSource={data}
+              noHeader
+              pagination={{
+                page,
+                pages,
+                handlePrev: handlePrevPage,
+                handleNext: handleNextPage,
+              }}
+            />
+          </>
         );
       default:
         return null;
