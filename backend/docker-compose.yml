@@ -1,0 +1,32 @@
+version: '3.7'
+services:
+  db:
+    container_name: db
+    image: postgres:12
+    env_file:
+      - .dev.env
+    restart: always
+    environment:
+      PG_DATA: /var/lib/postgresql/data
+    ports:
+      - 54322:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    container_name: backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .dev.env
+    restart: unless-stopped
+    ports:
+      - 7000:3000
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+
+volumes:
+  pgdata:

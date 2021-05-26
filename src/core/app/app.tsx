@@ -37,12 +37,14 @@ const App: FC = () => {
         <ProtectedRoute
           path={URL.FORUM_DETAILS.path}
           component={PageForumDetails}
+          exact
         />
         <ProtectedRoute
           path={URL.FORUM_SECTION.path}
           component={PageForumSection}
+          exact
         />
-        <ProtectedRoute path={URL.FORUM.path} component={PageForum} />
+        <ProtectedRoute path={URL.FORUM.path} component={PageForum} exact />
         <ProtectedRoute path={URL.PROFILE.path} component={PageProfile} />
         <ProtectedRoute path={URL.STATISTICS.path} component={PageStatistics} />
         <Route path={URL.SIGNIN.path} component={PageSignIn} />

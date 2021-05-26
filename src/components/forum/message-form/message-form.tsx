@@ -9,19 +9,19 @@ import './style.scss';
 
 export interface IMessageFormProps {
   loading?: boolean;
-  onSubmit: (values: Record<string, string>) => void;
+  onSubmit: (values: Omit<MessageRequestInfo, 'forumId' | 'themeId'>) => void;
 }
 
 export const MessageForm: FC<IMessageFormProps> = ({ onSubmit, loading }) => {
   const Form = useFormik({
-    initialValues: { message: '' },
+    initialValues: { content: '' },
     validateOnChange: false,
     validateOnBlur: true,
     validate: (values: Record<string, string>) => {
       const errors: Record<string, string> = {};
 
-      if (!values.message) {
-        errors.message = validationMessages.isRequire;
+      if (!values.content) {
+        errors.content = validationMessages.isRequire;
       }
 
       return errors;
@@ -39,11 +39,11 @@ export const MessageForm: FC<IMessageFormProps> = ({ onSubmit, loading }) => {
       <div className="theme-form_body">
         <Input
           type="message"
-          name="message"
+          name="content"
           placeholder="Введите сообщение"
           onChange={Form.handleChange}
-          error={Form.errors.message}
-          value={Form.values.message}
+          error={Form.errors.content}
+          value={Form.values.content}
         />
       </div>
       <Button type="submit" size="small">

@@ -1,4 +1,4 @@
-import { Configuration } from "webpack";
+import webpack, { Configuration } from 'webpack';
 
 const path = require('path');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
@@ -8,7 +8,7 @@ const Dotenv = require('dotenv-webpack');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 
-import { DIST_DIR, SRC_DIR } from './env';
+import { IS_DEV, DIST_DIR, SRC_DIR } from './env';
 
 const config: Configuration = {
   mode: 'development',
@@ -69,7 +69,7 @@ const config: Configuration = {
   externals: [nodeExternals({ allowlist: [/\.(?!(?:tsx?|json)$).{1,5}$/i] })],
 
   plugins: [
-    new Dotenv(),
+    IS_DEV ? new Dotenv() : new webpack.EnvironmentPlugin(['REDIRECT_URI', 'FORUM_API_URL']),
     new WebpackBar(),
     new MiniCssExtractPlugin(),
     new MomentLocalesPlugin({

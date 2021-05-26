@@ -18,6 +18,10 @@ import './home.scss';
 const PageHome: FC = () => {
   const actionLogout = useBoundAction(logout);
 
+  const handleLogout = () => {
+    actionLogout();
+  };
+
   return (
     <Space type="vertical">
       <Block center page="home" type="flex" className="home-block">
@@ -44,7 +48,7 @@ const PageHome: FC = () => {
         <Link type="button" to={URL.FORUM.path}>
           Форум
         </Link>
-        <Button radius onClick={actionLogout}>
+        <Button radius onClick={handleLogout}>
           Выйти из игры
         </Button>
       </Space>

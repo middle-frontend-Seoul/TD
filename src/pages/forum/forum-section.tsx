@@ -1,5 +1,5 @@
-import React, { FC, useEffect, useCallback } from 'react';
-import { Link as RouteLink } from 'react-router-dom';
+import React, { FC, useEffect, useState, useCallback } from 'react';
+import { Link as RouteLink, useParams } from 'react-router-dom';
 
 import { Link } from 'components-ui/link';
 import { Button } from 'components-ui/button';
@@ -14,21 +14,21 @@ import { URL } from 'core/url';
 import { useUrlParams } from 'hooks/use-url-params';
 import { useUrlNextPage } from 'hooks/use-url-next-page';
 import { useAppSelector, useBoundAction } from 'rdx/hooks';
-import { getSubThemes, create, setOpen } from 'rdx/slices/forum-slice';
+import { getForum, getThemes, createTheme } from 'rdx/slices/forum-slice';
 
 import './style.scss';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const columns: TableColumn<any>[] = [
+const columns: TableColumn<ThemeInfo>[] = [
   {
     key: 'name',
     dataIndex: 'name',
     width: '65%',
-    title: 'Раздел: Правила игры в Кинг',
+    title: '',
     render: (val, row) => (
       <RouteLink
         className="forum-link"
-        to={URL.FORUM_DETAILS.path.replace(':id', row.id)}
+        to={URL.FORUM_DETAILS.path.replace(':themeId', String(row.id))}
       >
         {val}
       </RouteLink>
@@ -39,76 +39,99 @@ const columns: TableColumn<any>[] = [
     dataIndex: 'messages',
     width: '15%',
     title: '',
+    render: (value) => `Сообщений: ${value ? value.length : 0}`,
   },
   {
-    key: 'view',
-    dataIndex: 'view',
+    key: 'viewCount',
+    dataIndex: 'viewCount',
     width: '20%',
     title: '',
+    render: (value) => `Просмотров: ${value}`,
   },
 ];
 
 const PageForumSection: FC = () => {
-  const params = useUrlParams();
+  const { forumId } = useParams<{ forumId: string }>();
+  const searchParams = useUrlParams();
   const nextPage = useUrlNextPage();
 
-  const isOpenModal = useAppSelector((state) => state.forum.isOpen);
-  const status = useAppSelector((state) => state.forum.subTheemsStatus);
-  const isLoadingCreate = useAppSelector((state) => state.forum.createRequest);
+  const [isModalOpen, setModalOpen] = useState(false);
 
-  const data = useAppSelector((state) => state.forum.subThemes);
-  const page = params.get('page') || '1';
-  const pages = useAppSelector((state) => state.forum.pages);
-  const currentPage = useAppSelector((state) => state.forum.currentPage);
+  const loadingStatus = useAppSelector((state) => state.forum.loadingStatus);
+  const mutatingStatus = useAppSelector((state) => state.forum.mutatingStatus);
 
-  const actionGetSubThemes = useBoundAction(getSubThemes);
-  const actionThemeCreate = useBoundAction(create);
-  const actionSetOpen = useBoundAction(setOpen);
+  const forum = useAppSelector((state) => state.forum.forum);
+  const data = useAppSelector((state) => state.forum.themes?.data || []);
+  const pages = useAppSelector(
+    (state) => state.forum.themes?.meta.lastPage || 0
+  );
+  const page = Number(searchParams.get('page') || '1');
+
+  const actionGetForum = useBoundAction(getForum);
+  const actionGetThemes = useBoundAction(getThemes);
+  const actionThemeCreate = useBoundAction(createTheme);
 
   useEffect(() => {
-    actionGetSubThemes(page);
-  }, [page, actionGetSubThemes]);
+    actionGetForum(Number(forumId));
+    actionGetThemes(Number(forumId), page);
+  }, [page, actionGetForum, actionGetThemes, forumId]);
 
   const handleNextPage = useCallback(() => {
-    const newPage = currentPage + 1;
-    nextPage(newPage);
-  }, [nextPage, currentPage]);
+    if (page < pages) {
+      const newPage = page + 1;
+      nextPage(newPage);
+    }
+  }, [nextPage, page, pages]);
 
   const handlePrevPage = useCallback(() => {
-    const newPage = currentPage - 1;
-    nextPage(newPage);
-  }, [nextPage, currentPage]);
+    if (page > 1) {
+      const newPage = page - 1;
+      nextPage(newPage);
+    }
+  }, [nextPage, page]);
 
-  const handleOnOpen = useCallback(() => {
-    actionSetOpen(true);
-  }, [actionSetOpen]);
-
-  const handleOnClose = useCallback(() => {
-    actionSetOpen(false);
-  }, [actionSetOpen]);
+  const handleCreateTheme = useCallback(
+    async (values: Omit<ThemeRequestInfo, 'forumId'>) => {
+      try {
+        await actionThemeCreate({
+          ...values,
+          forumId: Number(forumId),
+        });
+        setModalOpen(false);
+        actionGetThemes(Number(forumId), page);
+      } catch (error) {
+        console.error('could not create theme', error); // eslint-disable-line
+      }
+    },
+    [actionThemeCreate, actionGetThemes, forumId, page]
+  );
 
   // Render
   // ---------------
 
   const renderBody = () => {
-    switch (status) {
+    switch (loadingStatus) {
       case 'pending':
         return <Loading className="forum-loading" />;
       case 'failure':
         return 'Возникла ошибка';
       case 'success':
         return (
-          <Table
-            className="forum-table"
-            columns={columns}
-            dataSource={data}
-            pagination={{
-              page: currentPage,
-              pages,
-              handlePrev: handlePrevPage,
-              handleNext: handleNextPage,
-            }}
-          />
+          <>
+            <div className="forum-title">Раздел: {forum?.name || '-'}</div>
+            <Table
+              className="forum-table"
+              columns={columns}
+              dataSource={data}
+              noHeader
+              pagination={{
+                page,
+                pages,
+                handlePrev: handlePrevPage,
+                handleNext: handleNextPage,
+              }}
+            />
+          </>
         );
       default:
         return null;
@@ -117,8 +140,11 @@ const PageForumSection: FC = () => {
 
   return (
     <Space type="vertical">
-      <Modal isOpen={isOpenModal} onClose={handleOnClose}>
-        <ThemeForm loading={isLoadingCreate} onSubmit={actionThemeCreate} />
+      <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
+        <ThemeForm
+          loading={mutatingStatus === 'pending'}
+          onSubmit={handleCreateTheme}
+        />
       </Modal>
       <Block title="Форум" page="forum">
         <div className="forum">
@@ -128,7 +154,7 @@ const PageForumSection: FC = () => {
               type="button"
               use="primary"
               size="xsmall"
-              onClick={handleOnOpen}
+              onClick={() => setModalOpen(true)}
             >
               Новая тема
             </Button>
