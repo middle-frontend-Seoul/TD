@@ -1,0 +1,19 @@
+version: '3.7'
+
+networks:
+  default:
+    external:
+      name: yandex-praktikum-td-app
+
+services:
+  app:
+
+  nginx:
+    image: nginx:1.17-alpine
+    restart: unless-stopped
+    depends_on:
+      - app
+    ports:
+      - ${DOCKER_NGINX_PORT}:80
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf

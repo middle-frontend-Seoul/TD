@@ -20,7 +20,8 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker
     .register('/sw.js')
     .then((registration) => {
-      console.log( // eslint-disable-line
+      console.log(
+        // eslint-disable-line
         'ServiceWorker registration successful with scope: ',
         registration.scope
       );
