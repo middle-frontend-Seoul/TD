@@ -40,6 +40,17 @@ export abstract class Tower extends GridRenderable {
     const tileSize = map.getTileSize();
     const aimRadius = this.radius * tileSize;
 
+    if (this.name === 'Лазер' && this.canShoot) {
+      const enemies = enemyManager.getEnemiesOnLane(this);
+      if (enemies) {
+        enemies.forEach((enemy) => {
+          this.canShoot = false;
+          enemy.receiveDamage(1);
+        });
+      }
+      return;
+    }
+
     if (this.target && !this.target.isAlive) {
       this.target = undefined;
     } else if (
