@@ -3,6 +3,8 @@ import towerPathFlamethrower from 'images/tools/flamethrower.png';
 import { getDrawPosition } from 'games/helpers';
 import { GameMap } from 'games/game-map';
 import { Tower } from './tower';
+import { munitionManager } from '../managers/munition-manager';
+import { FlameMunition } from '../munitions/flame-munition';
 
 export class Flamethrower extends Tower {
   pathImage = towerPathFlamethrower;
@@ -15,9 +17,9 @@ export class Flamethrower extends Tower {
 
   radius = 3;
 
-  damage = 10;
+  damage = 1;
 
-  reloadTime = 1500;
+  reloadTime = 60;
 
   draw = (ctx: CanvasRenderingContext2D, map: GameMap): void => {
     const tileSize = map.getTileSize();
@@ -58,6 +60,9 @@ export class Flamethrower extends Tower {
   };
 
   shoot() {
-    console.log('shoot', this.target);
+    if (this.target) {
+      const munition = new FlameMunition(this.target, this);
+      munitionManager.add(munition);
+    }
   }
 }

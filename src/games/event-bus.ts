@@ -8,6 +8,7 @@ export enum EventNames {
   EnemyPassed = 'gamemap:enemypassed',
   GameOver = 'gamestats:over',
   FpsUpdated = 'gamestats:fpsupdated',
+  NewWave = 'wave:new',
 }
 
 export class EventBus {

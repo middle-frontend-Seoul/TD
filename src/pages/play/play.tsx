@@ -16,6 +16,8 @@ import { Stats } from 'components-ui/stats';
 import { Block } from 'components-ui/block';
 import { Modal } from 'components-ui/modal';
 import { Button } from 'components-ui/button';
+import { useAppSelector, useBoundAction } from 'rdx/hooks';
+import { addLeaderboardItem } from 'rdx/slices/leaderboard-slice';
 
 import { Game, uiReducer, initialUIState } from 'games/game';
 import { Towers } from 'games/towers/towers';
@@ -30,6 +32,10 @@ const TILE_SIZE = 30;
 
 const PagePlay: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const actionAddLeaderboardItem = useBoundAction(addLeaderboardItem);
+  const currentUser = useAppSelector((state) => state.auth.currentUser);
+
   const [gameManager, setGameManager] = useState<Game>();
   const [isFullscreenMode, setFullscreenMode] = useState<boolean>(false);
 
@@ -106,6 +112,14 @@ const PagePlay: FC = () => {
   };
 
   const returnToMain = () => {
+    actionAddLeaderboardItem({
+      data: {
+        login: currentUser?.login || 'anonymous',
+        level: uiState.wave,
+        score: uiState.score,
+      },
+      ratingFieldName: 'score',
+    });
     history.push({
       pathname: '/',
     });

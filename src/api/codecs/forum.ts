@@ -1,57 +1,67 @@
+import { User } from 'api/codecs';
+
 export type ThemesType = PagesInfo<ThemeInfo>;
 
-export const fromThemesDto = (res: ThemesDto): ThemesType => {
-  const items = res.data || [];
-  const data = items.map<ThemeInfo>((item) => ({
-    id: item.id,
-    name: item.name,
-    code: item.code,
-    themeCount: item.theme_сount,
-    messageCount: item.message_count,
-  }));
-
+export function fromMessageDto(dto: MessageDto): MessageInfo {
   return {
-    currentPage: res.current_page,
-    pages: res.pages,
-    data,
+    id: dto.id,
+    content: dto.content,
+    createdAt: new Date(dto.createdAt),
+    user: dto.user ? User.fromUserDto(dto.user) : ({} as UserInfo),
   };
-};
+}
 
-export type MessagesType = {
-  theme: Pick<ThemeInfo, 'id' | 'code' | 'name'>;
-  messages: ThemeMessageInfo[];
-};
-
-export const fromMessagesDto = (res: MessagesDto): MessagesType => {
-  const { messages, id, code, name } = res;
-  const themeMessages = messages.map<ThemeMessageInfo>((item) => ({
-    id: item.id,
-    date: item.date,
-    userName: item.user_name,
-    message: item.message,
-  }));
-
+export function fromThemeDto(dto: ThemeDto): ThemeInfo {
   return {
-    theme: { id, code, name },
-    messages: themeMessages,
+    id: dto.id,
+    name: dto.name,
+    viewCount: dto.viewCount,
+    messages: (dto.messages || []).map((dtoMessage) =>
+      fromMessageDto(dtoMessage)
+    ),
+    forumId: dto.forumId,
   };
-};
+}
 
-export type SubThemesType = PagesInfo<SubThemeInfo>;
-
-export const fromSubThemesDto = (res: SubThemesDto): SubThemesType => {
-  const items = res.data || [];
-  const data = items.map<SubThemeInfo>((item) => ({
-    id: item.id,
-    name: item.name,
-    code: item.code,
-    viewCount: item.view_сount,
-    messageCount: item.message_count,
-  }));
-
+export function fromForumDto(dto: ForumDto): ForumInfo {
   return {
-    currentPage: res.current_page,
-    pages: res.pages,
-    data,
+    id: dto.id,
+    name: dto.name,
+    themes: (dto.themes || []).map((dtoTheme) => fromThemeDto(dtoTheme)),
+    messages: (dto.messages || []).map((dtoMessage) =>
+      fromMessageDto(dtoMessage)
+    ),
   };
-};
+}
+
+export function toForumRequestDto(info: ForumRequestInfo): ForumRequestDto {
+  return {
+    name: info.name,
+  };
+}
+
+export function toThemeRequestDto(info: ThemeRequestInfo): ThemeRequestDto {
+  return {
+    name: info.name,
+    viewCount: info.viewCount,
+    forumId: info.forumId,
+  };
+}
+
+export function toThemeUpdateViewCountDto(
+  info: ThemeUpdateViewCountInfo
+): ThemeUpdateViewCountDto {
+  return {
+    viewCount: info.viewCount,
+  };
+}
+
+export function toMessageRequestDto(
+  info: MessageRequestInfo
+): MessageRequestDto {
+  return {
+    content: info.content,
+    themeId: info.themeId,
+    forumId: info.forumId,
+  };
+}

@@ -2,13 +2,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import { routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory, createMemoryHistory } from 'history';
 
+import { isServer } from 'utils/ssr';
 import createRootReducer from './root-reducer';
-
-export const isServer = !(
-  typeof window !== 'undefined' &&
-  window.document &&
-  window.document.createElement
-);
 
 export function createStore(initialState: RootState, url = '/') {
   const history = isServer

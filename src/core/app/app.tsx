@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import { Layout } from 'core/layout';
-import * as URL from 'core/url';
+import { URL } from 'core/url';
 import {
   PageHome,
   PagePlay,
@@ -32,15 +32,23 @@ const App: FC = () => {
   return (
     <Layout>
       <Switch>
-        <ProtectedRoute path={URL.HOME} component={PageHome} exact />
-        <ProtectedRoute path={URL.PLAY} component={PagePlay} />
-        <ProtectedRoute path={URL.FORUM_DETAILS} component={PageForumDetails} />
-        <ProtectedRoute path={URL.FORUM_SECTION} component={PageForumSection} />
-        <ProtectedRoute path={URL.FORUM} component={PageForum} />
-        <ProtectedRoute path={URL.PROFILE} component={PageProfile} />
-        <ProtectedRoute path={URL.STATISTICS} component={PageStatistics} />
-        <Route path={URL.SIGNIN} component={PageSignIn} />
-        <Route path={URL.SIGNUP} component={PageSignUp} />
+        <ProtectedRoute path={URL.HOME.path} component={PageHome} exact />
+        <ProtectedRoute path={URL.PLAY.path} component={PagePlay} />
+        <ProtectedRoute
+          path={URL.FORUM_DETAILS.path}
+          component={PageForumDetails}
+          exact
+        />
+        <ProtectedRoute
+          path={URL.FORUM_SECTION.path}
+          component={PageForumSection}
+          exact
+        />
+        <ProtectedRoute path={URL.FORUM.path} component={PageForum} exact />
+        <ProtectedRoute path={URL.PROFILE.path} component={PageProfile} />
+        <ProtectedRoute path={URL.STATISTICS.path} component={PageStatistics} />
+        <Route path={URL.SIGNIN.path} component={PageSignIn} />
+        <Route path={URL.SIGNUP.path} component={PageSignUp} />
         <Route component={PageError} />
       </Switch>
     </Layout>

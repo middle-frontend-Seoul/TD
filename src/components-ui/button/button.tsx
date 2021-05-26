@@ -57,6 +57,7 @@ export const Button: FC<IButtonProps> = ({
       style={style}
       className={classes}
       onClick={handleOnClick}
+      disabled={disabled}
     >
       {children}
     </button>

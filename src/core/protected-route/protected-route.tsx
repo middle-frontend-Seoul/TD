@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Redirect, Route, RouteProps } from 'react-router-dom';
 
-import * as URL from 'core/url';
+import { URL } from 'core/url';
 import { useAppSelector } from 'rdx/hooks';
 
 const ProtectedRoute: FC<RouteProps> = (routeProps) => {
@@ -11,7 +11,7 @@ const ProtectedRoute: FC<RouteProps> = (routeProps) => {
   return currentUser ? (
     <Route {...routeProps} /> // eslint-disable-line
   ) : (
-    <Redirect to={{ pathname: URL.SIGNIN, state: { from: location } }} />
+    <Redirect to={{ pathname: URL.SIGNIN.path, state: { from: location } }} />
   );
 };
 

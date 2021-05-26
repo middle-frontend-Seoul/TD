@@ -137,4 +137,16 @@ export abstract class Enemy extends Renderable {
   public getDamage = (): number => {
     return this.damage;
   };
+
+  public getSpeed = (): number => {
+    return this.speed;
+  };
+
+  public setSpeed = (speed: number) => {
+    this.speed = speed;
+  };
+
+  public setLife = (life: number) => {
+    this.live = life;
+  };
 }

@@ -19,7 +19,7 @@ export type TableColumn<T> = {
   align?: 'left' | 'center' | 'right';
   width?: string;
   minWidth?: string;
-  render?: (value: any, row: T) => JSX.Element;
+  render?: (value: any, row: T) => JSX.Element | number | string;
 };
 
 // TODO - типизировать
@@ -31,6 +31,7 @@ export interface ITableProps<T> {
   dataSource?: T[];
   size?: TableSize;
   pagination?: TablePagination;
+  noHeader?: boolean;
 }
 
 export function Table<T extends Record<string, any>>({
@@ -40,6 +41,7 @@ export function Table<T extends Record<string, any>>({
   dataSource = [],
   size = 'medium',
   pagination,
+  noHeader,
 }: ITableProps<T>): JSX.Element {
   const { page, pages, handleNext, handlePrev } = pagination || {};
 
@@ -63,11 +65,13 @@ export function Table<T extends Record<string, any>>({
         <thead>
           <tr>
             {columns.map(({ key, align, width, minWidth, title }) => {
-              const headerCellClasses = cn(
-                'table__header-cell',
-                `table__header-cell_size-${size}`,
-                `table__cell_align-${align || 'left'}`
-              );
+              const headerCellClasses = noHeader
+                ? cn('table__header-cell', `table__header-cell_size-noheader`)
+                : cn(
+                    'table__header-cell',
+                    `table__header-cell_size-${size}`,
+                    `table__cell_align-${align || 'left'}`
+                  );
               return (
                 <th
                   key={key}
@@ -77,7 +81,7 @@ export function Table<T extends Record<string, any>>({
                     minWidth,
                   }}
                 >
-                  {title}
+                  {noHeader ? null : title}
                 </th>
               );
             })}

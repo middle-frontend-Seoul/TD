@@ -5,7 +5,7 @@ import { Block } from 'components-ui/block';
 import { Title } from 'components-ui/title';
 import { Space } from 'components-ui/space';
 import { Button } from 'components-ui/button';
-import { PLAY, PROFILE, STATISTICS, FORUM } from 'core/url';
+import { URL } from 'core/url';
 import { useBoundAction } from 'rdx/hooks';
 import { logout } from 'rdx/slices/auth-slice';
 
@@ -18,33 +18,37 @@ import './home.scss';
 const PageHome: FC = () => {
   const actionLogout = useBoundAction(logout);
 
+  const handleLogout = () => {
+    actionLogout();
+  };
+
   return (
     <Space type="vertical">
       <Block center page="home" type="flex" className="home-block">
         <Title style={{ marginTop: -20 }}>Выберите карту</Title>
         <Space type="horizontal" position="center">
-          <Link to={PLAY}>
+          <Link to={URL.PLAY.path}>
             <img src={map1} alt="map1" />
           </Link>
-          <Link to={PLAY}>
+          <Link to={URL.PLAY.path}>
             <img src={map2} alt="map2" />
           </Link>
-          <Link to={PLAY}>
+          <Link to={URL.PLAY.path}>
             <img src={map3} alt="map3" />
           </Link>
         </Space>
       </Block>
       <Space type="horizontal">
-        <Link type="button" to={PROFILE}>
+        <Link type="button" to={URL.PROFILE.path}>
           Профиль
         </Link>
-        <Link type="button" to={STATISTICS}>
+        <Link type="button" to={URL.STATISTICS.path}>
           Таблица лидеров
         </Link>
-        <Link type="button" to={FORUM}>
+        <Link type="button" to={URL.FORUM.path}>
           Форум
         </Link>
-        <Button radius onClick={actionLogout}>
+        <Button radius onClick={handleLogout}>
           Выйти из игры
         </Button>
       </Space>

@@ -17,9 +17,39 @@ export class Gun extends Tower {
 
   radius = 3;
 
-  damage = 10;
+  damage = 2;
 
   reloadTime = 1500;
+
+  protected shotBulletsCount = 3;
+
+  protected currentShotBullet = 0;
+
+  protected timeBetweenBullets = 80;
+
+  protected lastTimeConsoleLog = 0;
+
+  public update(map: GameMap) {
+    if (
+      this.currentShotBullet < this.shotBulletsCount &&
+      this.lastShoot + this.timeBetweenBullets < performance.now()
+    ) {
+      this.canShoot = true;
+      this.lastShoot = performance.now();
+      this.currentShotBullet += 1;
+    }
+
+    if (
+      this.lastShoot + this.reloadTime < performance.now() &&
+      this.currentShotBullet >= 3
+    ) {
+      this.canShoot = true;
+      this.currentShotBullet = 0;
+      this.lastShoot = performance.now();
+    }
+
+    this.updateHelper(map);
+  }
 
   draw = (ctx: CanvasRenderingContext2D, map: GameMap): void => {
     const tileSize = map.getTileSize();

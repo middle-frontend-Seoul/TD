@@ -12,7 +12,6 @@ type SignUpRequestInfo = {
   password: string;
   repeatedPassword: string;
 }
-
 type SignUpRequestDto = {
   first_name: string,
   second_name: string,

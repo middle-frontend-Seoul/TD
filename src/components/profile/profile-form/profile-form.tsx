@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 
 import { FieldProfile } from 'components-ui/field-profile';
 import { Button } from 'components-ui/button';
+import { useAppSelector } from 'rdx/hooks';
 import { setDefaultValues } from 'utils/formHelpers';
 
 import { validation } from './profile-form-validation';
@@ -33,6 +34,15 @@ export const ProfileForm: FC<IProfileFormProps> = ({
   onCancel,
 }) => {
   const classes = cn(className, 'profile-form');
+
+  const currentUserLoadingStatus = useAppSelector(
+    (state) => state.auth.loadingStatus
+  );
+
+  const {
+    mutatingUserStatus: profileUpdateStatus,
+    mutatingPasswordStatus: passwordUpdateStatus,
+  } = useAppSelector((state) => state.user);
 
   const profileForm = useFormik({
     enableReinitialize: true,
@@ -113,7 +123,16 @@ export const ProfileForm: FC<IProfileFormProps> = ({
       <div className="profile-form__buttons">
         {isUpdate ? (
           <>
-            <Button type="submit" size="small" use="primary">
+            <Button
+              type="submit"
+              size="small"
+              use="primary"
+              disabled={
+                currentUserLoadingStatus === 'pending' ||
+                profileUpdateStatus === 'pending' ||
+                passwordUpdateStatus === 'pending'
+              }
+            >
               Сохранить
             </Button>
             <Button

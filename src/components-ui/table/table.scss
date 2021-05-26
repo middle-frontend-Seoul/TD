@@ -31,6 +31,10 @@
       height: 42px;
       padding: $padding-sm $padding-lg;
     }
+
+    &_noheader {
+      height: 2px;
+    }
   }
 
   &__body-cell {
