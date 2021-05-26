@@ -2,6 +2,7 @@ import towerPathLaser from 'images/tools/laser.png';
 
 import { getDrawPosition } from 'games/helpers';
 import { GameMap } from 'games/game-map';
+import { towerManager } from 'games/managers/tower-manager';
 import { Tower } from './tower';
 
 export class Laser extends Tower {
@@ -17,7 +18,9 @@ export class Laser extends Tower {
 
   damage = 10;
 
-  reloadTime = 1500;
+  reloadTime = 150;
+
+  towers = towerManager.getEntities();
 
   draw = (ctx: CanvasRenderingContext2D, map: GameMap): void => {
     const tileSize = map.getTileSize();
@@ -55,9 +58,24 @@ export class Laser extends Tower {
     ctx.fillStyle = '#FF0000';
     ctx.rect(x + p20.offset, y + p20.offset, p20.width, p20.width);
     ctx.fill();
+
+    for (let i = 0; i < this.towers.length; i += 1) {
+      if (this.towers[i].name === 'Лазер') {
+        ctx.beginPath();
+        ctx.moveTo(this.center.x, this.center.y);
+        ctx.lineTo(this.towers[i].center.x, this.towers[i].center.y);
+        ctx.strokeStyle = this.color;
+        ctx.shadowBlur = Math.floor(Math.random() * 10);
+        ctx.shadowColor = '#FD0100';
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+      }
+    }
   };
 
   shoot() {
-    console.log('shoot', this.target);
+    if (this.target) {
+      throw new Error('что-то пошло не так');
+    }
   }
 }
