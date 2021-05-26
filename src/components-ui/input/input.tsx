@@ -1,4 +1,4 @@
-import React, { FC, ChangeEvent, useEffect, useState, useRef } from 'react';
+import React, { FC, ChangeEvent } from 'react';
 import cn from 'classnames';
 
 import './input.scss';
@@ -17,7 +17,7 @@ export interface InputProps {
 }
 
 export const Input: FC<InputProps> = ({
-  size = 'medium',
+  // size = 'medium',
   placeholder = '',
   value,
   error,
@@ -26,62 +26,22 @@ export const Input: FC<InputProps> = ({
   id,
   type = 'text',
 }) => {
-  const [isHidden, setIsHidden] = useState<boolean>(true);
-  const [labelStyle, setLabelStyle] = useState<string>('default');
-  const inputEl = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    inputEl?.current?.focus();
-  }, [isHidden]);
-
-  const handleLeave = (event: ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    if (!value) {
-      setIsHidden(true);
-      setLabelStyle('');
-    }
-  };
-
-  const handleClick = () => {
-    if (isHidden) {
-      setIsHidden(false);
-      if (placeholder === '') {
-        setLabelStyle(`top`);
-      } else {
-        setLabelStyle(`hidden`);
-      }
-    }
-  };
-
-  const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value !== '' || !placeholder) {
-      setLabelStyle(`top`);
-    } else {
-      setLabelStyle(`hidden`);
-    }
-    onChange(event);
-  };
-
   return (
-    <div
-      onKeyDown={handleClick}
-      role="button"
-      tabIndex={0}
-      className={cn('input-field', size, { error: !!error })}
-      onClick={handleClick}
-    >
-      <div className={cn('defaultValue', labelStyle, size)}>{placeholder}</div>
+    <div className="input-field">
       <input
-        className={cn({ hidden: isHidden }, size)}
+        className={cn('input', 'field-input', {
+          'field-input_error': error,
+        })}
         value={value}
-        onBlur={handleLeave}
-        onChange={onChangeInput}
-        ref={inputEl}
+        onChange={onChange}
         placeholder={placeholder}
         name={name}
         id={id}
         type={type}
       />
+      <label htmlFor={name} className="field-label">
+        {placeholder}
+      </label>
     </div>
   );
 };

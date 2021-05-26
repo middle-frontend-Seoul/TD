@@ -9,13 +9,13 @@
   border-color: $border-color;
   transition: border-color 0.3s;
 
-  &.error {
-    border-color: $error-color;
+  // &.error {
+  //   border-color: $error-color;
 
-    .defaultValue {
-      color: $error-color;
-    }
-  }
+  //   .defaultValue {
+  //     color: $error-color;
+  //   }
+  // }
 
   &.small {
     width: $input-width-sm;
@@ -33,68 +33,146 @@
     border-radius: $border-radius-lg;
   }
 
-  .defaultValue {
-    color: $text-color-secondary;
-    &.small {
-      padding-left: 4px;
-      font-size: 8px;
-    }
-    &.medium {
-      padding-left: 8px;
-      font-size: 16px;
-    }
-    &.large {
-      padding-left: 16px;
-      font-size: 32px;
-    }
+  // .defaultValue {
+  //   color: $text-color-secondary;
+  //   &.small {
+  //     padding-left: 4px;
+  //     font-size: 8px;
+  //   }
+  //   &.medium {
+  //     padding-left: 8px;
+  //     font-size: 16px;
+  //   }
+  //   &.large {
+  //     padding-left: 16px;
+  //     font-size: 32px;
+  //   }
 
-    &.top {
-      &.small {
-        display: none;
-      }
-      &.medium {
-        position: absolute;
-        pointer-events: none;
-        font-size: $font-size-xs;
-        top: 4px;
-      }
-      &.large {
-        position: absolute;
-        pointer-events: none;
-        font-size: $font-size-md;
-        top: 4px;
-      }
-    }
-  }
+  //   &.top {
+  //     &.small {
+  //       display: none;
+  //     }
+  //     &.medium {
+  //       position: absolute;
+  //       pointer-events: none;
+  //       font-size: $font-size-xs;
+  //       top: 4px;
+  //     }
+  //     &.large {
+  //       position: absolute;
+  //       pointer-events: none;
+  //       font-size: $font-size-md;
+  //       top: 4px;
+  //     }
+  //   }
+  // }
 
-  .hidden {
-    display: none;
-  }
+  // .hidden {
+  //   display: none;
+  // }
 
-  input {
-    border: 0;
-    outline: none;
-    height: 100%;
-    &.small {
-      font-size: $font-size-base;
-      padding: 2px 0px 0px 4px;
-      border-radius: $border-radius-sm;
-      line-height: 17px;
-      width: 106px;
-    }
-    &.medium {
-      font-size: $font-size-base;
-      padding: 10px 0px 0px 8px;
-      border-radius: $border-radius-md;
-      line-height: 17px;
-      width: 232px;
-    }
-    &.large {
-      font-size: $font-size-xxlg;
-      padding: 20px 0px 0px 16px;
-      border-radius: $border-radius-lg;
-      line-height: 34px;
-      width: 344px;
-    }
-  }
+  // input {
+  //   border: 0;
+  //   outline: none;
+  //   height: 100%;
+  //   &.small {
+  //     font-size: $font-size-base;
+  //     padding: 2px 0px 0px 4px;
+  //     border-radius: $border-radius-sm;
+  //     line-height: 17px;
+  //     width: 106px;
+  //   }
+  //   &.medium {
+  //     font-size: $font-size-base;
+  //     padding: 10px 0px 0px 8px;
+  //     border-radius: $border-radius-md;
+  //     line-height: 17px;
+  //     width: 232px;
+  //   }
+  //   &.large {
+  //     font-size: $font-size-xxlg;
+  //     padding: 20px 0px 0px 16px;
+  //     border-radius: $border-radius-lg;
+  //     line-height: 34px;
+  //     width: 344px;
+  //   }
+  // }
+}
+
+input {
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  height: 100%; // ???
+  font-size: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+}
+
+.input {
+  font-size: $font-size-base;
+  padding: 10px 0px 0px 8px;
+  border-radius: $border-radius-md;
+  line-height: 17px;
+  width: 232px;
+}
+
+.input::placeholder { // .defaultValue?
+  font-size: 13px;
+  color: $text-color-secondary;
+  font-weight: 500;
+}
+
+.input-field {
+  // position: relative;
+  // display: flex;
+  // flex-direction: column;
+  // width: 100%;
+  // padding-bottom: 9px;
+  // padding-top: 11px;
+
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: white;
+  border: 1px solid;
+  border-color: $border-color;
+  transition: border-color 0.3s;
+}
+
+.input-field:focus-within ::placeholder {
+  opacity: 0;
+}
+
+.input-field_type_error .form__feedback {
+  visibility: visible;
+  color: $error-color;
+}
+
+.field-label {
+  position: absolute;
+  top: 0;
+  font-weight: 500;
+  font-size: 9px;
+  color: $text-color-secondary;
+  opacity: 0;
+}
+
+.field-input {
+  padding: 7px 0;
+  color: var(--primaryColor);
+  border-bottom: 1px solid #3369f3;
+}
+
+.field-input:focus + .field-label,
+.field-input:not(:placeholder-shown) + .field-label {
+  opacity: 1;
+}
+
+.field-input_error {
+  border-color: $error-color;
+  color: $error-color;
 }
