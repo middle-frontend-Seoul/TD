@@ -10,6 +10,7 @@ type FormField = {
   name: string;
   defaultValue: string;
   placeholder: string;
+  autoFocus?: boolean;
 };
 
 export interface FormProps<> {
@@ -61,6 +62,7 @@ export const Form: FC<FormProps> = ({
             name={field.name}
             placeholder={field.placeholder}
             type={field.type}
+            autoFocus={field.autoFocus}
           />
           {errors[field.name] ? (
             <div className="field-error">{errors[field.name]}</div>

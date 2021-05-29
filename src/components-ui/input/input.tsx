@@ -14,10 +14,11 @@ export interface InputProps {
   error?: string;
   name: string;
   type: string | undefined;
+  autoFocus?: boolean;
 }
 
 export const Input: FC<InputProps> = ({
-  // size = 'medium',
+  size = 'medium',
   placeholder = '',
   value,
   error,
@@ -25,12 +26,16 @@ export const Input: FC<InputProps> = ({
   name,
   id,
   type = 'text',
+  autoFocus,
 }) => {
   return (
-    <div className="input-field">
+    <div
+      className={cn('input-field', `input-field_${size}`, { error: !!error })}
+    >
+      <input style={{ display: 'none' }} />
       <input
-        className={cn('input', 'field-input', {
-          'field-input_error': error,
+        className={cn('input', `input_${size}`, 'input-field__input', {
+          'input-field__input_error': error,
         })}
         value={value}
         onChange={onChange}
@@ -38,8 +43,12 @@ export const Input: FC<InputProps> = ({
         name={name}
         id={id}
         type={type}
+        autoFocus={autoFocus} // eslint-disable-line
       />
-      <label htmlFor={name} className="field-label">
+      <label
+        htmlFor={name}
+        className={cn('input-field__label', `input-field__label_${size}`)}
+      >
         {placeholder}
       </label>
     </div>

@@ -33,6 +33,7 @@ const PageSignIn: FC = withAuth(() => {
       type: 'text',
       name: 'login',
       defaultValue: '',
+      autoFocus: true,
     },
     {
       placeholder: 'Password',

@@ -44,6 +44,7 @@ export const MessageForm: FC<IMessageFormProps> = ({ onSubmit, loading }) => {
           onChange={Form.handleChange}
           error={Form.errors.content}
           value={Form.values.content}
+          autoFocus
         />
       </div>
       <Button type="submit" size="small">

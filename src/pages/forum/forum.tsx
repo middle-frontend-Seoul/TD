@@ -143,7 +143,7 @@ const PageForum: FC = () => {
               size="xsmall"
               onClick={() => setModalOpen(true)}
             >
-              Новая тема
+              Новый раздел
             </Button>
           </div>
         </div>
