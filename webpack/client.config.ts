@@ -3,6 +3,7 @@ import webpack, { Configuration } from 'webpack';
 const path = require('path');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const WebpackBar = require('webpackbar');
+const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 
@@ -81,6 +82,15 @@ const config: Configuration = {
   plugins: [
     new webpack.EnvironmentPlugin(['REDIRECT_URI', 'FORUM_API_URL']),
     new WebpackBar(),
+    new CopyPlugin({
+      patterns: [
+        {
+          context: path.resolve(SRC_DIR, '_static'),
+          from: 'pki-validation',
+          to: '.well-known/pki-validation',
+        },
+      ],
+    }),
     new MiniCssExtractPlugin(),
     new MomentLocalesPlugin({
       localesToKeep: ['es-us', 'ru'],
