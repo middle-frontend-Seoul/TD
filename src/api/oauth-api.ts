@@ -4,7 +4,7 @@ import { OAuth } from 'api/codecs';
 export const oAuthApi = {
   getClientID: async (redirectUri: string): Promise<ApiResponse<OAuthInfo>> => {
     const { response, error } = await http.get<OAuthDto>(
-      `/oauth/yandex/service-id?callback_uri=${redirectUri}`
+      `/oauth/yandex/service-id?redirect_uri=${redirectUri}`
     );
     return {
       data: response && OAuth.fromOAuthDto(response.data || {}),
