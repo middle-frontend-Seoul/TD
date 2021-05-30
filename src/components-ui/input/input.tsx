@@ -1,4 +1,4 @@
-import React, { FC, ChangeEvent, useEffect, useState, useRef } from 'react';
+import React, { FC, ChangeEvent } from 'react';
 import cn from 'classnames';
 
 import './input.scss';
@@ -14,6 +14,7 @@ export interface InputProps {
   error?: string;
   name: string;
   type: string | undefined;
+  autoFocus?: boolean;
 }
 
 export const Input: FC<InputProps> = ({
@@ -25,63 +26,31 @@ export const Input: FC<InputProps> = ({
   name,
   id,
   type = 'text',
+  autoFocus,
 }) => {
-  const [isHidden, setIsHidden] = useState<boolean>(true);
-  const [labelStyle, setLabelStyle] = useState<string>('default');
-  const inputEl = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    inputEl?.current?.focus();
-  }, [isHidden]);
-
-  const handleLeave = (event: ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    if (!value) {
-      setIsHidden(true);
-      setLabelStyle('');
-    }
-  };
-
-  const handleClick = () => {
-    if (isHidden) {
-      setIsHidden(false);
-      if (placeholder === '') {
-        setLabelStyle(`top`);
-      } else {
-        setLabelStyle(`hidden`);
-      }
-    }
-  };
-
-  const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value !== '' || !placeholder) {
-      setLabelStyle(`top`);
-    } else {
-      setLabelStyle(`hidden`);
-    }
-    onChange(event);
-  };
-
   return (
     <div
-      onKeyDown={handleClick}
-      role="button"
-      tabIndex={0}
-      className={cn('input-field', size, { error: !!error })}
-      onClick={handleClick}
+      className={cn('input-field', `input-field_${size}`, { error: !!error })}
     >
-      <div className={cn('defaultValue', labelStyle, size)}>{placeholder}</div>
+      <input style={{ display: 'none' }} />
       <input
-        className={cn({ hidden: isHidden }, size)}
+        className={cn('input', `input_${size}`, 'input-field__input', {
+          'input-field__input_error': error,
+        })}
         value={value}
-        onBlur={handleLeave}
-        onChange={onChangeInput}
-        ref={inputEl}
+        onChange={onChange}
         placeholder={placeholder}
         name={name}
         id={id}
         type={type}
+        autoFocus={autoFocus} // eslint-disable-line
       />
+      <label
+        htmlFor={name}
+        className={cn('input-field__label', `input-field__label_${size}`)}
+      >
+        {placeholder}
+      </label>
     </div>
   );
 };

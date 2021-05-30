@@ -44,6 +44,7 @@ export const ThemeForm: FC<IThemeFormProps> = ({ onSubmit, loading }) => {
           onChange={Form.handleChange}
           error={Form.errors.name}
           value={Form.values.name}
+          autoFocus
         />
       </div>
       <Button type="submit" size="small">

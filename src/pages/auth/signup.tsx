@@ -29,6 +29,7 @@ const PageSignUp: FC = withAuth(() => {
       type: 'text',
       name: 'login',
       defaultValue: '',
+      autoFocus: true,
     },
     {
       placeholder: 'Email',

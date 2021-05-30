@@ -40,7 +40,7 @@ export const ForumForm: FC<IForumFormProps> = ({ onSubmit, loading }) => {
         <Input
           type="text"
           name="name"
-          placeholder="Введите название форума"
+          placeholder="Введите название"
           onChange={Form.handleChange}
           error={Form.errors.name}
           value={Form.values.name}
