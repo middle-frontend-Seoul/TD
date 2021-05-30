@@ -5,19 +5,28 @@ jobs:
     runs-on: self-hosted
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Stop running frontend
         run: |
           pm2 stop seoul-td
       - name: Delete frontend
+        if: always()
         run: |
           pm2 delete seoul-td
       - name: Check out repository code
+        if: always()
         uses: actions/checkout@v2
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
+      - name: Change dir to cloned repo
+        if: always()
         run: |
-          ls ${{ github.workspace }}
+          cd ${{ github.workspace }}
+      - name: Run npm install
+        if: always()
+        run: |
+          npm ci
+      - name: Start frontend with pm2
+        if: always()
+        run: |
+          pm2 start npm --no-automation --name seoul-td -- run dev
       - run: echo "🍏 This job's status is ${{ job.status }}."
+        if: always()
