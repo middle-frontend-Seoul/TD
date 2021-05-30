@@ -1,7 +1,7 @@
 name: GitHub Actions Demo
 on: [push]
 jobs:
-  Deploy-Backend:
+  Deploy-TD:
     runs-on: self-hosted
     steps:
       - name: Check out repository code
@@ -20,10 +20,6 @@ jobs:
           POSTGRES_PORT: ${{secrets.BACK_POSTGRES_PORT}}
           PRIVATE_KEY: ${{secrets.BACK_PRIVATE_KEY}}
       - run: echo "🍏 Backend deploy status is ${{ job.status }}."
-
-  Deploy-Frontend:
-    runs-on: self-hosted
-    steps:
       - name: Stop running frontend
         run: |
           pm2 stop seoul-td
@@ -36,9 +32,10 @@ jobs:
         run: cd ${{ github.workspace }}
       - name: Run npm install
         if: always()
-        run: |
-          npm ci
-          npm run build
+        run: npm ci
+      - name: Run npm install
+        if: always()
+        run: npm run build
         env:
           REDIRECT_URI: ${{secrets.FRONT_REDIRECT_URI}}
           FORUM_API_URL: ${{secrets.FRONT_FORUM_API_URL}}

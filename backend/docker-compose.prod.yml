@@ -23,6 +23,11 @@ services:
       context: .
       dockerfile: Dockerfile.prod
     environment:
+      - POSTGRES_HOST
+      - POSTGRES_USER
+      - POSTGRES_DB
+      - POSTGRES_PASSWORD
+      - POSTGRES_PORT
       - PRIVATE_KEY
     restart: unless-stopped
     ports:
