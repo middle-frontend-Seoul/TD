@@ -3,6 +3,8 @@ import towerPathMortar from 'images/tools/mortar.png';
 import { getDrawPosition } from 'games/helpers';
 import { GameMap } from 'games/game-map';
 import { Tower } from './tower';
+import { munitionManager } from '../managers/munition-manager';
+import { MortarMunition } from '../munitions/mortar-minition';
 
 export class Mortar extends Tower {
   pathImage = towerPathMortar;
@@ -13,11 +15,11 @@ export class Mortar extends Tower {
 
   color = 'rgba(134, 8, 0, 0.5)';
 
-  radius = 3;
+  radius = 10;
 
-  damage = 10;
+  damage = 40;
 
-  reloadTime = 1500;
+  reloadTime = 4500;
 
   draw = (ctx: CanvasRenderingContext2D, map: GameMap): void => {
     const tileSize = map.getTileSize();
@@ -58,6 +60,9 @@ export class Mortar extends Tower {
   };
 
   shoot() {
-    console.log('shoot', this.target);
+    if (this.target) {
+      const munition = new MortarMunition(this.target, this);
+      munitionManager.add(munition);
+    }
   }
 }

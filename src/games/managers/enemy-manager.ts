@@ -21,6 +21,22 @@ export class EnemyManager extends EntityRenderer<Enemy> {
     return closestEnemy;
   }
 
+  getEnemiesInRadius(position: Position, radius: number) {
+    const enemies: Array<Enemy> = [];
+    const shortestDistanceSquared = radius * radius;
+    this.entities.forEach((enemy) => {
+      const distanceSquared = getDistanceSquared(enemy.position, position);
+      // console.log('position', position)
+      // console.log('enemy', enemy.position)
+      // console.log('distanceSquared', distanceSquared)
+      // console.log('shortestDistanceSquared', shortestDistanceSquared)
+      if (distanceSquared <= shortestDistanceSquared) {
+        enemies.push(enemy);
+      }
+    });
+    return enemies;
+  }
+
   update(map: GameMap) {
     this.entities = this.entities.filter((enemy) => enemy.isAlive);
     this.entities.forEach((enemy) => enemy.update(map));
