@@ -1,11 +1,29 @@
 name: GitHub Actions Demo
 on: [push]
 jobs:
-  Explore-GitHub-Actions-Main:
+  Deploy-Backend:
     runs-on: self-hosted
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Change dir to cloned repo
+        run: cd ${{ github.workspace }}/backend
+      - name: stop running backend
+        run: docker-compose -f ${{ github.workspace }}/backend/docker-compose.prod.yml down
+      - name: start backend again
+        run: docker-compose -f ${{ github.workspace }}/backend/docker-compose.prod.yml up --build -d
+        env:
+          POSTGRES_HOST: ${{secrets.BACK_POSTGRES_HOST}}
+          POSTGRES_USER: ${{secrets.BACK_POSTGRES_USER}}
+          POSTGRES_DB: ${{secrets.BACK_POSTGRES_DB}}
+          POSTGRES_PASSWORD: ${{secrets.BACK_POSTGRES_PASSWORD}}
+          POSTGRES_PORT: ${{secrets.BACK_POSTGRES_PORT}}
+          PRIVATE_KEY: ${{secrets.BACK_PRIVATE_KEY}}
+      - run: echo "🍏 Backend deploy status is ${{ job.status }}."
+
+  Deploy-Frontend:
+    runs-on: self-hosted
+    steps:
       - name: Stop running frontend
         run: |
           pm2 stop seoul-td
@@ -27,4 +45,4 @@ jobs:
       - name: Start frontend with pm2
         if: always()
         run: pm2 start npm --no-automation --name seoul-td -- start
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+      - run: echo "🍏 Frontend deploy status is ${{ job.status }}."
