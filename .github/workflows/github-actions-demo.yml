@@ -22,8 +22,8 @@ jobs:
           npm ci
           npm run build
         env:
-          REDIRECT_URI: https://seul-towerdefence-4.ya-praktikum.tech
-          FORUM_API_URL: http://localhost:7000
+          REDIRECT_URI: ${{secrets.FRONT_REDIRECT_URI}}
+          FORUM_API_URL: ${{secrets.FRONT_FORUM_API_URL}}
       - name: Start frontend with pm2
         if: always()
         run: pm2 start npm --no-automation --name seoul-td -- start
