@@ -1,32 +1,30 @@
 name: GitHub Actions Demo
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
+  Explore-GitHub-Actions-Clean:
+    runs-on: self-hosted
+    steps:
+      - name: Stop running frontend
+        run: pm2 stop seoul-td
+      - name: Delete running frontend
+        run: pm2 delete seoul-td
+
+  Explore-GitHub-Actions-Main:
     runs-on: self-hosted
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Stop running frontend
-        run: |
-          pm2 stop seoul-td
-      - name: Delete frontend
-        if: always()
-        run: |
-          pm2 delete seoul-td
       - name: Check out repository code
-        if: always()
         uses: actions/checkout@v2
       - name: Change dir to cloned repo
-        if: always()
-        run: |
-          cd ${{ github.workspace }}
+        run: cd ${{ github.workspace }}
       - name: Run npm install
-        if: always()
         run: |
           npm ci
+          npm run build
+          env:
+            REDIRECT_URI: https://seul-towerdefence-4.ya-praktikum.tech
+            FORUM_API_URL: http://localhost:7000
       - name: Start frontend with pm2
-        if: always()
-        run: |
-          pm2 start npm --no-automation --name seoul-td -- run dev
+        run: pm2 start npm --no-automation --name seoul-td -- start
       - run: echo "🍏 This job's status is ${{ job.status }}."
-        if: always()
