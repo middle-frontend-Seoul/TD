@@ -1,11 +1,21 @@
-name: GitHub Actions Demo
-on: [push]
+name: GitHub Actions TD
+on:
+  push:
+    branches:
+      - TD-69_github-actions
+      - SP9
+
 jobs:
-  Deploy-TD:
+  checkout_repository:
     runs-on: self-hosted
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
+
+  deploy_backend:
+    needs: [checkout_repository]
+    runs-on: self-hosted
+    steps:
       - name: Change dir to cloned repo
         run: cd ${{ github.workspace }}/backend
       - name: stop running backend
@@ -20,13 +30,15 @@ jobs:
           POSTGRES_PORT: ${{secrets.BACK_POSTGRES_PORT}}
           PRIVATE_KEY: ${{secrets.BACK_PRIVATE_KEY}}
       - run: echo "🍏 Backend deploy status is ${{ job.status }}."
+
+  deploy_frontend:
+    needs: [deploy_backend]
+    runs-on: self-hosted
+    steps:
       - name: Stop running frontend
         run: |
           pm2 stop seoul-td
           pm2 delete seoul-td
-      - name: Check out repository code
-        if: always()
-        uses: actions/checkout@v2
       - name: Change dir to cloned repo
         if: always()
         run: cd ${{ github.workspace }}
