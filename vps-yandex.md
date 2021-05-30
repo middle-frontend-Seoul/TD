@@ -1,5 +1,6 @@
 ## Примерный список команд для выполнения на ВМ
 
+### Устанавливаем недостающие пакеты
 sudo apt-get update
 sudo apt install git
 sudo apt install unzip
@@ -11,12 +12,14 @@ sudo apt install nginx
 sudo ufw allow 'Nginx Full'
 sudo ufw allow OpenSSH
 systemctl status nginx
-cd /etc/nginx
-sudo cp nginx.conf old_nginx.conf
-sudo vim nginx.conf
-sudo vim nginx.conf
-sudo systemctl restart nginx
-systemctl status nginx.service
+sudo curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+docker -v
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+docker-compose --version
+
+### Подтягиваем ветку с настройками nginx + копируем ssl certs
 git pull
 git checkout -t origin/ssl-confirm
 npm i
@@ -24,16 +27,21 @@ npm run dev
 mkdir ~/ssl_certs
 exit
 sudo cp -rf ~/ssl_certs /etc/ssl/ssl_certs
+
+### Добавляем virtual host seoul-td
+cd /etc/nginx/sites-available
+sudo vim seoul-td (копируем содержимое из nginx/nginx.conf)
+sudo ln -s /etc/nginx/sites-available/seoul-td /etc/nginx/sites-enabled/
 sudo systemctl restart nginx
+systemctl status nginx.service
+
+### Запускаем фронтенд
 cd ~/TD
 npm install pm2 -g
 
-sudo curl -fsSL https://get.docker.com -o get-docker.sh
-sudo sh get-docker.sh
-docker -v
-sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-docker-compose --version
+### Запускаем бекенд
+cd ~/TD/backend
+sudo docker-compose up -d
 
 ## SSL certs
 ssl certs заказываем на zerossl.com
