@@ -4,11 +4,10 @@ const path = require('path');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const WebpackBar = require('webpackbar');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const Dotenv = require('dotenv-webpack');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 
-import { IS_DEV, DIST_DIR, SRC_DIR } from './env';
+import { DIST_DIR, SRC_DIR } from './env';
 
 const config: Configuration = {
   mode: 'development',
@@ -26,7 +25,11 @@ const config: Configuration = {
   resolve: {
     modules: [SRC_DIR, 'node_modules'],
     extensions: ['.tsx', '.ts', '.js'],
-    plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(SRC_DIR, '../tsconfig.json') })],
+    plugins: [
+      new TsconfigPathsPlugin({
+        configFile: path.resolve(SRC_DIR, '../tsconfig.json'),
+      }),
+    ],
   },
   module: {
     rules: [
@@ -52,12 +55,14 @@ const config: Configuration = {
       },
       {
         test: /\.(png|jpg|svg|jpeg|gif|webp)$/,
-        use: [{
-          loader: 'url-loader',
-          options: {
-            limit: 25 * 1024 // in bytes
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 25 * 1024, // in bytes
+            },
           },
-        }],
+        ],
       },
       {
         test: /\.html$/i,
@@ -69,13 +74,13 @@ const config: Configuration = {
   externals: [nodeExternals({ allowlist: [/\.(?!(?:tsx?|json)$).{1,5}$/i] })],
 
   plugins: [
-    IS_DEV ? new Dotenv() : new webpack.EnvironmentPlugin(['REDIRECT_URI', 'FORUM_API_URL']),
+    new webpack.EnvironmentPlugin(['REDIRECT_URI', 'FORUM_API_URL']),
     new WebpackBar(),
     new MiniCssExtractPlugin(),
     new MomentLocalesPlugin({
       localesToKeep: ['es-us', 'ru'],
     }),
-  ]
+  ],
 };
 
 export default config;

@@ -1,6 +1,5 @@
 import express from 'express';
 import helmet from 'helmet';
-import path from 'path';
 import cookieParser from 'cookie-parser';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
@@ -16,9 +15,11 @@ const styleSources = [
 const fontSources = ["'self'", 'https://fonts.gstatic.com'];
 const imageSources = ["'self'", 'data:', 'https://ya-praktikum.tech'];
 const connectSources = ["'self'", 'https://ya-praktikum.tech'];
-if (process.env.FORUM_API_URL) {
-  connectSources.push(process.env.FORUM_API_URL);
-}
+
+// Реализовано в nginx
+// if (process.env.FORUM_API_URL) {
+//   connectSources.push(process.env.FORUM_API_URL);
+// }
 
 const app = express();
 app.use(helmet());
@@ -47,19 +48,18 @@ app.use(
     },
   })
 );
-app.use(
-  '/api-forum',
-  createProxyMiddleware({
-    target: process.env.FORUM_API_URL,
-    secure: false,
-    changeOrigin: true,
-    cookieDomainRewrite: {
-      '*': '',
-    },
-  })
-);
+// Реализовано в nginx
+// app.use(
+//   '/api-forum',
+//   createProxyMiddleware({
+//     target: process.env.FORUM_API_URL,
+//     secure: false,
+//     changeOrigin: true,
+//   })
+// );
 
-app.use(express.static(path.join(__dirname, '../dist')));
+// статика обрабатывается ngixn
+// app.use(express.static(path.join(__dirname, '../dist')));
 
 app.get('/*', userAuthMiddleware, serverRenderMiddleware);
 
