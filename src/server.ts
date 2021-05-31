@@ -16,11 +16,6 @@ const fontSources = ["'self'", 'https://fonts.gstatic.com'];
 const imageSources = ["'self'", 'data:', 'https://ya-praktikum.tech'];
 const connectSources = ["'self'", 'https://ya-praktikum.tech'];
 
-// Реализовано в nginx
-// if (process.env.FORUM_API_URL) {
-//   connectSources.push(process.env.FORUM_API_URL);
-// }
-
 const app = express();
 app.use(helmet());
 app.use(
@@ -48,18 +43,6 @@ app.use(
     },
   })
 );
-// Реализовано в nginx
-// app.use(
-//   '/api-forum',
-//   createProxyMiddleware({
-//     target: process.env.FORUM_API_URL,
-//     secure: false,
-//     changeOrigin: true,
-//   })
-// );
-
-// статика обрабатывается ngixn
-// app.use(express.static(path.join(__dirname, '../dist')));
 
 app.get('/*', userAuthMiddleware, serverRenderMiddleware);
 
