@@ -4,6 +4,7 @@
   "scripts": {
     "start": "ts-node index.ts",
     "heroku-postbuild": "npm install --only=dev && npm install && npm run build",
+    "api-install": "cd backend && npm install",
     "clean": "rimraf dist",
     "build": "npm run clean && cross-env NODE_ENV=production webpack --mode production",
     "format": "prettier --write src/**/*.{js,jsx,ts,tsx}",
