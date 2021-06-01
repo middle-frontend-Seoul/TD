@@ -1,4 +1,5 @@
 node_modules
+var
 __stories__
 __test__
 test

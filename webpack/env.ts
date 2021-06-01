@@ -1,4 +1,7 @@
 const path = require('path');
+const { config } = require('dotenv');
+
+config();
 
 const IS_DEV = process.env.NODE_ENV !== 'production';
 const SRC_DIR = path.join(__dirname, '../src');
