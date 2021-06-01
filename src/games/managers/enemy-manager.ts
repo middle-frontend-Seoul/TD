@@ -26,10 +26,6 @@ export class EnemyManager extends EntityRenderer<Enemy> {
     const shortestDistanceSquared = radius * radius;
     this.entities.forEach((enemy) => {
       const distanceSquared = getDistanceSquared(enemy.position, position);
-      // console.log('position', position)
-      // console.log('enemy', enemy.position)
-      // console.log('distanceSquared', distanceSquared)
-      // console.log('shortestDistanceSquared', shortestDistanceSquared)
       if (distanceSquared <= shortestDistanceSquared) {
         enemies.push(enemy);
       }

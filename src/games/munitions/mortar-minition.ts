@@ -10,8 +10,6 @@ export class MortarMunition extends Munition {
   protected angle = 0;
 
   draw(ctx: CanvasRenderingContext2D) {
-    // console.log('this.position', this.position)
-    // console.log('this.target.position', this.target.position)
     const tileSize = 30;
     const { x, y } = this.position;
     const targetX = this.target.position.x + tileSize / 2;
