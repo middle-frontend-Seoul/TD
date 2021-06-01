@@ -1,7 +1,18 @@
 import { http } from 'network/http';
+import { httpForum } from 'network/http-forum';
 import { User } from 'api/codecs';
 
 export const userApi = {
+  getTheme: async (id: number): Promise<ApiResponse<string>> => {
+    const { response, error } = await httpForum.get<string>(
+      `/users/theme/${id}`
+    );
+    return {
+      data: response && response.data,
+      error,
+    };
+  },
+
   getUser: async (id: number): Promise<ApiResponse<UserInfo>> => {
     const { response, error } = await http.get<UserDto>(`/user/user/${id}`);
     return {

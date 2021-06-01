@@ -6,6 +6,7 @@ interface UserCreationAttrs {
   login: string;
   email: string;
   avatar?: string;
+  theme?: string;
 }
 
 @Table({tableName: 'users'})
@@ -21,6 +22,9 @@ export class User extends Model<User, UserCreationAttrs> {
 
   @Column({ type: DataType.STRING, allowNull: true })
   avatar: string;
+
+  @Column({ type: DataType.STRING, allowNull: false, defaultValue: 'default' })
+  theme: string;
 
   @HasMany(() => Message)
   messages: Message[];

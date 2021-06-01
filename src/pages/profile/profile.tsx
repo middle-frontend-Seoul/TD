@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
 import { Link } from 'components-ui/link';
 import { Block } from 'components-ui/block';
@@ -15,6 +15,7 @@ import {
   updateUser,
   updatePassword,
   updateAvatar,
+  getTheme,
 } from 'rdx/slices/user-slice';
 import { IMAGE_SERVER_URL } from 'constants/network';
 
@@ -26,9 +27,11 @@ const PageProfile: FC = () => {
   const actionUpdateUser = useBoundAction(updateUser);
   const actionUpdatePassword = useBoundAction(updatePassword);
   const actionUpdateAvatar = useBoundAction(updateAvatar);
+  const actionGetTheme = useBoundAction(getTheme);
 
   const currentUser = useAppSelector((state) => state.auth.currentUser);
   const profileUpdateError = useAppSelector((state) => state.user.error.user);
+  const theme = useAppSelector((state) => state.user.theme);
 
   const passwordUpdateError = useAppSelector(
     (state) => state.user.error.password
@@ -42,6 +45,12 @@ const PageProfile: FC = () => {
   useMountEffect(() => {
     actionGetCurrentUser();
   });
+
+  useEffect(() => {
+    if (currentUser?.id) {
+      actionGetTheme(currentUser.id);
+    }
+  }, [currentUser, actionGetTheme]);
 
   const handleProfileSubmit = async (
     values: UserRequestInfo & UserPasswordRequestInfo
@@ -144,7 +153,7 @@ const PageProfile: FC = () => {
         </Space>
         <Space type="horizontal" position="center">
           <Link type="button" to={URL.HOME.path}>
-            На главный экран
+            На главный экран - {`${theme}`}
           </Link>
         </Space>
       </Space>

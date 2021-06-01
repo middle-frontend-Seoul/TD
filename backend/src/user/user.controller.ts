@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Param, UseGuards } from '@nestjs/common';
+import {Controller, Delete, Get, NotFoundException, Param, UseGuards} from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { UserService } from './user.service';
 
@@ -20,5 +20,14 @@ export class UserController {
   @Delete(':id')
   delete(@Param('id') id: number) {
     return this.userService.deleteUser(id);
+  }
+
+  @Get('theme/:id')
+  async getTheme(@Param('id') id: number) {
+    const user = await this.userService.getUser({ where: { id } });
+    if (user)
+      return user.theme;
+    else
+      throw new NotFoundException();
   }
 }

@@ -5,6 +5,7 @@ import { formatError, formatHttpError } from 'utils/format';
 
 export type UserState = {
   data?: UserInfo;
+  theme: string;
   loadingStatus: StateStatus;
   mutatingUserStatus: StateStatus;
   mutatingPasswordStatus: StateStatus;
@@ -24,6 +25,7 @@ export const initialState: UserState = {
   mutatingPasswordStatus: 'idle',
   mutatingAvatarStatus: 'idle',
   error: {},
+  theme: 'default',
 };
 
 export const userSlice = createSlice({
@@ -79,6 +81,19 @@ export const userSlice = createSlice({
       state.mutatingPasswordStatus = 'failure';
       state.error.password = action.payload;
     },
+
+    getThemePending: (state) => {
+      state.loadingStatus = 'pending';
+      state.error.user = undefined;
+    },
+    getThemeSuccess: (state, action: PayloadAction<string | undefined>) => {
+      state.loadingStatus = 'success';
+      state.theme = action.payload || 'default';
+    },
+    getThemeFailure: (state, action: PayloadAction<SerializedError>) => {
+      state.loadingStatus = 'failure';
+      state.error.user = action.payload;
+    },
   },
 });
 
@@ -86,6 +101,10 @@ const {
   getUserPending,
   getUserSuccess,
   getUserFailure,
+
+  getThemePending,
+  getThemeSuccess,
+  getThemeFailure,
 
   updateUserPending,
   updateUserSuccess,
@@ -128,6 +147,22 @@ export function updateUser(arg: UserRequestInfo) {
       }
     } catch (error) {
       dispatch(updateUserFailure(formatError(error)));
+    }
+  };
+}
+
+export function getTheme(id: number) {
+  return async (dispatch: AppDispatch) => {
+    dispatch(getThemePending());
+    try {
+      const { data, error } = await userApi.getTheme(id);
+      if (!error) {
+        dispatch(getThemeSuccess(data));
+      } else {
+        dispatch(getThemeFailure(formatHttpError(error)));
+      }
+    } catch (error) {
+      dispatch(getThemeFailure(formatError(error)));
     }
   };
 }
