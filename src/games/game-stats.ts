@@ -55,9 +55,11 @@ export class GameStats {
   }
 
   enemyPassed(damage: number) {
-    this.hp -= damage;
+    if (this.hp > 0) {
+      this.hp -= damage;
+    }
     this.setUIState({ type: 'setLives', payload: this.hp });
-    if (this.hp <= 0) {
+    if (this.hp === 0) {
       this.eventBus.emit(EventNames.GameOver);
     }
   }
