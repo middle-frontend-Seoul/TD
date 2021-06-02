@@ -68,7 +68,7 @@ const PageSignIn: FC = withAuth(() => {
   }, [getCode]);
 
   const getCodeOAuth = async () => {
-    const { data, error } = await oAuthApi.getClientID();
+    const { data, error } = await oAuthApi.getClientID(`${redirectUri}`);
     if (data) {
       const clientId = data.service_id;
       const urlAuth = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;

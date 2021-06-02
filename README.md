@@ -14,7 +14,7 @@ npm start
 Скопировать `.env.sample` в `.env`
 docker-compose build
 docker-compose up -d
-http://localhost:8086
+http://localhost:8085
 
 Порт можно задать произвольный в `.env` файле.
 Для этого задайте переменной `PORT` требуемое значение
@@ -36,6 +36,20 @@ heroku create my-app (название приложения - выполняет
 heroku container:push web
 heroku container:release web
 heroku open // открываем приложение
+
+## Ручной запуск в Яндекс.Облаке
+
+список команд после создания ВМ (ubuntu 20.04) - файл vps-yandex.md
+запускаем с помощью pm2
+pm2 start npm --no-automation --name seoul-td -- run dev
+
+pm2 logs
+pm2 list
+pm2 stop all
+pm2 delete seoul-td
+
+cd backend
+docker-compose up -d
 
 ## Описание проекта:
 

@@ -22,6 +22,8 @@ services:
       - api
     environment:
       - PORT=5000
+      - REDIRECT_URI=https://seul-towerdefence-4.ya-praktikum.tech
+      - FORUM_API_URL=http://api:3000
     expose:
       - 5000
     volumes:
@@ -53,7 +55,11 @@ services:
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - PG_DATA=/var/lib/postgresql/data
     ports:
       - ${DB_PORT}:5432
     volumes:
-      - ./var/db:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
