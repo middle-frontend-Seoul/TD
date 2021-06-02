@@ -19,7 +19,6 @@ import {
   updateTheme,
 } from 'rdx/slices/user-slice';
 import { IMAGE_SERVER_URL } from 'constants/network';
-// import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 
 import defaultAvatar from './images/default-avatar.png';
