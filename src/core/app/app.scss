@@ -12,3 +12,11 @@ body {
 * {
   box-sizing: border-box;
 }
+
+.defaultStyle {
+  background-image: url('./terrain.png');
+}
+
+.alternativeStyle {
+  background-image: url('./concrete.png');
+}

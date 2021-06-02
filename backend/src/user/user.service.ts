@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {BadRequestException, Injectable, NotFoundException} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './model/user.model';
 import { UserCreateDto } from './dto/user-create.dto';
@@ -42,7 +42,12 @@ export class UserService {
   }
 
   async updateTheme(id: number, dto: UserUpdateDto) {
-    await this.userRepository.update(dto, { where: { id } });
-    return this.userRepository.findOne({ where: { id } });
+    try {
+      await this.userRepository.update(dto, { where: { id } });
+      return this.userRepository.findOne({ where: { id } });
+    }
+    catch {
+      throw new BadRequestException()
+    }
   }
 }

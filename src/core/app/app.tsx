@@ -20,8 +20,6 @@ import { useMountEffect } from 'utils/hooks';
 import { useAppSelector, useBoundAction } from 'rdx/hooks';
 import { getCurrentUser } from 'rdx/slices/auth-slice';
 import { getTheme } from 'rdx/slices/user-slice';
-import terrainBackground from './terrain.png';
-import concreteBackground from './concrete.png';
 
 import './app.scss';
 
@@ -40,19 +38,8 @@ const App: FC = () => {
     if (currentUser?.id) {
       actionGetTheme(currentUser.id);
     }
-    switch (colorTheme) {
-      case 'default': {
-        document.body.style.backgroundImage = `url(${terrainBackground})`;
-        break;
-      }
-      case 'alternative': {
-        document.body.style.backgroundImage = `url(${concreteBackground})`;
-        break;
-      }
-      default: {
-        document.body.style.backgroundImage = `url(${terrainBackground})`;
-      }
-    }
+    document.body.className = '';
+    document.body.classList.add(`${colorTheme}Style`);
   }, [currentUser, actionGetTheme, colorTheme]);
 
   return (

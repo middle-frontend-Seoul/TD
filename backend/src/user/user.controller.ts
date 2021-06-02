@@ -39,6 +39,6 @@ export class UserController {
     if (user)
       return user.theme;
     else
-      throw new NotFoundException();
+      return 'default';
   }
 }
