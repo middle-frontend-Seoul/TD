@@ -96,7 +96,7 @@ const PageProfile: FC = () => {
 
   const handleChangeTheme = (_: any, checked: boolean) => {
     if (currentUser?.id) {
-      actionUpdateTheme(currentUser.id, checked ? 'default' : 'bw');
+      actionUpdateTheme(currentUser.id, checked ? 'alternative' : 'default');
     }
   };
 
@@ -129,7 +129,7 @@ const PageProfile: FC = () => {
             <Space type="vertical" position="center">
               <div className="profile-theme">
                 <Switch
-                  checked={colorTheme === 'default'}
+                  checked={colorTheme !== 'default'}
                   onChange={handleChangeTheme}
                   name="checkedB"
                 />

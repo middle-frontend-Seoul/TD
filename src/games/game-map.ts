@@ -1,5 +1,7 @@
 import bg from 'images/bg-play.png';
+import bgAlternative from 'images/bg-concrete-play.png';
 import way from 'images/way-play.png';
+import wayConcrete from 'images/way-conrete-play.png';
 
 import { EventBus, EventNames } from 'games/event-bus';
 import { GridType, Position, GridPosition } from 'games/typing';
@@ -28,7 +30,7 @@ export class GameMap {
 
   protected endPosition: Position;
 
-  constructor(grid: GridType, tileSize = 30) {
+  constructor(grid: GridType, tileSize = 30, colorTheme: string) {
     this.eventBus = new EventBus();
 
     const { width, height } = getGridSize(grid);
@@ -40,8 +42,8 @@ export class GameMap {
 
     this.imgBG = new Image();
     this.imgWay = new Image();
-    this.imgBG.src = bg;
-    this.imgWay.src = way;
+    this.imgBG.src = colorTheme === 'default' ? bg : bgAlternative;
+    this.imgWay.src = colorTheme === 'default' ? way : wayConcrete;
 
     this.startPosition = { x: 0, y: 0 };
     this.endPosition = { x: 0, y: 0 };

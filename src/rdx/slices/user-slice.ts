@@ -5,7 +5,7 @@ import { formatError, formatHttpError } from 'utils/format';
 
 export type UserState = {
   data?: UserInfo;
-  theme: string;
+  theme: string | undefined;
   loadingStatus: StateStatus;
   mutatingUserStatus: StateStatus;
   mutatingPasswordStatus: StateStatus;
@@ -25,7 +25,7 @@ export const initialState: UserState = {
   mutatingPasswordStatus: 'idle',
   mutatingAvatarStatus: 'idle',
   error: {},
-  theme: 'default',
+  theme: undefined,
 };
 
 export const userSlice = createSlice({

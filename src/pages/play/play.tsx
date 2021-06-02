@@ -35,6 +35,7 @@ const PagePlay: FC = () => {
 
   const actionAddLeaderboardItem = useBoundAction(addLeaderboardItem);
   const currentUser = useAppSelector((state) => state.auth.currentUser);
+  const colorTheme = useAppSelector((state) => state.user.theme);
 
   const [gameManager, setGameManager] = useState<Game>();
   const [isFullscreenMode, setFullscreenMode] = useState<boolean>(false);
@@ -47,10 +48,20 @@ const PagePlay: FC = () => {
   const history = useHistory();
 
   useEffect(() => {
+    if (!colorTheme) {
+      // eslint-disable-next-line
+      return () => {};
+    }
     let game: Game;
     if (canvasRef.current) {
       try {
-        game = new Game(canvasRef.current, gridPlayOne, setUIState, TILE_SIZE);
+        game = new Game(
+          canvasRef.current,
+          gridPlayOne,
+          setUIState,
+          TILE_SIZE,
+          colorTheme
+        );
         game.start();
 
         setGameManager(game);
@@ -61,7 +72,7 @@ const PagePlay: FC = () => {
     return () => {
       game?.gameOver();
     };
-  }, [canvasRef]);
+  }, [canvasRef, colorTheme]);
 
   const onClickPause = useCallback(() => {
     if (gameManager?.pause()) {
