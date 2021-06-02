@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - SP9
-      - TD-69_fix-actions-order
 
 jobs:
   stop_app:
@@ -22,9 +21,12 @@ jobs:
           PORT: ${{secrets.PORT}}
           REDIRECT_URI: ${{secrets.FRONT_REDIRECT_URI}}
           FORUM_API_URL: ${{secrets.FRONT_FORUM_API_URL}}
+      - name: stop app complete
+        run: echo "🍏 Stop app status is ${{ job.status }}."
 
   checkout_repository:
     needs: [stop_app]
+    if: always()
     runs-on: self-hosted
     steps:
       - name: Check out repository code
@@ -32,6 +34,7 @@ jobs:
 
   prepare_deploy:
     needs: [checkout_repository]
+    if: always()
     runs-on: self-hosted
     steps:
       - name: Change dir to cloned repo
@@ -49,6 +52,7 @@ jobs:
 
   deploy:
     needs: [prepare_deploy]
+    if: always()
     runs-on: self-hosted
     steps:
       - name: Change dir to cloned repo
