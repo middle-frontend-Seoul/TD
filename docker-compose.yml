@@ -22,6 +22,8 @@ services:
       - api
     environment:
       - PORT=5000
+      - REDIRECT_URI=https://seul-towerdefence-4.ya-praktikum.tech
+      - FORUM_API_URL=http://api:3000
     expose:
       - 5000
     volumes:
