@@ -14,7 +14,7 @@ npm start
 Скопировать `.env.sample` в `.env`
 docker-compose build
 docker-compose up -d
-http://localhost:8086
+http://localhost:8085
 
 Порт можно задать произвольный в `.env` файле.
 Для этого задайте переменной `PORT` требуемое значение
