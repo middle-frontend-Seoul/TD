@@ -16,8 +16,11 @@ import {
   updatePassword,
   updateAvatar,
   getTheme,
+  updateTheme,
 } from 'rdx/slices/user-slice';
 import { IMAGE_SERVER_URL } from 'constants/network';
+// import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 
 import defaultAvatar from './images/default-avatar.png';
 import './profile.scss';
@@ -28,10 +31,11 @@ const PageProfile: FC = () => {
   const actionUpdatePassword = useBoundAction(updatePassword);
   const actionUpdateAvatar = useBoundAction(updateAvatar);
   const actionGetTheme = useBoundAction(getTheme);
+  const actionUpdateTheme = useBoundAction(updateTheme);
 
   const currentUser = useAppSelector((state) => state.auth.currentUser);
   const profileUpdateError = useAppSelector((state) => state.user.error.user);
-  const theme = useAppSelector((state) => state.user.theme);
+  const colorTheme = useAppSelector((state) => state.user.theme);
 
   const passwordUpdateError = useAppSelector(
     (state) => state.user.error.password
@@ -90,6 +94,12 @@ const PageProfile: FC = () => {
     }
   };
 
+  const handleChangeTheme = (_: any, checked: boolean) => {
+    if (currentUser?.id) {
+      actionUpdateTheme(currentUser.id, checked ? 'default' : 'bw');
+    }
+  };
+
   return (
     <Space type="vertical">
       <Space type="horizontal" position="center">
@@ -117,6 +127,14 @@ const PageProfile: FC = () => {
         <Space type="horizontal" position="center">
           <Block type="inline">
             <Space type="vertical" position="center">
+              <div className="profile-theme">
+                <Switch
+                  checked={colorTheme === 'default'}
+                  onChange={handleChangeTheme}
+                  name="checkedB"
+                />
+                Альтернативная тема
+              </div>
               <div className="profile">
                 <ProfileForm
                   key={`${isUpdate}`}
@@ -153,7 +171,7 @@ const PageProfile: FC = () => {
         </Space>
         <Space type="horizontal" position="center">
           <Link type="button" to={URL.HOME.path}>
-            На главный экран - {`${theme}`}
+            На главный экран
           </Link>
         </Space>
       </Space>

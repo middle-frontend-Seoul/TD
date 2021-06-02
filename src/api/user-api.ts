@@ -5,7 +5,20 @@ import { User } from 'api/codecs';
 export const userApi = {
   getTheme: async (id: number): Promise<ApiResponse<string>> => {
     const { response, error } = await httpForum.get<string>(
-      `/users/theme/${id}`
+      `/users/${id}/theme`
+    );
+    return {
+      data: response && response.data,
+      error,
+    };
+  },
+
+  updateTheme: async (
+    id: number,
+    colorTheme: string
+  ): Promise<ApiResponse<string>> => {
+    const { response, error } = await httpForum.put<string>(
+      `/users/${id}/theme?colorTheme=${colorTheme}`
     );
     return {
       data: response && response.data,

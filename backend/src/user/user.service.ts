@@ -4,6 +4,7 @@ import { User } from './model/user.model';
 import { UserCreateDto } from './dto/user-create.dto';
 import { UserUpdateDto } from './dto/user-update.dto';
 import { FindOptions } from 'sequelize/types';
+import {UpdateMessageDto} from "../forum/dto/update-message.dto";
 
 @Injectable()
 export class UserService {
@@ -38,5 +39,10 @@ export class UserService {
 
   async deleteUser(id: number) {
     return await this.userRepository.destroy({ where: { id } })
+  }
+
+  async updateTheme(id: number, dto: UserUpdateDto) {
+    await this.userRepository.update(dto, { where: { id } });
+    return this.userRepository.findOne({ where: { id } });
   }
 }

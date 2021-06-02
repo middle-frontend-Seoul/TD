@@ -6,7 +6,7 @@ import { Title } from 'components-ui/title';
 import { Space } from 'components-ui/space';
 import { Button } from 'components-ui/button';
 import { URL } from 'core/url';
-import { useBoundAction } from 'rdx/hooks';
+import { useAppSelector, useBoundAction } from 'rdx/hooks';
 import { logout } from 'rdx/slices/auth-slice';
 
 import map1 from './images/map1.png';
@@ -17,6 +17,8 @@ import './home.scss';
 
 const PageHome: FC = () => {
   const actionLogout = useBoundAction(logout);
+
+  const theme = useAppSelector((state) => state.user.theme);
 
   const handleLogout = () => {
     actionLogout();
@@ -40,7 +42,7 @@ const PageHome: FC = () => {
       </Block>
       <Space type="horizontal">
         <Link type="button" to={URL.PROFILE.path}>
-          Профиль
+          Профиль - {theme}
         </Link>
         <Link type="button" to={URL.STATISTICS.path}>
           Таблица лидеров

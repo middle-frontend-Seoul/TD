@@ -94,6 +94,19 @@ export const userSlice = createSlice({
       state.loadingStatus = 'failure';
       state.error.user = action.payload;
     },
+
+    updateThemePending: (state) => {
+      state.loadingStatus = 'pending';
+      state.error.user = undefined;
+    },
+    updateThemeSuccess: (state, action: PayloadAction<string | undefined>) => {
+      state.loadingStatus = 'success';
+      state.theme = action.payload || 'default';
+    },
+    updateThemeFailure: (state, action: PayloadAction<SerializedError>) => {
+      state.loadingStatus = 'failure';
+      state.error.user = action.payload;
+    },
   },
 });
 
@@ -109,6 +122,10 @@ const {
   updateUserPending,
   updateUserSuccess,
   updateUserFailure,
+
+  updateThemePending,
+  updateThemeSuccess,
+  updateThemeFailure,
 
   updateAvatarPending,
   updateAvatarSuccess,
@@ -163,6 +180,22 @@ export function getTheme(id: number) {
       }
     } catch (error) {
       dispatch(getThemeFailure(formatError(error)));
+    }
+  };
+}
+
+export function updateTheme(id: number, colorTheme: string) {
+  return async (dispatch: AppDispatch) => {
+    dispatch(updateThemePending());
+    try {
+      const { data, error } = await userApi.updateTheme(id, colorTheme);
+      if (!error) {
+        dispatch(updateThemeSuccess(data));
+      } else {
+        dispatch(updateThemeFailure(formatHttpError(error)));
+      }
+    } catch (error) {
+      dispatch(updateThemeFailure(formatError(error)));
     }
   };
 }
