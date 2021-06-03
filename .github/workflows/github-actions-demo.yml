@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - SP9
+      - TD-75_bug-avatar-cookie
 
 jobs:
   stop_app:
