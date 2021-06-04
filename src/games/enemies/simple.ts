@@ -4,13 +4,13 @@ import { Enemy } from './enemy';
 export class SimpleEnemy extends Enemy {
   protected name = 'simple';
 
-  protected speed = 0.8;
+  protected speed = 1.3;
 
   protected live = 100;
 
   protected damage = 1;
 
-  protected cash = 10;
+  protected cash = 3;
 
   protected sizeBox = 4;
 

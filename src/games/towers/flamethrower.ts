@@ -11,13 +11,13 @@ export class Flamethrower extends Tower {
 
   name = 'Огнемёт';
 
-  price = 25;
+  price = 35;
 
   color = 'rgba(191, 94, 0, 0.5)';
 
-  radius = 3;
+  radius = 2;
 
-  damage = 1;
+  damage = 2;
 
   reloadTime = 60;
 

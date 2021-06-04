@@ -3,6 +3,7 @@ import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
+import path from 'path';
 import userAuthMiddleware from './user-auth-middleware';
 import serverRenderMiddleware from './server-render-middleware';
 
@@ -43,6 +44,17 @@ app.use(
     },
   })
 );
+
+app.use(
+  '/api-forum',
+  createProxyMiddleware({
+    target: process.env.FORUM_API_URL,
+    secure: false,
+    changeOrigin: true,
+  })
+);
+
+app.use(express.static(path.join(__dirname, '../dist')));
 
 app.get('/*', userAuthMiddleware, serverRenderMiddleware);
 
