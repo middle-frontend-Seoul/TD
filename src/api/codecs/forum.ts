@@ -8,6 +8,9 @@ export function fromMessageDto(dto: MessageDto): MessageInfo {
     content: dto.content,
     createdAt: new Date(dto.createdAt),
     user: dto.user ? User.fromUserDto(dto.user) : ({} as UserInfo),
+    likedByUsers: (dto.likedByUsers || []).map((likedByUsersDto) =>
+      User.fromUserDto(likedByUsersDto)
+    ),
   };
 }
 

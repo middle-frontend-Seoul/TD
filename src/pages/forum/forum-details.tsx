@@ -75,10 +75,12 @@ const PageForumDetails: FC = () => {
         return (messages || []).map((msg: MessageInfo) => (
           <ForumMassage
             key={msg.id}
+            id={msg.id}
             src={msg.user.avatar}
             date={msg.createdAt}
             userName={msg.user.login}
             message={msg.content}
+            likesCount={msg.likedByUsers.length}
           />
         ));
       default:

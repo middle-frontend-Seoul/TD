@@ -182,6 +182,29 @@ export const forumSlice = createSlice({
       state.mutatingStatus = 'failure';
       state.error = action.payload;
     },
+
+    toggleMessageLikePending: (state) => {
+      state.mutatingStatus = 'pending';
+    },
+    toggleMessageLikeSuccess: (
+      state,
+      action: PayloadAction<MessageInfo | undefined>
+    ) => {
+      state.allMessages = (state.allMessages || []).map((message) => {
+        if (message.id === action.payload?.id) {
+          return action.payload;
+        }
+        return message;
+      });
+      state.mutatingStatus = 'success';
+    },
+    toggleMessageLikeFailure: (
+      state,
+      action: PayloadAction<SerializedError>
+    ) => {
+      state.mutatingStatus = 'failure';
+      state.error = action.payload;
+    },
   },
 });
 
@@ -381,6 +404,24 @@ export function createMessage(arg: MessageRequestInfo) {
       }
     } catch (error) {
       dispatch(forumSlice.actions.createMessageFailure(formatError(error)));
+    }
+  };
+}
+
+export function toggleMessageLike(id: number) {
+  return async (dispatch: AppDispatch) => {
+    dispatch(forumSlice.actions.toggleMessageLikePending());
+    try {
+      const { data, error } = await forumApi.toggleMessageLike(id);
+      if (!error) {
+        dispatch(forumSlice.actions.toggleMessageLikeSuccess(data));
+      } else {
+        dispatch(
+          forumSlice.actions.toggleMessageLikeFailure(formatHttpError(error))
+        );
+      }
+    } catch (error) {
+      dispatch(forumSlice.actions.toggleMessageLikeFailure(formatError(error)));
     }
   };
 }

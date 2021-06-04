@@ -1,7 +1,8 @@
-import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
+import { BelongsTo, BelongsToMany, Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
 import { User } from 'src/user/model/user.model';
 import { Forum } from './forum.model';
 import { Theme } from './theme.model';
+import { MessageLike } from './message-like';
 
 interface MessageCreationAttrs {
   content: string;
@@ -39,4 +40,7 @@ export class Message extends Model<Message, MessageCreationAttrs> {
 
   @BelongsTo(() => User)
   user: User;
+
+  @BelongsToMany(()=> User, () => MessageLike)
+  likedByUsers: User[];
 }

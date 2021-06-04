@@ -1,5 +1,6 @@
-import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
+import { BelongsToMany, Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
 import { Message } from 'src/forum/model/message.model';
+import { MessageLike } from 'src/forum/model/message-like';
 
 interface UserCreationAttrs {
   id: number;
@@ -28,4 +29,7 @@ export class User extends Model<User, UserCreationAttrs> {
 
   @HasMany(() => Message)
   messages: Message[];
+
+  @BelongsToMany(()=> Message, () => MessageLike)
+  likedMessages: Message[];
 }

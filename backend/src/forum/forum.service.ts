@@ -7,6 +7,7 @@ import { CreateThemeDto } from './dto/create-theme.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
 import { UpdateThemeDto } from './dto/update-theme.dto';
 import { Forum } from './model/forum.model';
+import { MessageLike } from './model/message-like';
 import { Message } from './model/message.model';
 import { Theme } from './model/theme.model';
 
@@ -16,6 +17,7 @@ export class ForumService {
     @InjectModel(Forum) private forumRepository: typeof Forum,
     @InjectModel(Theme) private themeRepository: typeof Theme,
     @InjectModel(Message) private messageRepository: typeof Message,
+    @InjectModel(MessageLike) private messageLikeRepository: typeof MessageLike,
   ) {}
 
   async createForum(dto: CreateForumDto) {
@@ -107,6 +109,22 @@ export class ForumService {
       userId,
     });
     return message;
+  }
+
+  async toggleMessageLike(userId: number, messageId: number) {
+    const isMessageLiked = await this.messageLikeRepository.findOne({ where: {
+      userId, messageId,
+    } });
+    if (isMessageLiked) {
+      await this.messageLikeRepository.destroy({ where: {
+        userId, messageId,
+      } });
+    } else {
+      await this.messageLikeRepository.create({
+        userId, messageId,
+      });
+    }
+    return this.messageRepository.findOne({ where: { id: messageId }, include: { all: true } });
   }
 
   async updateMessage(id: number, dto: UpdateMessageDto) {

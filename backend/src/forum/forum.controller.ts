@@ -78,6 +78,12 @@ export class ForumController {
     return this.forumService.createMessage(userId, messageDto)
   }
 
+  @Put('messages/:id/toggle-like')
+  async toggleMessageLike(@Param('id') id: number, @Req() request: Request) {
+    const userId = await this.authService.userId(request);
+    return this.forumService.toggleMessageLike(userId, id);
+  }
+
   @Put('messages/:id')
   updateMessage(@Param('id') id: number, @Body() messageDto: UpdateMessageDto) {
     return this.forumService.updateMessage(id, messageDto)
