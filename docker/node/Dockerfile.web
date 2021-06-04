@@ -1,0 +1,15 @@
+FROM node:12-alpine
+
+ARG REDIRECT_URI=$REDIRECT_URI
+ARG FORUM_API_URL=$FORUM_API_URL
+
+WORKDIR /var/www/web
+
+COPY . /var/www/web
+
+RUN npm install
+RUN npm run build
+
+EXPOSE 5000
+
+CMD npm start

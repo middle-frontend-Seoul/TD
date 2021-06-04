@@ -18,7 +18,6 @@ import {
   getTheme,
   updateTheme,
 } from 'rdx/slices/user-slice';
-// import { IMAGE_SERVER_URL } from 'constants/network';
 import Switch from '@material-ui/core/Switch';
 
 import defaultAvatar from './images/default-avatar.png';

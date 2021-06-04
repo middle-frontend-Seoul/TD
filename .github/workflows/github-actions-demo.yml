@@ -1,0 +1,71 @@
+name: GitHub Actions TD
+on:
+  push:
+    branches:
+      - SP9
+
+jobs:
+  stop_app:
+    runs-on: self-hosted
+    steps:
+      - name: Change dir to cloned repo
+        run: cd ${{ github.workspace }}
+      - name: stop app
+        run: docker-compose down
+        env:
+          DB_USER: ${{secrets.DB_USER}}
+          DB_NAME: ${{secrets.DB_NAME}}
+          DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+          DB_PORT: ${{secrets.DB_PORT}}
+          DB_FORCE_SYNC: ${{secrets.DB_FORCE_SYNC}}
+          PORT: ${{secrets.PORT}}
+          REDIRECT_URI: ${{secrets.FRONT_REDIRECT_URI}}
+          FORUM_API_URL: ${{secrets.FRONT_FORUM_API_URL}}
+      - name: stop app complete
+        run: echo "🍏 Stop app status is ${{ job.status }}."
+
+  checkout_repository:
+    needs: [stop_app]
+    if: always()
+    runs-on: self-hosted
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+  prepare_deploy:
+    needs: [checkout_repository]
+    if: always()
+    runs-on: self-hosted
+    steps:
+      - name: Change dir to cloned repo
+        run: cd ${{ github.workspace }}
+      - name: npm install web
+        run: npm install
+      - name: npm build web
+        run: npm run build
+        env:
+          REDIRECT_URI: ${{secrets.FRONT_REDIRECT_URI}}
+          FORUM_API_URL: ${{secrets.FRONT_FORUM_API_URL}}
+      - name: npm install api
+        run: npm run api-install
+      - run: echo "🍏 Deploy prepare status is ${{ job.status }}."
+
+  deploy:
+    needs: [prepare_deploy]
+    if: always()
+    runs-on: self-hosted
+    steps:
+      - name: Change dir to cloned repo
+        run: cd ${{ github.workspace }}
+      - name: start app
+        run: docker-compose up --build -d
+        env:
+          DB_USER: ${{secrets.DB_USER}}
+          DB_NAME: ${{secrets.DB_NAME}}
+          DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+          DB_PORT: ${{secrets.DB_PORT}}
+          DB_FORCE_SYNC: ${{secrets.DB_FORCE_SYNC}}
+          PORT: ${{secrets.PORT}}
+          REDIRECT_URI: ${{secrets.FRONT_REDIRECT_URI}}
+          FORUM_API_URL: ${{secrets.FRONT_FORUM_API_URL}}
+      - run: echo "🍏 Deploy status is ${{ job.status }}."
