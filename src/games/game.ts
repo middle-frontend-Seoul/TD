@@ -83,7 +83,8 @@ export class Game {
     canvas: HTMLCanvasElement,
     grid: GridType,
     setUIState: React.Dispatch<GameUIAction>,
-    tileSize: number
+    tileSize: number,
+    colorTheme: string
   ) {
     this.eventBus = new EventBus();
     this.eventBus.clearAll();
@@ -95,7 +96,7 @@ export class Game {
     this.setUIState = setUIState;
 
     this.gameStats = new GameStats(initialUIState, setUIState);
-    this.map = new GameMap(clonedGrid, tileSize);
+    this.map = new GameMap(clonedGrid, tileSize, colorTheme);
     this.canvas = new Canvas(canvas);
     this.cursor = new Cursor(this.canvas);
     this.towerPlacer = new TowerPlacer(this.cursor, this.map, this.gameStats);

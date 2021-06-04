@@ -6,17 +6,22 @@ import { Title } from 'components-ui/title';
 import { Space } from 'components-ui/space';
 import { Button } from 'components-ui/button';
 import { URL } from 'core/url';
-import { useBoundAction } from 'rdx/hooks';
+import { useAppSelector, useBoundAction } from 'rdx/hooks';
 import { logout } from 'rdx/slices/auth-slice';
 
 import map1 from './images/map1.png';
 import map2 from './images/map2.png';
 import map3 from './images/map3.png';
+import map1Alt from './images/map1_alt.png';
+import map2Alt from './images/map2_alt.png';
+import map3Alt from './images/map3_alt.png';
 
 import './home.scss';
 
 const PageHome: FC = () => {
   const actionLogout = useBoundAction(logout);
+
+  const colorTheme = useAppSelector((state) => state.user.theme);
 
   const handleLogout = () => {
     actionLogout();
@@ -28,13 +33,13 @@ const PageHome: FC = () => {
         <Title style={{ marginTop: -20 }}>Выберите карту</Title>
         <Space type="horizontal" position="center">
           <Link to={URL.PLAY.path}>
-            <img src={map1} alt="map1" />
+            <img src={colorTheme === 'default' ? map1 : map1Alt} alt="map1" />
           </Link>
           <Link to={URL.PLAY.path}>
-            <img src={map2} alt="map2" />
+            <img src={colorTheme === 'default' ? map2 : map2Alt} alt="map2" />
           </Link>
           <Link to={URL.PLAY.path}>
-            <img src={map3} alt="map3" />
+            <img src={colorTheme === 'default' ? map3 : map3Alt} alt="map3" />
           </Link>
         </Space>
       </Block>

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import { Layout } from 'core/layout';
@@ -17,17 +17,30 @@ import {
 } from 'pages';
 import { ProtectedRoute } from 'core/protected-route';
 import { useMountEffect } from 'utils/hooks';
-import { useBoundAction } from 'rdx/hooks';
+import { useAppSelector, useBoundAction } from 'rdx/hooks';
 import { getCurrentUser } from 'rdx/slices/auth-slice';
+import { getTheme } from 'rdx/slices/user-slice';
 
 import './app.scss';
 
 const App: FC = () => {
   const actionGetCurrentUser = useBoundAction(getCurrentUser);
+  const actionGetTheme = useBoundAction(getTheme);
+
+  const currentUser = useAppSelector((state) => state.auth.currentUser);
+  const colorTheme = useAppSelector((state) => state.user.theme);
 
   useMountEffect(() => {
     actionGetCurrentUser();
   });
+
+  useEffect(() => {
+    if (currentUser?.id) {
+      actionGetTheme(currentUser.id);
+    }
+    document.body.className = '';
+    document.body.classList.add(`${colorTheme}Style`);
+  }, [currentUser, actionGetTheme, colorTheme]);
 
   return (
     <Layout>

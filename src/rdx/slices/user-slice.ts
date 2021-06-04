@@ -5,6 +5,7 @@ import { formatError, formatHttpError } from 'utils/format';
 
 export type UserState = {
   data?: UserInfo;
+  theme: string | undefined;
   loadingStatus: StateStatus;
   mutatingUserStatus: StateStatus;
   mutatingPasswordStatus: StateStatus;
@@ -24,6 +25,7 @@ export const initialState: UserState = {
   mutatingPasswordStatus: 'idle',
   mutatingAvatarStatus: 'idle',
   error: {},
+  theme: undefined,
 };
 
 export const userSlice = createSlice({
@@ -79,6 +81,32 @@ export const userSlice = createSlice({
       state.mutatingPasswordStatus = 'failure';
       state.error.password = action.payload;
     },
+
+    getThemePending: (state) => {
+      state.loadingStatus = 'pending';
+      state.error.user = undefined;
+    },
+    getThemeSuccess: (state, action: PayloadAction<string | undefined>) => {
+      state.loadingStatus = 'success';
+      state.theme = action.payload || 'default';
+    },
+    getThemeFailure: (state, action: PayloadAction<SerializedError>) => {
+      state.loadingStatus = 'failure';
+      state.error.user = action.payload;
+    },
+
+    updateThemePending: (state) => {
+      state.loadingStatus = 'pending';
+      state.error.user = undefined;
+    },
+    updateThemeSuccess: (state, action: PayloadAction<string | undefined>) => {
+      state.loadingStatus = 'success';
+      state.theme = action.payload || 'default';
+    },
+    updateThemeFailure: (state, action: PayloadAction<SerializedError>) => {
+      state.loadingStatus = 'failure';
+      state.error.user = action.payload;
+    },
   },
 });
 
@@ -87,9 +115,17 @@ const {
   getUserSuccess,
   getUserFailure,
 
+  getThemePending,
+  getThemeSuccess,
+  getThemeFailure,
+
   updateUserPending,
   updateUserSuccess,
   updateUserFailure,
+
+  updateThemePending,
+  updateThemeSuccess,
+  updateThemeFailure,
 
   updateAvatarPending,
   updateAvatarSuccess,
@@ -128,6 +164,38 @@ export function updateUser(arg: UserRequestInfo) {
       }
     } catch (error) {
       dispatch(updateUserFailure(formatError(error)));
+    }
+  };
+}
+
+export function getTheme(id: number) {
+  return async (dispatch: AppDispatch) => {
+    dispatch(getThemePending());
+    try {
+      const { data, error } = await userApi.getTheme(id);
+      if (!error) {
+        dispatch(getThemeSuccess(data));
+      } else {
+        dispatch(getThemeFailure(formatHttpError(error)));
+      }
+    } catch (error) {
+      dispatch(getThemeFailure(formatError(error)));
+    }
+  };
+}
+
+export function updateTheme(id: number, colorTheme: string) {
+  return async (dispatch: AppDispatch) => {
+    dispatch(updateThemePending());
+    try {
+      const { data, error } = await userApi.updateTheme(id, colorTheme);
+      if (!error) {
+        dispatch(updateThemeSuccess(data));
+      } else {
+        dispatch(updateThemeFailure(formatHttpError(error)));
+      }
+    } catch (error) {
+      dispatch(updateThemeFailure(formatError(error)));
     }
   };
 }

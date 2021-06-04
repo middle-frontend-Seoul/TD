@@ -4,4 +4,6 @@ export class UserUpdateDto {
   readonly email?: string;
 
   readonly avatar?: string;
+
+  readonly theme?: string;
 }
