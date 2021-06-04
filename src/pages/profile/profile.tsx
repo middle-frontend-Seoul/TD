@@ -16,7 +16,7 @@ import {
   updatePassword,
   updateAvatar,
 } from 'rdx/slices/user-slice';
-// import { IMAGE_SERVER_URL } from 'constants/network';
+import { IMAGE_SERVER_URL } from 'constants/network';
 
 import defaultAvatar from './images/default-avatar.png';
 import './profile.scss';
@@ -85,12 +85,12 @@ const PageProfile: FC = () => {
     <Space type="vertical">
       <Space type="horizontal" position="center">
         <Avatar
-          src={defaultAvatar}
-          // src={
-          //   currentUser?.avatar
-          //     ? `${IMAGE_SERVER_URL}${currentUser.avatar}`
-          //     : defaultAvatar
-          // }
+          // src={defaultAvatar}
+          src={
+            currentUser?.avatar
+              ? `${IMAGE_SERVER_URL}${currentUser.avatar}`
+              : defaultAvatar
+          }
           size={130}
         >
           <label htmlFor="avatar_upload" className="avatar-upload">

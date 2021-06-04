@@ -8,6 +8,13 @@ https://docs.github.com/en/actions/hosting-your-own-runners/configuring-the-self
 sudo ./svc.sh install root
 sudo ./svc.sh start
 
+после остановки или рестарта ВМ - необходимо перезапустить runner:
+
+sudo ./svc.sh stop
+sudo ./svc.sh uninstall
+затем Add runner через Github
+и опять install как root и запустить
+
 ## Запуск docker и docker-compose без sudo
 sudo gpasswd -a $USER docker
 sudo service docker restart
