@@ -11,15 +11,15 @@ export class Flamethrower extends Tower {
 
   name = 'Огнемёт';
 
-  price = 35;
+  price = 30;
 
   color = 'rgba(191, 94, 0, 0.5)';
 
   radius = 2;
 
-  damage = 2;
+  damage = 1;
 
-  reloadTime = 60;
+  reloadTime = 45;
 
   draw = (ctx: CanvasRenderingContext2D, map: GameMap): void => {
     const tileSize = map.getTileSize();

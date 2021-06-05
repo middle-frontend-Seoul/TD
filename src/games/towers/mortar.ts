@@ -11,7 +11,7 @@ export class Mortar extends Tower {
 
   name = 'Ракеты';
 
-  price = 60;
+  price = 50;
 
   color = 'rgba(134, 8, 0, 0.5)';
 

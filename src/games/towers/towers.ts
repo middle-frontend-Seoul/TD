@@ -9,4 +9,4 @@ export type GameTowers =
   | typeof Laser
   | typeof Mortar;
 
-export const Towers: Array<GameTowers> = [Gun, Flamethrower, Laser, Mortar];
+export const Towers: Array<GameTowers> = [Gun, Laser, Flamethrower, Mortar];

@@ -17,7 +17,7 @@ export class Gun extends Tower {
 
   radius = 3;
 
-  damage = 9;
+  damage = 5;
 
   reloadTime = 1500;
 

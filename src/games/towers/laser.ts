@@ -10,13 +10,13 @@ export class Laser extends Tower {
 
   name = 'Лазер';
 
-  price = 40;
+  price = 45;
 
   color = 'rgba(148, 10, 0, 0.5)';
 
-  radius = 3;
+  radius = 0;
 
-  damage = 10;
+  damage = 15;
 
   reloadTime = 150;
 

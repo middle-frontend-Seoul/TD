@@ -94,6 +94,10 @@ export class GameMap {
     return this.tileSize;
   }
 
+  public getHeight(): number {
+    return this.height;
+  }
+
   public getGrid(): GridType {
     return this.grid;
   }
