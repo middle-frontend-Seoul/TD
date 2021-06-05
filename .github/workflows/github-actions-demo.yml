@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - SP9
-      - csp-fix
+      - limit-fps
 
 jobs:
   stop_app:

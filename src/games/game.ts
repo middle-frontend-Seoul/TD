@@ -150,7 +150,9 @@ export class Game {
     this.update();
     this.draw();
     if (this.ticker !== -1) {
-      this.ticker = requestAnimationFrame(this.animation.bind(this));
+      setTimeout(() => {
+        this.ticker = requestAnimationFrame(this.animation.bind(this));
+      }, 1000 / 70); // TARGET_FPS = 50
     }
   }
 
