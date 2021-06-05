@@ -24,9 +24,9 @@ app.use(
     directives: {
       defaultSrc: ["'self'"],
       scriptSrc: scriptSources,
-      scriptSrcElem: scriptSources,
+      // scriptSrcElem: scriptSources,
       styleSrc: styleSources,
-      styleSrcElem: styleSources,
+      // styleSrcElem: styleSources,
       fontSrc: fontSources,
       imgSrc: imageSources,
       connectSrc: connectSources,
