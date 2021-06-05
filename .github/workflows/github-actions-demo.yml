@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - SP9
+      - csp-fix
 
 jobs:
   stop_app:
