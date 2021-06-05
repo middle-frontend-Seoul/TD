@@ -17,7 +17,7 @@ export class Mortar extends Tower {
 
   radius = 10;
 
-  damage = 40;
+  damage = 20;
 
   reloadTime = 4500;
 
