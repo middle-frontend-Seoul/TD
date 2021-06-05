@@ -1,5 +1,6 @@
 import express from 'express';
 import helmet from 'helmet';
+// import path from 'path';
 import cookieParser from 'cookie-parser';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
@@ -43,6 +44,18 @@ app.use(
     },
   })
 );
+// Реализовано в nginx
+// app.use(
+//   '/api-forum',
+//   createProxyMiddleware({
+//     target: process.env.FORUM_API_URL,
+//     secure: false,
+//     changeOrigin: true,
+//   })
+// );
+
+// статика обрабатывается ngixn
+// app.use(express.static(path.join(__dirname, '../dist')));
 
 app.get('/*', userAuthMiddleware, serverRenderMiddleware);
 

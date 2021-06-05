@@ -135,4 +135,14 @@ export const forumApi = {
       error,
     };
   },
+
+  toggleMessageLike: async (id: number): Promise<ApiResponse<MessageInfo>> => {
+    const { response, error } = await httpForum.put<MessageDto>(
+      `/forums/messages/${id}/toggle-like`
+    );
+    return {
+      data: response && Forum.fromMessageDto(response.data || {}),
+      error,
+    };
+  },
 };

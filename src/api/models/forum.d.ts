@@ -31,13 +31,15 @@ type MessageDto = {
   id: number;
   content: string;
   createdAt: string;
-  user: ForumUserDto;
+  user: UserDto;
+  likedByUsers: UserDto[];
 };
 type MessageInfo = {
   id: number;
   content: string;
   createdAt: Date;
-  user: ForumUserInfo;
+  user: UserInfo;
+  likedByUsers: UserInfo[];
 };
 
 type ForumRequestDto = {
