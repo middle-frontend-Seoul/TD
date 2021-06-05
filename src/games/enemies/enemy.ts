@@ -149,7 +149,6 @@ export abstract class Enemy extends Renderable {
   };
 
   public setLife = (life: number) => {
-    console.log('life:', life);
     this.live = life;
   };
 }
