@@ -14,7 +14,7 @@ import { simpleThrottle } from 'utils/helpers';
 export const initialUIState: GameUIState = {
   isGameEnded: false,
   fps: 0,
-  score: 200,
+  score: 50,
   wave: 1,
   lives: 5,
 };

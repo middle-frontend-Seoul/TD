@@ -10,7 +10,7 @@ export class StrongEnemy extends Enemy {
 
   protected damage = 2;
 
-  protected cash = 50;
+  protected cash = 7;
 
   protected sizeBox = 4;
 

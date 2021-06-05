@@ -25,7 +25,7 @@ export const initialState: UserState = {
   mutatingPasswordStatus: 'idle',
   mutatingAvatarStatus: 'idle',
   error: {},
-  theme: undefined,
+  theme: 'default',
 };
 
 export const userSlice = createSlice({

@@ -33,6 +33,8 @@ export abstract class Enemy extends Renderable {
     if (this.position.x > map.getEndPosition().x) {
       map.handleDamage(this.damage);
       this.isAlive = false;
+    } else if (this.position.y > (map.getHeight() - 1) * map.getTileSize()) {
+      this.isAlive = false;
     } else {
       const tileSize = map.getTileSize();
       const grid = map.getGrid();

@@ -11,13 +11,13 @@ export class Gun extends Tower {
 
   name = 'Пулемёт';
 
-  price = 15;
+  price = 20;
 
   color = 'rgba(82, 82, 82, 0.5)';
 
   radius = 3;
 
-  damage = 2;
+  damage = 5;
 
   reloadTime = 1500;
 
