@@ -79,6 +79,8 @@ export class Game {
 
   private throttledFpsUpdate: (fps: number) => void;
 
+  private throttledUpdate: () => void;
+
   constructor(
     canvas: HTMLCanvasElement,
     grid: GridType,
@@ -111,6 +113,10 @@ export class Game {
     this.throttledFpsUpdate = simpleThrottle((fps: number) => {
       this.eventBus.emit(EventNames.FpsUpdated, fps);
     }, 1000);
+
+    this.throttledUpdate = simpleThrottle(() => {
+      this.update();
+    }, 1000 / 70);
 
     this.eventBus.on(EventNames.NewWave, (wave: number) => {
       this.setUIState({ type: 'setWave', payload: wave });
@@ -146,23 +152,21 @@ export class Game {
   }
 
   public animation(): void {
-    this.fps();
-    this.update();
+    this.fpsUpdate();
+    this.throttledUpdate();
     this.draw();
     if (this.ticker !== -1) {
-      setTimeout(() => {
-        this.ticker = requestAnimationFrame(this.animation.bind(this));
-      }, 1000 / 70); // TARGET_FPS = 50
+      this.ticker = requestAnimationFrame(this.animation.bind(this));
     }
   }
 
-  private fps = (): void => {
+  private fpsUpdate = (): void => {
     if (!this.lastTime) {
       this.lastTime = performance.now();
     } else {
-      const fps = 1000 / (performance.now() - this.lastTime);
+      const currentFps = 1000 / (performance.now() - this.lastTime);
       this.lastTime = 0;
-      this.throttledFpsUpdate(fps);
+      this.throttledFpsUpdate(currentFps);
     }
   };
 

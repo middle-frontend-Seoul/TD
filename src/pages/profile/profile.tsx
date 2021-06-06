@@ -18,6 +18,7 @@ import {
   getTheme,
   updateTheme,
 } from 'rdx/slices/user-slice';
+import { IMAGE_SERVER_URL } from 'constants/network';
 import Switch from '@material-ui/core/Switch';
 
 import defaultAvatar from './images/default-avatar.png';
@@ -102,12 +103,11 @@ const PageProfile: FC = () => {
     <Space type="vertical">
       <Space type="horizontal" position="center">
         <Avatar
-          src={defaultAvatar}
-          // src={
-          //   currentUser?.avatar
-          //     ? `${IMAGE_SERVER_URL}${currentUser.avatar}`
-          //     : defaultAvatar
-          // }
+          src={
+            currentUser?.avatar
+              ? `${IMAGE_SERVER_URL}${currentUser.avatar}`
+              : defaultAvatar
+          }
           size={130}
         >
           <label htmlFor="avatar_upload" className="avatar-upload">
