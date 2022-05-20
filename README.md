@@ -118,9 +118,9 @@ https://www.figma.com/file/24fCfLLYYrCyTPW4SULqI5/Tower-Defense?node-id=0%3A1
         <p>dev</p>
       </td>
       <td valign="top">
-        <a href="https://github.com/greyforce"><img width="150" height="150" src="https://ca.slack-edge.com/TPV9DP0N4-U01B6UW0LKY-d6d64d6756ca-512"></a>
+        <a href="https://github.com/refactor256"><img width="150" height="150" src="https://ca.slack-edge.com/TPV9DP0N4-U01B6UW0LKY-d6d64d6756ca-512"></a>
         <br>
-        <a href="https://github.com/greyforce">Gregory Kovorotny</a>
+        <a href="https://github.com/refactor256">Gregory Kovorotny</a>
         <br>
         <p>dev</p>
       </td>
